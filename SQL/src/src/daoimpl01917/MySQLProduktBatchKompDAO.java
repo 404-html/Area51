@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mysql.jdbc.PreparedStatement;
+
 import src.connector01917.Connector;
 import src.daointerfaces01917.DALException;
 import src.daointerfaces01917.ProduktBatchKompDAO;
@@ -43,23 +45,41 @@ public class MySQLProduktBatchKompDAO implements ProduktBatchKompDAO {
 	@Override
 	public List<ProduktBatchKompDTO> getProduktBatchKompList()
 			throws DALException {
-		// TODO Auto-generated method stub
-		return null;
+		List<ProduktBatchKompDTO> pList = new ArrayList<>();
+		try(ResultSet r = Connector.doQuery("SELECT * FROM produktbatchkomponent ;")){
+			while (r.next()){
+			pList.add(new ProduktBatchKompDTO(r.getInt("pb_id"), r.getInt("rb_id"), r.getDouble("tara"), r.getDouble("netto"), r.getInt("opr_id")));
+			}
+		} catch(SQLException e){
+			System.out.println("SQL failed" + e);
+		}
+		return pList;
 	}
 
 	@Override
 	public void createProduktBatchKomp(
-			src.dto01917.ProduktBatchKompDTO produktbatchkomponent)
+			ProduktBatchKompDTO produktbatchkomponent)
 			throws DALException {
-		// TODO Auto-generated method stub
+		Connector.doUpdate("INSERT INTO produktbatchkomponent (pb_id, rb_id, tara, netto, opr_id) VALUES (" +
+			produktbatchkomponent.getPbId() + "," +
+			produktbatchkomponent.getRbId() + "," +
+			produktbatchkomponent.getTara() + "," +
+			produktbatchkomponent.getNetto() + "," +
+			produktbatchkomponent.getOprId() + ");"	);
 
 	}
 
 	@Override
 	public void updateProduktBatchKomp(
-			src.dto01917.ProduktBatchKompDTO produktbatchkomponent)
+			ProduktBatchKompDTO produktbatchkomponent)
 			throws DALException {
-		// TODO Auto-generated method stub
+		Connector.doUpdate("UPDATE produktbatchkomponent SET " + 
+				"rb_id = " + produktbatchkomponent.getRbId() + "," +
+				"tara = " +	produktbatchkomponent.getTara() + "," +
+				"netto = " + produktbatchkomponent.getNetto() + "," +
+				"opr_id = " + produktbatchkomponent.getOprId() + 
+				"WHERE pb_id =" + produktbatchkomponent.getPbId() + ";"
+				);
 
 	}
 
