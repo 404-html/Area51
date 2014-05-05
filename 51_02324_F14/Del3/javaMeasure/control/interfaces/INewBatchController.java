@@ -1,0 +1,34 @@
+package javaMeasure.control.interfaces;
+
+import java.util.ArrayList;
+
+import javaMeasure.BatchProfile;
+import javaMeasure.BatchSetting;
+import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
+
+public interface INewBatchController {
+	
+	IMainController getMainController();
+
+	BatchProfile getDefaultBatchProfile() throws DataBaseException;
+	
+	BatchProfile getBatchProfile(String profileName) throws DataBaseException;
+
+	ArrayList<String> getSavedBatchProfiles();
+
+	void saveBatchSettingsPressed(String profileName, ArrayList<String> profileSettings);
+	
+	void deleteBatchSettingPressed(String profileName);
+
+	void createBatchpressed(String batchString,
+			ArrayList<String> profileSettings);
+
+	boolean isBatchInDB(String batchNumber) throws DataBaseException;
+	
+	void loadBatchSettingsPressed(String profilename);
+
+	void annullerPressed();
+	
+	
+
+}

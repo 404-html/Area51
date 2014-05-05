@@ -1,0 +1,25 @@
+package javaMeasure.control.interfaces;
+
+import javaMeasure.Batch;
+
+public interface IBatchMeasureController {
+
+	void showGui(boolean visible);
+
+	void btnStrokePressed();
+
+	void btnNewBatchPressed();
+
+	void btnLeakCurrent(String dasyPath);
+
+	void btnLogOutPressed();
+	
+	IMainController getMainController();
+
+	void setActiveBatch(Batch b);
+
+	void btnGetBatchPressed();
+	
+	
+	
+}
