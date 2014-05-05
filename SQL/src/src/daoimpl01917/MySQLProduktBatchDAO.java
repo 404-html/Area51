@@ -18,7 +18,10 @@ public class MySQLProduktBatchDAO implements ProduktBatchDAO {
 			ProduktBatchDTO p = null;
 		try(ResultSet r = Connector.doQuery("SELECT * FROM produktbatch WHERE pb_id =" + pbId + ";")){
 			r.next();
-			p = new ProduktBatchDTO(r.getInt("pb_id"), r.getInt("status"), r.getInt("receptid"));
+//			System.out.println(r.getInt("pb_id"));
+//			System.out.println(r.getInt("status"));
+//			System.out.println(r.getInt("recept_id"));
+			p = new ProduktBatchDTO(r.getInt("pb_id"), r.getInt("status"), r.getInt("recept_id"));
 			return p;
 		} catch(SQLException e){
 			System.out.println("No produktbatch with this id");
@@ -30,9 +33,9 @@ public class MySQLProduktBatchDAO implements ProduktBatchDAO {
 	public List<src.dto01917.ProduktBatchDTO> getProduktBatchList()
 			throws DALException {
 		ArrayList<src.dto01917.ProduktBatchDTO> list = new ArrayList<>();
-		try(ResultSet r = Connector.doQuery("SELECT * FROM produktbatches;")){
+		try(ResultSet r = Connector.doQuery("SELECT * FROM produktbatch;")){
 			while(r.next()){
-				list.add(new ProduktBatchDTO(r.getInt("pb_id"), r.getInt("status"), r.getInt("receptid")));
+				list.add(new ProduktBatchDTO(r.getInt("pb_id"), r.getInt("status"), r.getInt("recept_id")));
 			}
 		}catch(SQLException e){
 			System.out.println("there are no produktbatches in database");

@@ -7,6 +7,8 @@ import src.dto01917.OperatoerDTO;
 import src.dto01917.ProduktBatchDTO;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import src.connector01917.Connector;
 
@@ -21,16 +23,46 @@ public class Main {
 		
 		System.out.println("update produktbatch:");
 		MySQLOperatoerDAO opr = new MySQLOperatoerDAO();
+		MySQLProduktBatchDAO prodbatch = new MySQLProduktBatchDAO();
 		
+		// test af getProduktBatch(int pbId)
+		try{
+			System.out.println("test 1:");
+			ProduktBatchDTO pb1 = prodbatch.getProduktBatch(3);
+			System.out.println("id: " + pb1.getPbId() + " receptid: " + pb1.getReceptId() + " status: " + pb1.getStatus());
 		
+		} catch (DALException dale){
+			
+		}
+		
+		// testing list of produktbatches
+		try{
+			System.out.println("test 2:");
+			List<ProduktBatchDTO> list = prodbatch.getProduktBatchList();
+			for(ProduktBatchDTO p : list){
+				System.out.println("id: " + p.getPbId() + " receptid: " + p.getReceptId() + " status: " + p.getStatus());
+			}
+		} catch(DALException dale){
+			
+		}
+		
+		// testing updateProduktBatch(produktbatchDTO); and getting batch again
 		ProduktBatchDTO produktbatchDTO = new ProduktBatchDTO(3, 1, 3);
 		try{
-			MySQLProduktBatchDAO pb = new MySQLProduktBatchDAO();
-			pb.updateProduktBatch(produktbatchDTO);
+			System.out.println("test 3:");
+			prodbatch.updateProduktBatch(produktbatchDTO);
+			ProduktBatchDTO pb1 = prodbatch.getProduktBatch(3);
+			System.out.println("id: " + pb1.getPbId() + " receptid: " + pb1.getReceptId() + " status: " + pb1.getStatus());
+			prodbatch.updateProduktBatch(new ProduktBatchDTO(3, 2, 2));
+			ProduktBatchDTO pb2 = prodbatch.getProduktBatch(3);
+			System.out.println("id: " + pb2.getPbId() + " receptid: " + pb2.getReceptId() + " status: " + pb2.getStatus());
 		
 		}catch(Exception e ){
 			System.out.println("failed!!");
 		}
+		
+		// testing create batch. create, then getting and then deleting again
+		
 		
 //		System.out.println("Operatoer nummer 3:");
 //		MySQLOperatoerDAO opr = new MySQLOperatoerDAO();
