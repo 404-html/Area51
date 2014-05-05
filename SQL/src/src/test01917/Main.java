@@ -2,10 +2,10 @@ package src.test01917;
 
 import src.daoimpl01917.MySQLOperatoerDAO;
 import src.daoimpl01917.MySQLProduktBatchDAO;
+import src.daointerfaces01917.DALException;
 import src.dto01917.ProduktBatchDTO;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import src.connector01917.Connector;

@@ -5,8 +5,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mysql.jdbc.PreparedStatement;
-
 import src.connector01917.Connector;
 import src.daointerfaces01917.DALException;
 import src.daointerfaces01917.ProduktBatchKompDAO;
