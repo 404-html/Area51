@@ -143,7 +143,7 @@ public class NewBatchController implements INewBatchController {
 	}
 
 	@Override
-	public void deleteBatchSettingPressed(String profileName) throws DataBaseException {
+	public void deleteBatchProfilePressed(String profileName) throws DataBaseException {
 		BatchProfile bp = null;
 		try {
 			//Loads a batchProfile from DB
