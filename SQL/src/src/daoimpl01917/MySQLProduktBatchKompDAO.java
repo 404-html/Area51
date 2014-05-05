@@ -30,7 +30,7 @@ public class MySQLProduktBatchKompDAO implements ProduktBatchKompDAO {
 			int pbId) throws DALException {
 		// TODO Auto-generated method stub
 		List<ProduktBatchKompDTO> pList = new ArrayList<>();
-		try(ResultSet r = Connector.doQuery("SELECT * FROM produktbatchkomponent;")){
+		try(ResultSet r = Connector.doQuery("SELECT * FROM produktbatchkomponent WHERE pb_id = " + pbId +";")){
 			while (r.next()){
 			pList.add(new ProduktBatchKompDTO(r.getInt("pb_id"), r.getInt("rb_id"), r.getDouble("tara"), r.getDouble("netto"), r.getInt("opr_id")));
 			}
@@ -41,7 +41,7 @@ public class MySQLProduktBatchKompDAO implements ProduktBatchKompDAO {
 	}
 
 	@Override
-	public List<src.dto01917.ProduktBatchKompDTO> getProduktBatchKompList()
+	public List<ProduktBatchKompDTO> getProduktBatchKompList()
 			throws DALException {
 		// TODO Auto-generated method stub
 		return null;
