@@ -2,6 +2,7 @@ package src.daoimpl01917;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import src.connector01917.Connector;
@@ -25,10 +26,18 @@ public class MySQLProduktBatchKompDAO implements ProduktBatchKompDAO {
 	}
 
 	@Override
-	public List<src.dto01917.ProduktBatchKompDTO> getProduktBatchKompList(
+	public List<ProduktBatchKompDTO> getProduktBatchKompList(
 			int pbId) throws DALException {
 		// TODO Auto-generated method stub
-		return null;
+		List<ProduktBatchKompDTO> pList = new ArrayList<>();
+		try(ResultSet r = Connector.doQuery("SELECT * FROM produktbatchkomponent;")){
+			while (r.next()){
+			pList.add(new ProduktBatchKompDTO(r.getInt("pb_id"), r.getInt("rb_id"), r.getDouble("tara"), r.getDouble("netto"), r.getInt("opr_id")));
+			}
+		} catch(SQLException e){
+			System.out.println("SQL failed" + e);
+		}
+		return pList;
 	}
 
 	@Override
