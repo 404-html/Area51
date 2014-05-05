@@ -18,7 +18,7 @@ public interface INewBatchController {
 
 	void saveBatchSettingsPressed(String profileName, ArrayList<String> profileSettings);
 	
-	void deleteBatchSettingPressed(String profileName);
+	void deleteBatchProfilePressed(String profileName) throws DataBaseException;
 
 	void createBatchpressed(String batchString,
 			ArrayList<String> profileSettings);

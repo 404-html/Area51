@@ -143,10 +143,7 @@ public class NewBatchController implements INewBatchController {
 	}
 
 	@Override
-	public void deleteBatchSettingPressed(String profileName) {
-	 IDatabaseController idbc;
-	 getBatchProfile(profileName);
-	 BatchSetting b;
+	public void deleteBatchProfilePressed(String profileName) throws DataBaseException {
 		BatchProfile bp = null;
 		try {
 			//Loads a batchProfile from DB
@@ -154,8 +151,7 @@ public class NewBatchController implements INewBatchController {
 		} catch (DataBaseException e) {
 			e.printStackTrace();
 		}
-		
-	 idbc.deleteBatchSetting();
+		mainController.getDatabaseController().deleteBatchProfile(bp);
 		
 	}
 

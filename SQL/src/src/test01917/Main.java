@@ -2,8 +2,6 @@ package src.test01917;
 
 import src.daoimpl01917.MySQLOperatoerDAO;
 import src.daoimpl01917.MySQLProduktBatchDAO;
-import src.daointerfaces01917.DALException;
-import src.dto01917.OperatoerDTO;
 import src.dto01917.ProduktBatchDTO;
 
 import java.sql.SQLException;

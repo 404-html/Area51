@@ -17,6 +17,7 @@ import javax.swing.JCheckBox;
 import javax.swing.SwingConstants;
 import javax.swing.JSeparator;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
 
 @SuppressWarnings("serial")
 public class NewBatchGui extends JFrame implements INewBatchGui{
@@ -255,9 +256,15 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 				btnAnnuller.setActionCommand("annuller");
 				panel_1.add(btnAnnuller);
 				
+				JButton btnDeleteSettings = new JButton("Delete Settings");
+				btnDeleteSettings.setActionCommand("deleteSettings");
+				btnDeleteSettings.setBounds(131, 32, 129, 23);
+				panel_1.add(btnDeleteSettings);
+				
 
 		btnLoadBatchSettings.addActionListener(this);
 		btnSaveBatchSettings.addActionListener(this);
+		btnDeleteSettings.addActionListener(this);
 		btnCreateBatch.addActionListener(this);
 		btnAnnuller.addActionListener(this);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -342,6 +349,14 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 		case "annuller":
 			newBatchController.annullerPressed();
 			break;
+//		case "deleteSettings":
+//			try {
+//				newBatchController.deleteBatchSettingPressed(profileName);
+//			} catch (DataBaseException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			}
+//			break;
 		default: System.err.println("ActionCommand is not recognized");
 		}		
 	}

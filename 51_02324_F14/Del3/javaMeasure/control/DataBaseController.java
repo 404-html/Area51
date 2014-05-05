@@ -486,17 +486,17 @@ public class DataBaseController implements IDatabaseController {
 	}
 
 	@Override
-	public void deleteBatchProfile(BatchProfile bp) throws DataBaseException {
-		// TODO test
-		String query = "DELETE FROM batchsettings WHERE profileID=?";
-		PreparedStatement s = sqlConnector.getPreparedStatement(query);
-		try{
-			s.setInt(1, bp.getProfileID());
-			s.executeUpdate();
-		} catch (SQLException e){
-			e.printStackTrace();
-			throw new DataBaseException();
-			
-		}
+public void deleteBatchProfile(BatchProfile bp) throws DataBaseException {
+	// TODO test
+	String query = "DELETE FROM batchsettings WHERE profileID=?";
+	PreparedStatement s = sqlConnector.getPreparedStatement(query);
+	try{
+		s.setInt(1, bp.getProfileID());
+		s.executeUpdate();
+	} catch (SQLException e){
+		e.printStackTrace();
+		throw new DataBaseException();
+		
 	}
+}
 }
