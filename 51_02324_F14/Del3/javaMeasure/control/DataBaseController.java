@@ -9,10 +9,11 @@ import javaMeasure.Measurement;
 import javaMeasure.Measurement.MeasurementType;
 import javaMeasure.control.interfaces.IDatabaseController;
 import javaMeasure.control.interfaces.ISQLConnector;
+import javaMeasure.DataBaseException;
 import javaMeasure.User;
 
 public class DataBaseController implements IDatabaseController {
-	private ISQLConnector sqlConnector = new SQLConnector();
+	private static ISQLConnector sqlConnector = new SQLConnector();
 	//TODO should if there is time extend the amount of exceptions!
 	public DataBaseController() {
 		super();
