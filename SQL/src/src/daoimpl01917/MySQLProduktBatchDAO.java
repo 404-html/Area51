@@ -16,24 +16,24 @@ public class MySQLProduktBatchDAO implements ProduktBatchDAO {
 	public src.dto01917.ProduktBatchDTO getProduktBatch(int pbId)
 			throws DALException {
 			ProduktBatchDTO p = null;
+			//Getting resultset from db:
 		try(ResultSet r = Connector.doQuery("SELECT * FROM produktbatch WHERE pb_id =" + pbId + ";")){
+			//Moving cursor and creating DTO:
 			r.next();
-//			System.out.println(r.getInt("pb_id"));
-//			System.out.println(r.getInt("status"));
-//			System.out.println(r.getInt("recept_id"));
 			p = new ProduktBatchDTO(r.getInt("pb_id"), r.getInt("status"), r.getInt("recept_id"));
-			return p;
-		} catch(SQLException e){
+			} catch(SQLException e){
 			System.out.println("No produktbatch with this id");
 		}
 		return p;
 	}
 
 	@Override
-	public List<src.dto01917.ProduktBatchDTO> getProduktBatchList()
+	public List<ProduktBatchDTO> getProduktBatchList()
 			throws DALException {
-		ArrayList<src.dto01917.ProduktBatchDTO> list = new ArrayList<>();
+		ArrayList<ProduktBatchDTO> list = new ArrayList<>();
+		//Resultset from db:
 		try(ResultSet r = Connector.doQuery("SELECT * FROM produktbatch;")){
+			//Parsing resultset into list:
 			while(r.next()){
 				list.add(new ProduktBatchDTO(r.getInt("pb_id"), r.getInt("status"), r.getInt("recept_id")));
 			}
@@ -44,9 +44,9 @@ public class MySQLProduktBatchDAO implements ProduktBatchDAO {
 	}
 
 	@Override
-	public void createProduktBatch(src.dto01917.ProduktBatchDTO produktbatch)
+	public void createProduktBatch(ProduktBatchDTO produktbatch)
 			throws DALException {
-		try{
+		try{//Running SQL query
 			Connector.doUpdate("INSERT INTO produktbatch"
 					+ " VALUES(" + produktbatch.getPbId() + ","
 					+ produktbatch.getStatus() + ","
@@ -54,13 +54,12 @@ public class MySQLProduktBatchDAO implements ProduktBatchDAO {
 		} catch(DALException e){
 			System.out.println("produktbatch is not created properly");
 		}
-
 	}
 
 	@Override
-	public void updateProduktBatch(src.dto01917.ProduktBatchDTO produktbatch)
+	public void updateProduktBatch(ProduktBatchDTO produktbatch)
 			throws DALException {
-			try{
+			try{ //Updating produktbatch in db
 				Connector.doUpdate("UPDATE produktbatch SET status=" + produktbatch.getStatus() + ","
 						+ "recept_id=" + produktbatch.getReceptId() + " "
 						+ "WHERE pb_id=" + produktbatch.getPbId() + ";");
