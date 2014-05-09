@@ -1,8 +1,8 @@
 package javaMeasure.control.interfaces;
 import java.util.ArrayList;
+import javaMeasure.DataBaseException;
 
 import javaMeasure.*;
-import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 
 public interface IDatabaseController {
 	//User functionality

@@ -3,7 +3,7 @@ package javaMeasure.control.interfaces;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 
-import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
+import javaMeasure.DataBaseException;
 
 public interface ISQLConnector {
 

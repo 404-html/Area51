@@ -7,21 +7,16 @@ import java.util.ArrayList;
 
 import javaMeasure.Measurement.MeasurementType;
 import javaMeasure.control.SQLConnector;
+import javaMeasure.DataBaseException;
 import javaMeasure.control.interfaces.ISQLConnector;
-import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 
-public class MeasurementDAO {
+
+
+public class MeasurementDAO{
 	private static ISQLConnector sqlConnector = new SQLConnector();
 	
 	
-	 public void addToDB(Measurement measurement) throws DataBaseException {
-	  //  Statement statement = sqlConnector.getStatement();
-	  //  String qString = "INSERT INTO measurements (elementnumber, measurementtype, measurementvalue, timestamp) VALUES ("
-	  //    + measurement.getElementNo() +  ",'" 
-	  //    + measurement.getMeasurementType().name() + "',"
-	  //    + measurement.getMeasureValue() +"," 
-	  //    + measurement.getTimeStamp()     
-	  //    + ")";
+	 public void addToDB(Measurement measurement) throws DataBaseException, javaMeasure.control.interfaces.IDatabaseController.DataBaseException {
 	  String query = "INSERT INTO measurements (batchid, elementnumber, measurementtype, measurementvalue, timestamp) VALUES (?,?,?,?,?)";
 	  PreparedStatement statement = sqlConnector.getPreparedStatement(query);
 

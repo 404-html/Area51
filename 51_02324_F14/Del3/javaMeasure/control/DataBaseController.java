@@ -9,10 +9,11 @@ import javaMeasure.Measurement;
 import javaMeasure.Measurement.MeasurementType;
 import javaMeasure.control.interfaces.IDatabaseController;
 import javaMeasure.control.interfaces.ISQLConnector;
+import javaMeasure.DataBaseException;
 import javaMeasure.User;
 
 public class DataBaseController implements IDatabaseController {
-	private ISQLConnector sqlConnector = new SQLConnector();
+	private static ISQLConnector sqlConnector = new SQLConnector();
 	//TODO should if there is time extend the amount of exceptions!
 	public DataBaseController() {
 		super();
@@ -488,10 +489,10 @@ public class DataBaseController implements IDatabaseController {
 	@Override
 public void deleteBatchProfile(BatchProfile bp) throws DataBaseException {
 	// TODO test
-	String query = "DELETE FROM batchsettings WHERE profileID=?";
+	String query = "DELETE FROM batchprofile WHERE profilename=?";
 	PreparedStatement s = sqlConnector.getPreparedStatement(query);
 	try{
-		s.setInt(1, bp.getProfileID());
+		s.setString(1, bp.getProfileName());
 		s.executeUpdate();
 	} catch (SQLException e){
 		e.printStackTrace();

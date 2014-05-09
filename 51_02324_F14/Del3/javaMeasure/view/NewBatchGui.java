@@ -349,14 +349,19 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 		case "annuller":
 			newBatchController.annullerPressed();
 			break;
-//		case "deleteSettings":
-//			try {
-//				newBatchController.deleteBatchSettingPressed(profileName);
-//			} catch (DataBaseException e1) {
-//				// TODO Auto-generated catch block
-//				e1.printStackTrace();
-//			}
-//			break;
+		case "deleteSettings":
+			 ArrayList<String> list2 = newBatchController.getSavedBatchProfiles();
+			 Object o2 = JOptionPane.showInputDialog(getContentPane(), "Choose profile to delete: ", "Delete Profile", JOptionPane.QUESTION_MESSAGE, null, list2.toArray(), list2.get(0));
+			 if(o2 != null){
+				 profileName = o2.toString();
+				 try {
+					newBatchController.deleteBatchProfilePressed(profileName);
+				} catch (DataBaseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			 }
+			break;
 		default: System.err.println("ActionCommand is not recognized");
 		}		
 	}

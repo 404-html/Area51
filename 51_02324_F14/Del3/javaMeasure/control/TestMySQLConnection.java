@@ -1,7 +1,7 @@
 package javaMeasure.control;
 import java.sql.*;
 
-import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
+import javaMeasure.DataBaseException;
 import javaMeasure.control.interfaces.ISQLConnector;
 
 public class TestMySQLConnection {
