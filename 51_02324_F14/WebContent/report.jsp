@@ -5,21 +5,27 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Noliac Form</title>
+<% String username = (String) session.getAttribute("username"); %>
+<title>Noliac : <%out.println(username);%> | Final report</title>
 <link rel="stylesheet" type="text/css" href="view.css" media="all" />
 <script type="text/javascript" src="view.js"></script>
 <script type="text/javascript" src="calendar.js"></script>
 </head>
 <%
-	String name = request.getParameter("name");
-	out.println("test");
+	String name = request.getParameter("submit");
+	String excel = request.getParameter("saveForm");
 	if(name == null){name = ""; }
+	if(excel == null){excel = ""; }
 	if(session.getAttribute("username") == null)
 	{	
 		response.sendRedirect("userlogin.jsp");
-	}else if(name.equalsIgnoreCase("submit"))
+	}else if(name.equals("Ny rapport"))
 	{
 		response.sendRedirect("form.jsp");
+	}
+	else if(excel.equals("saveAsExcel"))
+	{
+		response.sendRedirect("form.jsp"); // should be something else later on
 	}
 	else{
 	javaMeasure.Batch batch = (javaMeasure.Batch) session.getAttribute("batch");
@@ -260,7 +266,7 @@
 					<li class="buttons">
 					<input type="hidden" name="form_id"	value="812583" /> 
 					<input id="saveForm" class="button_text" type="submit" name="submit" value="Ny rapport" />
-					<input id="saveAsExcel" class="button_text" type="submit" name="saveForm" value="Gem som Excel-fil" />
+					<input id="saveAsExcel" class="button_text" type="submit" name="saveForm" value="saveAsExcel" />
 					</li>
 				</ul>
 			</form>
