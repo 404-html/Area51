@@ -33,7 +33,8 @@
 				String password = request.getParameter("pass");
 				if((username == null || username.equals("")) && (password == null || password.equals(""))){ %> <p>Indtast Brugernavn og password</p> <%}
 				else if(mainControl.getDatabaseController().isUserNameInDB(username)){
-					response.sendRedirect("form.jsp?username=" + username);
+					session.setAttribute("username", username);
+					response.sendRedirect("form.jsp");
 				}
 				else
 					%> <p> Forkert brugernavn eller adgangskode! Prøv igen.  </p> <%
