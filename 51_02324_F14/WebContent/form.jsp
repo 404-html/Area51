@@ -1,3 +1,4 @@
+<%@page import="javaMeasure.control.interfaces.IDatabaseController.DataBaseException"%>
 <%@page import="javaMeasure.control.MainController"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -9,18 +10,16 @@
 <%
 	String username = (String) session.getAttribute("username");
 %>
-<title>Noliac Form logged in as: <%
-	out.println(username);
-%></title>
+<title>Noliac : <%out.println(username);%> | udtræk</title>
 <link rel="stylesheet" type="text/css" href="view.css" media="all" />
 <script type="text/javascript" src="view.js"></script>
 <script type="text/javascript" src="calendar.js"></script>
 </head>
 <body id="main-body">
 
-	<jsp:useBean id="database"
-		class="javaMeasure.control.DataBaseController" scope="session" />
 	<%
+		javaMeasure.control.DataBaseController database = (javaMeasure.control.DataBaseController) session.getAttribute("database");
+		javaMeasure.Batch batch = null;
 		if (username == null) {
 			response.sendRedirect("userlogin.jsp");
 		} else {
@@ -29,7 +28,11 @@
 			if (batchname == null) {
 
 			} else if (!batchname.equalsIgnoreCase("")) {
-				javaMeasure.Batch batch = database.getBatch(batchname);
+				try{
+					batch = database.getBatch(batchname);
+				} catch (DataBaseException dbe){
+					response.sendRedirect("form.jsp");
+				}
 				if (batch != null) {
 
 					javaMeasure.BatchProfile profile = database

@@ -12,8 +12,7 @@
 </head>
 <body id="main-body">
 
-	<jsp:useBean id="database"
-		class="javaMeasure.control.DataBaseController" scope="session" />
+	<jsp:useBean id="database" class="javaMeasure.control.DataBaseController" scope="session" />
 
 	<div id="wrapper">
 
@@ -31,6 +30,7 @@
 
 
 					<%
+						session.setAttribute("database", database);
 						String username = request.getParameter("username");
 						String password = request.getParameter("pass");
 						if ((username == null || username.equals(""))
@@ -39,13 +39,21 @@
 					<p>Indtast Brugernavn og password</p>
 					<%
 						} else if (database.isUserNameInDB(username)) {
-							session.setAttribute("username", username);
-							response.sendRedirect("form.jsp");
+							javaMeasure.User user = database.getUserFromString(username);
+							if(user.getUserName().equals(username)) // password should be part of this later
+							{
+								session.setAttribute("username", username);
+								response.sendRedirect("form.jsp");
+							} else
+							{
+								%><p>Forkert brugernavn eller adgangskode! Prøv igen.</p><%
+							}
 						} else
-					%>
-					<p>Forkert brugernavn eller adgangskode! Prøv igen.</p>
-					<%
-						
+						{
+							%>
+							<p>Forkert brugernavn eller adgangskode! Prøv igen.</p>
+							<%
+						}
 					%>
 				</div>
 				<ul>
