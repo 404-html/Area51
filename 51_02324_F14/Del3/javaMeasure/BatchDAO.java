@@ -11,8 +11,11 @@ import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 import javaMeasure.interfaces.IBatchDAO;
 
 public class BatchDAO implements IBatchDAO {
-	private static ISQLConnector sqlConnector = new SQLConnector();
+	private  ISQLConnector sqlConnector;
 	
+	public BatchDAO(ISQLConnector sqlConnector) {
+		this.sqlConnector = sqlConnector;
+	}
 	/* (non-Javadoc)
 	 * @see javaMeasure.IBatchDAO#getBatches()
 	 */
@@ -114,6 +117,82 @@ public class BatchDAO implements IBatchDAO {
 			throw new DataBaseException();
 		}
 		return false;
+	}
+	public Batch getBatch(int batchId) throws DataBaseException {
+		//TODO testing
+		Batch returBatch;
+		Measurement.MeasurementType type; 
+		String query = "SELECT * FROM batches WHERE id=?";
+		PreparedStatement p = sqlConnector.getPreparedStatement(query);
+
+		try {
+			p.setInt(1, batchId);
+			ResultSet result = p.executeQuery();
+			if(result.next()){
+				returBatch = new Batch(result.getInt("id"), result.getString("name"), result.getInt("profile"));
+
+
+				query = "SELECT * FROM measurements WHERE batchid=?";
+				p = sqlConnector.getPreparedStatement(query);
+				p.setInt(1, batchId);
+				result = p.executeQuery();
+
+				//				if(result.next()){
+				//					if(result.getString("measurementtype").equals("LEAK")){
+				//						translate = Measurement.MeasurementType.LEAK;						
+				//					}
+				//					else{
+				//						translate = Measurement.MeasurementType.STROKE;
+				//					}
+				//					Measurement measure = new Measurement(result.getFloat("measurmentvalue"), translate, result.getInt("timestamp"));
+				//					measure.setElementNo(result.getInt("elementnumber"));
+				//					measure.setBatchID(result.getInt("id"));
+				//					returBatch.addMeasurement(measure);
+				while(result.next()){
+					if(result.getString("measurementtype").equals("LEAK")){
+						type = Measurement.MeasurementType.LEAK;						
+					}
+					else{
+						type = Measurement.MeasurementType.STROKE;
+					}
+					returBatch.addMeasurement(new Measurement(result.getInt("id"), result.getInt("elementnumber"), result.getFloat("measurementvalue"), type, result.getLong("timestamp")));
+					//						measure = new Measurement(result.getFloat("measurmentvalue"), translate, result.getInt("timestamp"));
+					//						measure.setElementNo(result.getInt("elementnumber"));
+					//						measure.setBatchID(result.getInt("id"));
+					//						returBatch.addMeasurement(measure);
+				}
+				//				} else{
+				//					throw new DataBaseException();
+				//				}
+
+			} else{
+				throw new DataBaseException();
+			}
+
+			return returBatch;
+
+		} catch (SQLException e1) {
+			System.err.println("error in returning batch by batchId");
+			e1.printStackTrace();
+			throw new DataBaseException();
+		}
+
+		//*****************************************************************
+		//		Statement statement = sqlConnector.getStatement();
+		//		String qString = "SELECT * FROM batches WHERE id = " 
+		//				+ batchId + ")";
+		//		try {
+		//			ResultSet result = statement.executeQuery(qString);
+		//			if (result.next()){
+		//				return new Batch(result.getInt("id"), result.getString("name"), result.getInt("profile"));
+		//			} else {
+		//				throw new DataBaseException();
+		//			}
+		//		} catch (SQLException e) {
+		//			e.printStackTrace();
+		//			throw new DataBaseException();
+		//		}
+		//*********************************************************************
 	}
 	
 

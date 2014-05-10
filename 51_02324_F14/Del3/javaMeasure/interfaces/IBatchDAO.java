@@ -14,5 +14,7 @@ public interface IBatchDAO {
 	Batch getBatch(String batchname) throws DataBaseException;
 
 	boolean isBatchInDB(String batchName) throws DataBaseException;
+	
+	Batch getBatch(int batchId) throws DataBaseException;
 
 }
