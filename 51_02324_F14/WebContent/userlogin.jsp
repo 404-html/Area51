@@ -1,5 +1,8 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <title>Noliac Form</title>
@@ -8,6 +11,9 @@
 <script type="text/javascript" src="calendar.js"></script>
 </head>
 <body id="main-body">
+
+<jsp:useBean id="mainControl" class="javaMeasure.control.MainController" scope="session" />
+
 	<div id="wrapper">
 	
 	<div id="header"><img src="noliac_logo.png" alt="Logo"></div>
@@ -15,10 +21,24 @@
 	<div id="form_container">
 	
 		<!--<h1><a>Noliac</a></h1>-->
-	  <form id="login_form" class="appnitro"  method="post" action="form.jsp">
+<!-- 		action="form.jsp" -->
+	  <form id="login_form" class="appnitro"  method="post">  
 		<div class="form_description">
 			<h1>Noliac User login</h1>
-			<p>Indtast Brugernavn og password</p>
+
+						
+			<%
+				
+				String username = request.getParameter("username");
+				String password = request.getParameter("pass");
+				if((username == null || username.equals("")) && (password == null || password.equals(""))){ %> <p>Indtast Brugernavn og password</p> <%}
+				else if(mainControl.getDatabaseController().isUserNameInDB(username)){
+					response.sendRedirect("form.jsp?username=" + username);
+				}
+				else
+					%> <p> Forkert brugernavn eller adgangskode! Prøv igen.  </p> <%
+					
+			%>
 		</div>						
 		  <ul>
 			<li id="li_3" >
@@ -34,7 +54,7 @@
 			        </div>
 				    <p class="guidelines" id="guide_"><small>Batch # du ønsker</small></p>
 		    </li>
-				  <li class="buttons">
+		<li class="buttons">
 			    <input type="hidden" name="form_id" value="812583" />
 			    
 				<input id="saveForm" class="button_text" type="submit" name="login" value="Login" />
@@ -49,3 +69,4 @@
 	</div>
 	</body>
 </html>
+
