@@ -152,8 +152,19 @@ public class BatchProfileDAO implements IBatchProfileDAO {
 		@Override
 		public void deleteBatchProfile(BatchProfile bp) throws DataBaseException {
 			// TODO test
-			String query = "DELETE FROM batchprofile WHERE profilename=?";
+			String query = "DELETE FROM batchsettings WHERE profileid=?";
 			PreparedStatement s = sqlConnector.getPreparedStatement(query);
+			try{
+				s.setInt(1, bp.getProfileID());
+				s.executeUpdate();
+			} catch (SQLException e){
+				e.printStackTrace();
+				throw new DataBaseException();
+				
+			}
+			
+			query = "DELETE FROM batchprofile WHERE profilename=?";
+			s = sqlConnector.getPreparedStatement(query);
 			try{
 				s.setString(1, bp.getProfileName());
 				s.executeUpdate();
