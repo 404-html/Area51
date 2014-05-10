@@ -45,10 +45,17 @@ public class Batch {
 
 	// adds a single measurement to the batch
 	// as of now, the measurements kan be taken in any chronological order, which means as of now, you have to make all measurements on all elements
-	public void addMeasurement(Measurement measurement){
+	public boolean addMeasurement(Measurement measurement){
 		MeasurementType type = measurement.getMeasurementType();
 		float value = measurement.getMeasureValue();
-
+		int dif = currentLeakElement - currentStrokeElement;
+		if(type.equals(MeasurementType.LEAK))
+			dif++;
+		else dif--;
+		if(dif > 1 || dif < -1){
+			return false;
+		}
+		
 		if(type.equals(MeasurementType.LEAK)){
 			// the try catch is to make sure that the measurement never is put out bounds
 			// if the currentLeakElement points out of bounds, a new object is created in the catch clause
@@ -67,6 +74,27 @@ public class Batch {
 			}
 			currentStrokeElement++;
 		}
+		return true;
+	}
+	
+	// method for database to add the whole list without trouble
+	public void setMeasurementList(ArrayList<Measurement> stroke, ArrayList<Measurement> leak){
+		int size = 0;
+		if(stroke.size() > leak.size()){
+			size = stroke.size();
+		} else size = leak.size();
+	if(size != 0){
+		System.out.println(size);
+		System.out.println("stroke: " + stroke.size());
+		System.out.println("leak: " + leak.size());
+		for(int i = 0; i < size; i++)
+		{
+			if(stroke.size() > i && !stroke.isEmpty())
+			addMeasurement(stroke.get(i));
+			if(leak.size() > i && !leak.isEmpty())
+			addMeasurement(leak.get(i));
+		}
+	}
 	}
 
 	public int getCurrentLeakElement(){

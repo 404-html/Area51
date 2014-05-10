@@ -114,9 +114,10 @@
 						});
 					</script></li>
 
-					<li class="buttons"><input type="hidden" name="form_id"
-						value="812583" /> <input id="saveForm" class="button_text"
-						type="submit" name="submit" value="Indsend" /></li>
+					<li class="buttons"><input type="hidden" name="form_id"	value="812583" /> 
+						<input id="saveForm" class="button_text" type="submit" name="submit" value="Indsend" />
+						<input id="saveForm" class="button_text" type="submit" name="logout" value="logout"/>
+					</li>
 				</ul>
 			</form>
 			<div id="footer">

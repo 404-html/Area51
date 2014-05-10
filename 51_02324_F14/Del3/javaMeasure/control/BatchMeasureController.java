@@ -87,10 +87,18 @@ public class BatchMeasureController implements IBatchMeasureController {
 				measurement[0].setBatchID(activeBatch.getBatchID());
 				measurement[0].setMeasurementType(MeasurementType.STROKE);
 				measurement[0].setElementNo(activeBatch.getCurrentStrokeElement());
-				updateTable(measurement[0]);
 				if(measurement != null)
 					try {
-						mainController.getDatabaseController().addToDB(measurement[0]);
+						boolean measurementAdded = activeBatch.addMeasurement(measurement[0]);
+						if(!measurementAdded)
+						{
+							batchGUI.showInformationMessage("measurements should be taken equally", "measurements not equal");
+						} else
+						{
+							mainController.getDatabaseController().addToDB(measurement[0]);
+							updateTable();
+						}
+						
 					} catch (DataBaseException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -120,17 +128,26 @@ public class BatchMeasureController implements IBatchMeasureController {
 				measurement.setBatchID(activeBatch.getBatchID());
 				measurement.setElementNo(activeBatch.getCurrentLeakElement());
 				// adds the measurement to guis JTable before saved in database
-				updateTable(measurement);
+
 				try {
-					mainController.getDatabaseController().addToDB(measurement);
+					boolean measurementAdded = activeBatch.addMeasurement(measurement);
+					if(!measurementAdded)
+					{
+						batchGUI.showInformationMessage("measurements should be taken equally", "measurements not equal");
+					} else
+					{
+						mainController.getDatabaseController().addToDB(measurement);
+						updateTable();
+					}
 				} catch (DataBaseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+
 			}
 		}
 	}
-	
+
 	private void updateTable(Batch batch){
 		ArrayList<Object[]> list = batch.getMeasurementsList();
 		Object[][] updatedList = new Object[list.size()][3];
@@ -142,8 +159,8 @@ public class BatchMeasureController implements IBatchMeasureController {
 		batchGUI.updateTable(updatedList);
 	}
 
-	private void updateTable(Measurement measurement){
-		activeBatch.addMeasurement(measurement);
+	private void updateTable(){
+
 		ArrayList<Object[]> list = activeBatch.getMeasurementsList();
 		Object[][] updatedList = new Object[list.size()][3];
 
@@ -153,6 +170,7 @@ public class BatchMeasureController implements IBatchMeasureController {
 			updatedList[i][2] = list.get(i)[2];
 		}
 		batchGUI.updateTable(updatedList);
+
 	}
 
 	public void btnLogOutPressed() {

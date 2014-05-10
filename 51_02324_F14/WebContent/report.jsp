@@ -12,18 +12,17 @@
 <script type="text/javascript" src="calendar.js"></script>
 </head>
 <%
-	String name = request.getParameter("submit");
-	String excel = request.getParameter("saveForm");
-	if(name == null){name = ""; }
-	if(excel == null){excel = ""; }
+	String newReport = request.getParameter("newReport");
+	String excel = request.getParameter("saveAsExcel");
+
 	if(session.getAttribute("username") == null)
 	{	
 		response.sendRedirect("userlogin.jsp");
-	}else if(name.equals("Ny rapport"))
+	}else if(newReport != null)
 	{
 		response.sendRedirect("form.jsp");
 	}
-	else if(excel.equals("saveAsExcel"))
+	else if(excel != null)
 	{
 		response.sendRedirect("form.jsp"); // should be something else later on
 	}
@@ -265,8 +264,8 @@
 
 					<li class="buttons">
 					<input type="hidden" name="form_id"	value="812583" /> 
-					<input id="saveForm" class="button_text" type="submit" name="submit" value="Ny rapport" />
-					<input id="saveAsExcel" class="button_text" type="submit" name="saveForm" value="saveAsExcel" />
+					<input id="newReport" class="button_text" type="submit" name="newReport" value="Ny rapport" />
+					<input id="saveAsExcel" class="button_text" type="submit" name="saveAsExcel" value="gem som Excel" />
 					</li>
 				</ul>
 			</form>
