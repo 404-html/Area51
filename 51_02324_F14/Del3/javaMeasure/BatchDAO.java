@@ -8,10 +8,14 @@ import java.util.ArrayList;
 import javaMeasure.control.SQLConnector;
 import javaMeasure.control.interfaces.ISQLConnector;
 import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
+import javaMeasure.interfaces.IBatchDAO;
 
-public class BatchDAO {
+public class BatchDAO implements IBatchDAO {
 	private static ISQLConnector sqlConnector = new SQLConnector();
 	
+	/* (non-Javadoc)
+	 * @see javaMeasure.IBatchDAO#getBatches()
+	 */
 	public ArrayList<Batch> getBatches() throws DataBaseException {
 		//TODO needs testing 
 		String query = "SELECT * FROM batches";
@@ -35,6 +39,9 @@ public class BatchDAO {
 		}
 		return batches;
 	}
+	/* (non-Javadoc)
+	 * @see javaMeasure.IBatchDAO#addToDB(javaMeasure.Batch)
+	 */
 	public void addToDB(Batch batch) throws DataBaseException {
 		String query = "INSERT INTO batches (name, profile) VALUES (?,?)";
 		PreparedStatement statement = sqlConnector.getPreparedStatement(query);
@@ -48,6 +55,9 @@ public class BatchDAO {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see javaMeasure.IBatchDAO#getBatch(java.lang.String)
+	 */
 	public Batch getBatch(String batchname) throws DataBaseException {
 		// TODO needs testing   measurements (elementnumber, measurementtype, measurementvalue, timestamp)
 		Batch returBatch;
@@ -89,6 +99,9 @@ public class BatchDAO {
 			throw new DataBaseException();
 		}
 	}
+	/* (non-Javadoc)
+	 * @see javaMeasure.IBatchDAO#isBatchInDB(java.lang.String)
+	 */
 	public boolean isBatchInDB(String batchName) throws DataBaseException {
 		String qString = "SELECT * FROM batches WHERE name =?";
 		PreparedStatement statement = sqlConnector.getPreparedStatement(qString);

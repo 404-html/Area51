@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import javaMeasure.*;
 
 public interface IDatabaseController {
+	
 	//User functionality
 	ArrayList<User> getUserList() throws DataBaseException;
 	boolean isUserNameInDB(String userName) throws DataBaseException;

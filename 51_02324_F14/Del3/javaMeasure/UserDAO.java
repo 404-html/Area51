@@ -8,9 +8,10 @@ import java.util.ArrayList;
 import javaMeasure.control.SQLConnector;
 import javaMeasure.control.interfaces.ISQLConnector;
 import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
-import javaMeasure.UserNotFoundException;
+import javaMeasure.interfaces.IUserDAO;
+import javaMeasure.control.interfaces.IDatabaseController.UserNotFoundException;
 
-public class UserDAO {
+public class UserDAO implements IUserDAO {
 	private static ISQLConnector sqlConnector = new SQLConnector();
 
 	//User methods	

@@ -2,16 +2,17 @@ package javaMeasure.control;
 
 import java.sql.*;
 import java.util.ArrayList;
-import javaMeasure.Batch;
-import javaMeasure.BatchProfile;
-import javaMeasure.BatchSetting;
-import javaMeasure.Measurement;
+import javaMeasure.*;
+import javaMeasure.interfaces.*;
 import javaMeasure.Measurement.MeasurementType;
 import javaMeasure.control.interfaces.IDatabaseController;
 import javaMeasure.control.interfaces.ISQLConnector;
-import javaMeasure.User;
+
 
 public class DataBaseController implements IDatabaseController {
+
+	IUserDAO user= new UserDAO();
+	
 	private static ISQLConnector sqlConnector = new SQLConnector();
 	//TODO should if there is time extend the amount of exceptions!
 	public DataBaseController() {
@@ -21,85 +22,23 @@ public class DataBaseController implements IDatabaseController {
 	//User methods	
 	@Override
 	public ArrayList<User> getUserList() throws DataBaseException {
-		String query = "SELECT * FROM users ORDER BY username";
-		PreparedStatement statement = sqlConnector.getPreparedStatement(query);
-
-		ArrayList<User> users = new ArrayList<>();		
-		try {
-
-			ResultSet result = statement.executeQuery();
-
-			while (result.next()){
-				String userName = result.getString("username");
-				int userID = result.getInt("id");
-				users.add(new User(userName, userID));	
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DataBaseException();
-		}			
-		return  users; 
+		return this.user.getUserList();
 	}
 
 	@Override
 	public boolean isUserNameInDB(String userName) throws DataBaseException {
-		String query = "SELECT * FROM users WHERE username=?";
-		PreparedStatement statement = sqlConnector.getPreparedStatement(query);
-		ResultSet result = null;
-		try {
-			statement.setString(1, userName);
-			result = statement.executeQuery();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DataBaseException();
-		}
-		try {
-			if (result.next()){
-				return true;
-			}
-		} catch (SQLException e) {
-			throw new DataBaseException();
-		}
-		return false;
+		return this.user.isUserNameInDB( userName);
 	}
 
 	@Override
 	public void addToDB(User user) throws DataBaseException{
-		String query = "INSERT INTO users (username) VALUES (?)";
-		PreparedStatement statement = sqlConnector.getPreparedStatement(query);
-		try {
-			statement.setString(1, user.getUserName());
-			statement.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DataBaseException();
-		}
+		this.user.addToDB(user);
 
 	}
 
 	@Override
 	public User getUserFromString(String userString) throws DataBaseException, UserNotFoundException {
-		String query = "SELECT * FROM users WHERE username=?";
-		PreparedStatement statement = sqlConnector.getPreparedStatement(query);
-		ResultSet result = null;
-		//Query DB
-		try {
-			statement.setString(1, userString);
-			result = statement.executeQuery();
-		} catch (SQLException e) {
-			throw new DataBaseException(); 
-		}
-		//Parse results
-		try {
-			if (result.next()){
-				User user = new User(result.getString("username"), result.getInt("id"));
-				return user;
-			} 
-		} catch (SQLException e) {
-			throw new DataBaseException();
-		}
-
-		throw new UserNotFoundException();
+		return this.user.getUserFromString(userString);
 	}
 	//Measurements
 

@@ -9,14 +9,18 @@ import javaMeasure.Measurement.MeasurementType;
 import javaMeasure.control.SQLConnector;
 import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 import javaMeasure.control.interfaces.ISQLConnector;
+import javaMeasure.interfaces.IMeasurementDAO;
 
 
 
-public class MeasurementDAO{
+public class MeasurementDAO implements IMeasurementDAO{
 	private static ISQLConnector sqlConnector = new SQLConnector();
 	
 	
-	 public void addToDB(Measurement measurement) throws DataBaseException, javaMeasure.control.interfaces.IDatabaseController.DataBaseException {
+	 /* (non-Javadoc)
+	 * @see javaMeasure.IMeasurementDAO#addToDB(javaMeasure.Measurement)
+	 */
+	public void addToDB(Measurement measurement) throws DataBaseException, javaMeasure.control.interfaces.IDatabaseController.DataBaseException {
 	  String query = "INSERT INTO measurements (batchid, elementnumber, measurementtype, measurementvalue, timestamp) VALUES (?,?,?,?,?)";
 	  PreparedStatement statement = sqlConnector.getPreparedStatement(query);
 
@@ -33,6 +37,9 @@ public class MeasurementDAO{
 	  }
 	 }
 	 
+	/* (non-Javadoc)
+	 * @see javaMeasure.IMeasurementDAO#getMeasurementsByBatch(javaMeasure.Batch)
+	 */
 	public ArrayList<Measurement> getMeasurementsByBatch(Batch batch) throws DataBaseException {
 		//TODO needs testing 
 		String query = "SELECT * FROM measurements WHERE batchid=?";
