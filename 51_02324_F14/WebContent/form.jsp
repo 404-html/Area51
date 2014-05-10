@@ -20,27 +20,31 @@
 	<%
 		javaMeasure.control.DataBaseController database = (javaMeasure.control.DataBaseController) session.getAttribute("database");
 		javaMeasure.Batch batch = null;
-		if (username == null) {
-			response.sendRedirect("userlogin.jsp");
-		} else {
+			if (username == null) {
+		response.sendRedirect("userlogin.jsp");
+			} else {
 
-			String batchname = request.getParameter("element_3");
-			if (batchname == null) {
-
-			} else if (!batchname.equalsIgnoreCase("")) {
-				try{
-					batch = database.getBatch(batchname);
-				} catch (DataBaseException dbe){
-					response.sendRedirect("form.jsp");
+		String batchname = request.getParameter("element_3");
+		String submit = request.getParameter("submit");
+		String logout = request.getParameter("logout");
+		if (submit != null)
+		{
+				if (batchname != null) {
+					try {
+						batch = database.getBatch(batchname);
+					} catch (DataBaseException dbe) {
+						response.sendRedirect("form.jsp");
+					}
+					if (batch != null) {
+						javaMeasure.BatchProfile profile = database.getBatchProfile(batch.getProfileID());
+						session.setAttribute("batch", batch);
+						session.setAttribute("profile", profile);
+						response.sendRedirect("report.jsp");
+					}
 				}
-				if (batch != null) {
-
-					javaMeasure.BatchProfile profile = database
-							.getBatchProfile(batch.getProfileID());
-					session.setAttribute("batch", batch);
-					session.setAttribute("profile", profile);
-					response.sendRedirect("report.jsp");
-				}
+			} else if (logout != null) {
+				session.setAttribute("username", null);
+				response.sendRedirect("userlogin.jsp");
 			}
 		}
 	%>
