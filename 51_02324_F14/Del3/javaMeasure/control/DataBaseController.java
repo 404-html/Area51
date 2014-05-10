@@ -9,7 +9,6 @@ import javaMeasure.Measurement;
 import javaMeasure.Measurement.MeasurementType;
 import javaMeasure.control.interfaces.IDatabaseController;
 import javaMeasure.control.interfaces.ISQLConnector;
-import javaMeasure.DataBaseException;
 import javaMeasure.User;
 
 public class DataBaseController implements IDatabaseController {

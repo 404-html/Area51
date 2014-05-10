@@ -1,6 +1,5 @@
 package javaMeasure.control.interfaces;
 import java.util.ArrayList;
-import javaMeasure.DataBaseException;
 
 import javaMeasure.*;
 
