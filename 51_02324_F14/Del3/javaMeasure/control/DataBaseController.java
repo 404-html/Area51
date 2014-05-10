@@ -11,7 +11,10 @@ import javaMeasure.control.interfaces.ISQLConnector;
 
 public class DataBaseController implements IDatabaseController {
 
-	IUserDAO user= new UserDAO();
+	IUserDAO userDAO = new UserDAO();
+	IBatchDAO batchDAO = new BatchDAO();
+	IBatchProfileDAO BatchProfileDAO = new BatchProfileDAO();
+	IMeasurementDAO MeasurementDAO = new MeasurementDAO();
 	
 	private static ISQLConnector sqlConnector = new SQLConnector();
 	//TODO should if there is time extend the amount of exceptions!
@@ -22,23 +25,23 @@ public class DataBaseController implements IDatabaseController {
 	//User methods	
 	@Override
 	public ArrayList<User> getUserList() throws DataBaseException {
-		return this.user.getUserList();
+		return this.userDAO.getUserList();
 	}
 
 	@Override
 	public boolean isUserNameInDB(String userName) throws DataBaseException {
-		return this.user.isUserNameInDB( userName);
+		return this.userDAO.isUserNameInDB( userName);
 	}
 
 	@Override
 	public void addToDB(User user) throws DataBaseException{
-		this.user.addToDB(user);
+		this.userDAO.addToDB(user);
 
 	}
 
 	@Override
 	public User getUserFromString(String userString) throws DataBaseException, UserNotFoundException {
-		return this.user.getUserFromString(userString);
+		return this.userDAO.getUserFromString(userString);
 	}
 	//Measurements
 
