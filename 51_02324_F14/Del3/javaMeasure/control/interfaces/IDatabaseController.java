@@ -2,6 +2,7 @@ package javaMeasure.control.interfaces;
 import java.util.ArrayList;
 
 import javaMeasure.*;
+import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 
 public interface IDatabaseController {
 	
@@ -31,9 +32,6 @@ public interface IDatabaseController {
 		// use index as id 
 	int saveBatchProfile(BatchProfile profile) throws DataBaseException; // returns id of saved batchprofile
 	
-	//Batchsetting
-	void saveBatchSetting(BatchSetting b, int profileID)
-			throws DataBaseException;
 	
 	void deleteBatchProfile(BatchProfile bp) throws DataBaseException;
 	
@@ -45,6 +43,8 @@ public interface IDatabaseController {
 	public class UserNotFoundException extends Exception {
 
 	}
+	void saveBatchSetting(BatchSetting b, int profileID)
+			throws DataBaseException;
 	
 //	ArrayList<BatchProfile> getBatchProfiles();
 	

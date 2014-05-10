@@ -12,10 +12,12 @@ import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 import javaMeasure.interfaces.IBatchProfileDAO;
 public class BatchProfileDAO implements IBatchProfileDAO {
 
-	private static ISQLConnector sqlConnector = new SQLConnector();
-		/* (non-Javadoc)
-		 * @see javaMeasure.IBatchProfileDAO#getBatchProfile(java.lang.String)
-		 */
+	private ISQLConnector sqlConnector;
+		public BatchProfileDAO(ISQLConnector sqlConnector) {
+			this.sqlConnector = sqlConnector;
+	}
+
+
 		public BatchProfile getBatchProfile(String profileName) throws DataBaseException {
 			//TODO testing!!
 			//Initialising variables
@@ -58,9 +60,7 @@ public class BatchProfileDAO implements IBatchProfileDAO {
 			return batchProfile;
 		}
 
-		/* (non-Javadoc)
-		 * @see javaMeasure.IBatchProfileDAO#getBatchProfile(int)
-		 */
+		@Override
 		public BatchProfile getBatchProfile(int profileId) throws DataBaseException{
 			//TODO implement
 			String query = "SELECT * FROM batchsettings WHERE profileid=?";
@@ -84,9 +84,7 @@ public class BatchProfileDAO implements IBatchProfileDAO {
 
 
 
-		/* (non-Javadoc)
-		 * @see javaMeasure.IBatchProfileDAO#getSavedBatchProfilesNames()
-		 */
+		@Override
 		public ArrayList<String> getSavedBatchProfilesNames() throws DataBaseException {
 			//TODO testing!!
 			ArrayList<String> nameList = new ArrayList<String>();
@@ -105,9 +103,7 @@ public class BatchProfileDAO implements IBatchProfileDAO {
 			}
 			return nameList;
 		}
-		/* (non-Javadoc)
-		 * @see javaMeasure.IBatchProfileDAO#saveBatchProfile(javaMeasure.BatchProfile)
-		 */
+		@Override
 		public int saveBatchProfile(BatchProfile profile) throws DataBaseException {
 			//TODO testing!!!
 
@@ -132,9 +128,10 @@ public class BatchProfileDAO implements IBatchProfileDAO {
 
 			return profileId;
 		}
-		/* (non-Javadoc)
-		 * @see javaMeasure.IBatchProfileDAO#saveBatchSetting(javaMeasure.BatchSetting, int)
-		 */
+
+
+		//helper method
+		@Override
 		public void saveBatchSetting(BatchSetting b, int profileID) throws DataBaseException{
 			//TODO Test!!
 			String query = "INSERT INTO batchsettings (profileid, settingname, valuetype, value) VALUES(?,?,?,?)";
@@ -151,13 +148,11 @@ public class BatchProfileDAO implements IBatchProfileDAO {
 				throw new DataBaseException();
 			}
 		}
-		
-		/* (non-Javadoc)
-		 * @see javaMeasure.IBatchProfileDAO#deleteBatchProfile(javaMeasure.BatchProfile)
-		 */
+
+		@Override
 		public void deleteBatchProfile(BatchProfile bp) throws DataBaseException {
 			// TODO test
-			String query = "DELETE FROM batchsettings WHERE profileID=?";
+			String query = "DELETE FROM batchsettings WHERE profileid=?";
 			PreparedStatement s = sqlConnector.getPreparedStatement(query);
 			try{
 				s.setInt(1, bp.getProfileID());
@@ -167,7 +162,17 @@ public class BatchProfileDAO implements IBatchProfileDAO {
 				throw new DataBaseException();
 				
 			}
-		}
-		
+			
+			query = "DELETE FROM batchprofile WHERE profilename=?";
+			s = sqlConnector.getPreparedStatement(query);
+			try{
+				s.setString(1, bp.getProfileName());
+				s.executeUpdate();
+			} catch (SQLException e){
+				e.printStackTrace();
+				throw new DataBaseException();
+				
+			}
+	}
 
 }

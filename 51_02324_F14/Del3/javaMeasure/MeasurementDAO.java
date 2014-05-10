@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javaMeasure.Measurement.MeasurementType;
-import javaMeasure.control.SQLConnector;
 import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 import javaMeasure.control.interfaces.ISQLConnector;
 import javaMeasure.interfaces.IMeasurementDAO;
@@ -14,10 +13,14 @@ import javaMeasure.interfaces.IMeasurementDAO;
 
 
 public class MeasurementDAO implements IMeasurementDAO{
-	private static ISQLConnector sqlConnector = new SQLConnector();
+	private ISQLConnector sqlConnector;
 	
 	
-	 /* (non-Javadoc)
+	 public MeasurementDAO(ISQLConnector sqlConnector) {
+		 this.sqlConnector = sqlConnector;
+	}
+
+	/* (non-Javadoc)
 	 * @see javaMeasure.IMeasurementDAO#addToDB(javaMeasure.Measurement)
 	 */
 	public void addToDB(Measurement measurement) throws DataBaseException, javaMeasure.control.interfaces.IDatabaseController.DataBaseException {

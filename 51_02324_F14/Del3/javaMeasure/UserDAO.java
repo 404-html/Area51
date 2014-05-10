@@ -12,8 +12,11 @@ import javaMeasure.interfaces.IUserDAO;
 import javaMeasure.control.interfaces.IDatabaseController.UserNotFoundException;
 
 public class UserDAO implements IUserDAO {
-	private static ISQLConnector sqlConnector = new SQLConnector();
+	private ISQLConnector sqlConnector;
 
+	public UserDAO(ISQLConnector sqlConnector) {
+		this.sqlConnector = sqlConnector;
+	}
 	//User methods	
 	public ArrayList<User> getUserList() throws DataBaseException {
 		String query = "SELECT * FROM users ORDER BY username";
