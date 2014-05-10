@@ -11,9 +11,17 @@
 <script type="text/javascript" src="calendar.js"></script>
 </head>
 <%
-	if(session.getAttribute("username") == null){
+	String name = request.getParameter("name");
+	out.println("test");
+	if(name == null){name = ""; }
+	if(session.getAttribute("username") == null)
+	{	
 		response.sendRedirect("userlogin.jsp");
-	}else{
+	}else if(name.equalsIgnoreCase("submit"))
+	{
+		response.sendRedirect("form.jsp");
+	}
+	else{
 	javaMeasure.Batch batch = (javaMeasure.Batch) session.getAttribute("batch");
 	javaMeasure.BatchProfile profile = (javaMeasure.BatchProfile) session.getAttribute("profile");
 	
@@ -60,7 +68,7 @@
 		<div id="form_container">
 
 			<!--<h1><a>Noliac</a></h1>-->
-			<form id="form_812583" class="appnitro" method="post" action="">
+			<form id="form_812583" class="appnitro" method="post">
 				<div class="form_description">
 					<h1>Noliac Batch report</h1>
 				</div>
@@ -94,27 +102,13 @@
 							</tr>
 							<tr>
 								<td>Length (mm):</td>
-								<td>
-									<% out.println(lengthNorm); %>
-								</td>
-								<td>
-									<% out.println(lengthMin); %>
-								</td>
-								<td>
-									<% out.println(lengthMax); %>
-								</td>
-								<td>
-									<% out.println(lengthInsp); %>
-								</td>
-								<td>
-									<% out.println(leakNorm); // not finished %>
-								</td>
-								<td>
-									<% out.println(leakNorm); // not finished %>
-								</td>
-								<td>
-									<% out.println(leakNorm); // not finished %>
-								</td>
+								<td><% out.println(lengthNorm); %></td>
+								<td><% out.println(lengthMin); %></td>
+								<td><% out.println(lengthMax); %></td>
+								<td><% out.println(lengthInsp); %></td>
+								<td><% out.println(leakNorm); // not finished %></td>
+								<td><% out.println(leakNorm); // not finished %></td>
+								<td><% out.println(leakNorm); // not finished %></td>
 								<td>&nbsp;</td>
 							</tr>
 							<tr>
@@ -263,11 +257,11 @@
 						</table>
 					</li>
 
-					<li class="buttons"><input type="hidden" name="form_id"
-						value="812583" /> <input id="saveForm" class="button_text"
-						type="submit" name="submit" value="Ny rapport" /> <input
-						id="saveAsExcel" class="button_text" type="submit" name="saveForm"
-						value="Gem som Excel-fil" /></li>
+					<li class="buttons">
+					<input type="hidden" name="form_id"	value="812583" /> 
+					<input id="saveForm" class="button_text" type="submit" name="submit" value="Ny rapport" />
+					<input id="saveAsExcel" class="button_text" type="submit" name="saveForm" value="Gem som Excel-fil" />
+					</li>
 				</ul>
 			</form>
 			<div id="footer">
