@@ -12,7 +12,7 @@
 </head>
 <body id="main-body">
 
-<jsp:useBean id="mainControl" class="javaMeasure.control.MainController" scope="session" />
+<jsp:useBean id="database" class="javaMeasure.control.DataBaseController" scope="session" />
 
 	<div id="wrapper">
 	
@@ -32,7 +32,7 @@
 				String username = request.getParameter("username");
 				String password = request.getParameter("pass");
 				if((username == null || username.equals("")) && (password == null || password.equals(""))){ %> <p>Indtast Brugernavn og password</p> <%}
-				else if(mainControl.getDatabaseController().isUserNameInDB(username)){
+				else if(database.isUserNameInDB(username)){
 					session.setAttribute("username", username);
 					response.sendRedirect("form.jsp");
 				}

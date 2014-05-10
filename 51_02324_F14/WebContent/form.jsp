@@ -1,6 +1,6 @@
 <%@page import="javaMeasure.control.MainController"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 	<%
 		String username = (String) session.getAttribute("username");
@@ -15,7 +15,22 @@
 </head>
 <body id="main-body">
 
-<%-- 	<% session. %> --%>
+<jsp:useBean id="database" class="javaMeasure.control.DataBaseController" scope="session" />
+	<%
+		String batchname = request.getParameter("element_3");
+		if(batchname == null){
+			
+		}
+		else if(!batchname.equalsIgnoreCase("")){
+			javaMeasure.Batch batch = database.getBatch(batchname);
+			if(batch != null){
+				session.setAttribute("batch", batch);
+				response.sendRedirect("report.jsp");
+			}
+		}
+	
+	
+	%>
 	<div id="wrapper">
 	
 	<div id="header"><img src="noliac_logo.png" alt="Logo"></div>
@@ -23,7 +38,7 @@
 	<div id="form_container">
 	
 		<!--<h1><a>Noliac</a></h1>-->
-		<form id="form_812583" class="appnitro"  method="post" action="">
+		<form id="form_812583" class="appnitro"  method="post">
 					<div class="form_description">
 			<h1>Noliac Batch-udtræk</h1>
 			<p>Indtast selv Batch ID eller vælg Batch ID fra rullemenu</p>
