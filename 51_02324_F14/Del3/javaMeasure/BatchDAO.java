@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import javaMeasure.control.SQLConnector;
 import javaMeasure.control.interfaces.ISQLConnector;
-import javaMeasure.DataBaseException;
+import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 
 public class BatchDAO {
 	private static ISQLConnector sqlConnector = new SQLConnector();

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import javaMeasure.Measurement.MeasurementType;
 import javaMeasure.control.SQLConnector;
-import javaMeasure.DataBaseException;
+import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 import javaMeasure.control.interfaces.ISQLConnector;
 
 

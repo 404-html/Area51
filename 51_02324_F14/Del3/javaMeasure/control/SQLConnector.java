@@ -3,8 +3,8 @@ package javaMeasure.control;
 import java.sql.*;
 
 import javaMeasure.control.interfaces.ISQLConnector;
-import javaMeasure.DataBaseException;
 import javaMeasure.control.interfaces.ISQLConnector.DBConnectFailedException;
+import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 
 public class SQLConnector implements ISQLConnector {
 	private Connection connection;
