@@ -1,4 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@page import="javaMeasure.BatchSetting"%>
+<%@page import="javaMeasure.Batch"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -7,6 +9,11 @@
 <script type="text/javascript" src="view.js"></script>
 <script type="text/javascript" src="calendar.js"></script>
 </head>
+<%
+	javaMeasure.Batch batch = (javaMeasure.Batch) session.getAttribute("batch");
+	javaMeasure.BatchProfile profile = (javaMeasure.BatchProfile) session.getAttribute("profile");
+%>
+
 <body id="main-body">
 	<div id="wrapper">
 	
@@ -48,13 +55,13 @@
 	          </tr>
 		      <tr>
 		        <td>Length (mm):</td>
-		        <td>5,0</td>
-		        <td>4,9</td>
-		        <td>5,1</td>
-		        <td>Min. 5</td>
-		        <td>5,01</td>
-		        <td>4,97</td>
-		        <td>5,04</td>
+		        <td> <% out.println(profile.getProfileSettings().get(0).getValue()); %> </td>
+		        <td> <% out.println(profile.getProfileSettings().get(1).getValue()); %> </td>
+		        <td> <% out.println(profile.getProfileSettings().get(2).getValue()); %> </td>
+		        <td> <% out.println(profile.getProfileSettings().get(3).getValue()); %> </td>
+		        <td> <% out.println(profile.getProfileSettings().get(4).getValue()); %> </td>
+		        <td> <% out.println(profile.getProfileSettings().get(5).getValue()); %> </td>
+		        <td> <% out.println(profile.getProfileSettings().get(6).getValue()); %> </td>
 		        <td>&nbsp;</td>
 	          </tr>
 		      <tr>

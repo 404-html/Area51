@@ -24,7 +24,10 @@
 		else if(!batchname.equalsIgnoreCase("")){
 			javaMeasure.Batch batch = database.getBatch(batchname);
 			if(batch != null){
+				
+				javaMeasure.BatchProfile profile = database.getBatchProfile(batch.getProfileID());
 				session.setAttribute("batch", batch);
+				session.setAttribute("profile", profile);
 				response.sendRedirect("report.jsp");
 			}
 		}
