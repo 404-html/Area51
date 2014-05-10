@@ -61,7 +61,7 @@
 							Batch ID </label>
 						<div>
 							<input id="element_3" name="element_3"
-								class="element text medium" type="text" maxlength="255" value="" />
+								class="element text medium" type="text" maxlength="255" value="webtest" />
 						</div>
 						<p class="guidelines" id="guide_3">
 							<small>Batch # du ønsker</small>
