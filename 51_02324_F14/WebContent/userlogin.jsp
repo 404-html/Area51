@@ -23,8 +23,6 @@
 
 		<div id="form_container">
 
-			<!--<h1><a>Noliac</a></h1>-->
-			<!-- 		action="form.jsp" -->
 			<form id="login_form" class="appnitro" method="post">
 				<div class="form_description">
 					<h1>Noliac User login</h1>

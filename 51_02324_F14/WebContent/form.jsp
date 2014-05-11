@@ -4,6 +4,7 @@
 <%@page import="javaMeasure.control.MainController"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@page import="javaMeasure.control.DataBaseController" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -22,8 +23,7 @@
 </head>
 <body id="main-body">
 	<%
-		javaMeasure.control.DataBaseController database = (javaMeasure.control.DataBaseController) session
-		.getAttribute("database");
+		DataBaseController database = (DataBaseController) session.getAttribute("database");
 		javaMeasure.Batch batch = null;
 		if (username == null) {
 			response.sendRedirect("userlogin.jsp");
@@ -31,14 +31,14 @@
 
 			String batchname = request.getParameter("batchname");
 			String submit = request.getParameter("submit");
-			String logout = request.getParameter("logout");		
+			String logout = request.getParameter("logout");
 			
 			if (submit != null) {
 				if (batchname != null) {
 					try {
 						batch = database.getBatch(batchname);
 					} catch (DataBaseException dbe) {
-						response.sendRedirect("form.jsp");
+						response.sendRedirect("form.jsp?fail=notfound");
 					}
 					if (batch != null) {
 						javaMeasure.BatchProfile profile = database
@@ -70,7 +70,7 @@
 				</div>
 				<ul>
 
-					<li id="li_3"><label class="description" for="element_3">Indtast
+					<li id="li_3"><label class="description" for="element_3"><% if (request.getParameter("fail") != null) out.print("Batch navn ikke genkendt! -"); %>Indtast
 							Batch navn </label>
 						<div>
 							<input id="batchname" name="batchname"

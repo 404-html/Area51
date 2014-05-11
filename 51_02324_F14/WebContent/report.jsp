@@ -41,6 +41,7 @@
 	}
 	else{
 	// values
+	//TODO robustness against empty sets...
 	String lengthNorm = profile.getProfileSettings().get(0).getValue();
 	String lengthMin = String.valueOf(Double.parseDouble(lengthNorm) - Double.parseDouble(profile.getProfileSettings().get(12).getValue()));
 	String lengthMax = String.valueOf(Double.parseDouble(lengthNorm) + Double.parseDouble(profile.getProfileSettings().get(12).getValue()));
@@ -72,6 +73,7 @@
 	
 	String visualNorm = profile.getProfileSettings().get(40).getValue();
 	String visualInsp = profile.getProfileSettings().get(35).getValue();
+
 %>
 
 <body id="main-body">
