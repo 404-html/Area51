@@ -38,15 +38,9 @@
 					<p>Indtast Brugernavn og password</p>
 					<%
 						} else if (database.validateUser(new User(userName, -1, password))) {
-							User user = database.getUserFromString(userName);
-							if(user.getUserName().equals(userName))
-							{
+
 								session.setAttribute("username", userName);
 								response.sendRedirect("form.jsp");
-							} else
-							{
-								%><p>Forkert brugernavn eller adgangskode! Prøv igen.</p><%
-							}
 						} else
 						{
 							%>
