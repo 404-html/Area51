@@ -12,24 +12,34 @@
 <script type="text/javascript" src="calendar.js"></script>
 </head>
 <%
+	// input actions from buttons
 	String newReport = request.getParameter("newReport");
 	String excel = request.getParameter("saveAsExcel");
+	
+	// batch and profile for table input
+	javaMeasure.Batch batch = (javaMeasure.Batch) session.getAttribute("batch");
+	javaMeasure.BatchProfile profile = (javaMeasure.BatchProfile) session.getAttribute("profile");
 
 	if(session.getAttribute("username") == null)
 	{	
 		response.sendRedirect("userlogin.jsp");
-	}else if(newReport != null)
+	}
+	else if(newReport != null)
 	{
+		session.setAttribute("corruptSettings", null);
+		response.sendRedirect("form.jsp");
+	}
+	else if(profile.getProfileSettings().size() < 40)
+	{
+		session.setAttribute("corruptSettings", "corrupt");
 		response.sendRedirect("form.jsp");
 	}
 	else if(excel != null)
 	{
+		session.setAttribute("corruptSettings", null);
 		response.sendRedirect("form.jsp"); // should be something else later on
 	}
 	else{
-	javaMeasure.Batch batch = (javaMeasure.Batch) session.getAttribute("batch");
-	javaMeasure.BatchProfile profile = (javaMeasure.BatchProfile) session.getAttribute("profile");
-	
 	// values
 	String lengthNorm = profile.getProfileSettings().get(0).getValue();
 	String lengthMin = String.valueOf(Double.parseDouble(lengthNorm) - Double.parseDouble(profile.getProfileSettings().get(12).getValue()));
