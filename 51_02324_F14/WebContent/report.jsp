@@ -35,6 +35,7 @@
 	String lengthMin = String.valueOf(Double.parseDouble(lengthNorm) - Double.parseDouble(profile.getProfileSettings().get(12).getValue()));
 	String lengthMax = String.valueOf(Double.parseDouble(lengthNorm) + Double.parseDouble(profile.getProfileSettings().get(12).getValue()));
 	String lengthInsp = profile.getProfileSettings().get(21).getValue();
+	String mLengthNorm = String.valueOf(batch.getAverageLeak());
 	
 	String widthNorm = profile.getProfileSettings().get(1).getValue();
 	String widthMin = String.valueOf(Double.parseDouble(widthNorm) - Double.parseDouble(profile.getProfileSettings().get(13).getValue()));
