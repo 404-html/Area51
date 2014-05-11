@@ -18,7 +18,8 @@ public interface IDatabaseController {
 		
 	//Batches
 	void addToDB(Batch batch) throws DataBaseException;
-	ArrayList<Batch> getBatches() throws DataBaseException;	
+	ArrayList<Batch> getBatches() throws DataBaseException;
+	ArrayList<String> getBatchNames() throws DataBaseException;
 	public Batch getBatch(String batchName) throws DataBaseException;
 	public Batch getBatch(int batchID) throws DataBaseException;
 	boolean isBatchInDB(String batchName) throws DataBaseException;

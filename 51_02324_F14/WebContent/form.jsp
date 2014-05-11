@@ -1,4 +1,6 @@
-<%@page import="javaMeasure.control.interfaces.IDatabaseController.DataBaseException"%>
+<%@page import="java.util.ArrayList"%>
+<%@page
+	import="javaMeasure.control.interfaces.IDatabaseController.DataBaseException"%>
 <%@page import="javaMeasure.control.MainController"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -10,25 +12,28 @@
 <%
 	String username = (String) session.getAttribute("username");
 %>
-<title>Noliac : <%out.println(username);%> | udtræk</title>
+<title>Noliac : <%
+	out.println(username);
+%> | udtræk
+</title>
 <link rel="stylesheet" type="text/css" href="view.css" media="all" />
 <script type="text/javascript" src="view.js"></script>
 <script type="text/javascript" src="calendar.js"></script>
 </head>
 <body id="main-body">
-
 	<%
-		javaMeasure.control.DataBaseController database = (javaMeasure.control.DataBaseController) session.getAttribute("database");
+		javaMeasure.control.DataBaseController database = (javaMeasure.control.DataBaseController) session
+		.getAttribute("database");
 		javaMeasure.Batch batch = null;
-			if (username == null) {
-		response.sendRedirect("userlogin.jsp");
-			} else {
+		if (username == null) {
+			response.sendRedirect("userlogin.jsp");
+		} else {
 
-		String batchname = request.getParameter("element_3");
-		String submit = request.getParameter("submit");
-		String logout = request.getParameter("logout");
-		if (submit != null)
-		{
+			String batchname = request.getParameter("batchname");
+			String submit = request.getParameter("submit");
+			String logout = request.getParameter("logout");		
+			
+			if (submit != null) {
 				if (batchname != null) {
 					try {
 						batch = database.getBatch(batchname);
@@ -36,7 +41,8 @@
 						response.sendRedirect("form.jsp");
 					}
 					if (batch != null) {
-						javaMeasure.BatchProfile profile = database.getBatchProfile(batch.getProfileID());
+						javaMeasure.BatchProfile profile = database
+								.getBatchProfile(batch.getProfileID());
 						session.setAttribute("batch", batch);
 						session.setAttribute("profile", profile);
 						response.sendRedirect("report.jsp");
@@ -65,10 +71,21 @@
 				<ul>
 
 					<li id="li_3"><label class="description" for="element_3">Indtast
-							Batch ID </label>
+							Batch navn </label>
 						<div>
-							<input id="element_3" name="element_3"
-								class="element text medium" type="text" maxlength="255" value="webtest" />
+							<input id="batchname" name="batchname"
+								class="element text medium" type="text" maxlength="255" 
+								list="batches" autocomplete="on" value="" />
+								<datalist id="batches">
+								<% 	
+								
+								ArrayList<String> batchNames = database.getBatchNames();
+
+								for (String batchName : batchNames){
+									%>
+									<option> <%=batchName%></option>
+									<%	}	%>
+								</datalist>
 						</div>
 						<p class="guidelines" id="guide_3">
 							<small>Batch # du ønsker</small>
@@ -118,10 +135,11 @@
 						});
 					</script></li>
 
-					<li class="buttons"><input type="hidden" name="form_id"	value="812583" /> 
-						<input id="saveForm" class="button_text" type="submit" name="submit" value="Indsend" />
-						<input id="saveForm" class="button_text" type="submit" name="logout" value="logout"/>
-					</li>
+					<li class="buttons"><input type="hidden" name="form_id"
+						value="812583" /> <input id="saveForm" class="button_text"
+						type="submit" name="submit" value="Indsend" /> <input
+						id="saveForm" class="button_text" type="submit" name="logout"
+						value="logout" /></li>
 				</ul>
 			</form>
 			<div id="footer">

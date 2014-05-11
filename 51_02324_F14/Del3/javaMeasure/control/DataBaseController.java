@@ -73,6 +73,11 @@ public class DataBaseController implements IDatabaseController {
 	public ArrayList<Batch> getBatches() throws DataBaseException {
 		return batchDAO.getBatches();
 		}
+	
+	@Override
+	public ArrayList<String> getBatchNames() throws DataBaseException {
+		return batchDAO.getBatchNames();
+	}
 
 	public Batch getBatch(String batchname) throws DataBaseException {
 		return batchDAO.getBatch(batchname);
@@ -130,6 +135,5 @@ public class DataBaseController implements IDatabaseController {
 		
 		
 	}
-
 	
 }

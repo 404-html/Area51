@@ -42,6 +42,18 @@ public class BatchDAO implements IBatchDAO {
 		}
 		return batches;
 	}
+	
+	@Override
+	public ArrayList<String> getBatchNames() throws DataBaseException {
+		ArrayList<Batch> batches = getBatches();
+		ArrayList<String> batchNames = new ArrayList<>();
+		for (Batch batch : batches) {
+			batchNames.add(batch.getBatchString());
+		}
+		return batchNames;
+	}
+	
+	
 	/* (non-Javadoc)
 	 * @see javaMeasure.IBatchDAO#addToDB(javaMeasure.Batch)
 	 */
@@ -193,6 +205,6 @@ public class BatchDAO implements IBatchDAO {
 		//		}
 		//*********************************************************************
 	}
-	
+
 
 }
