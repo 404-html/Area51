@@ -346,6 +346,17 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 			newBatchController.saveBatchSettingsPressed(profileName, savingSettings);
 			System.out.println("save batch settings");
 			break;
+		case "saveBatchSettingsEdit":
+			String profileNameEdit = JOptionPane.showInputDialog(getContentPane(), "Enter profile name: ", "Saving profile", JOptionPane.QUESTION_MESSAGE);
+			ArrayList<String> savingSettingsEdit = getSettings();
+			try {
+				newBatchController.saveEditedBatchSettingsPressed(profileNameEdit, savingSettingsEdit);
+			} catch (DataBaseException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+			System.out.println("save batch settings");
+			break;
 		case "annuller":
 			newBatchController.annullerPressed();
 			break;

@@ -1,6 +1,8 @@
 package javaMeasure.control.interfaces;
 import java.util.ArrayList;
 
+import javax.xml.bind.DataBindingException;
+
 import javaMeasure.*;
 import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 
@@ -35,6 +37,7 @@ public interface IDatabaseController {
 	
 	void deleteBatchProfile(BatchProfile bp) throws DataBaseException;
 	void editBatchProfile(BatchProfile bp) throws DataBaseException; 
+	void saveEditedBatchProfile(BatchProfile oldProfile, String newName) throws DataBaseException;
 	//Exceptions
 	@SuppressWarnings("serial")
 	public class DataBaseException extends Exception {

@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import javaMeasure.control.NewBatchController;
 import javaMeasure.control.SQLConnector;
 import javaMeasure.control.interfaces.ISQLConnector;
 import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
@@ -152,7 +153,6 @@ public class BatchProfileDAO implements IBatchProfileDAO {
 
 		@Override
 		public void deleteBatchProfile(BatchProfile bp) throws DataBaseException {
-			// TODO test
 			String query = "DELETE FROM batchsettings WHERE profileid=?";
 			PreparedStatement s = sqlConnector.getPreparedStatement(query);
 			try{
@@ -177,7 +177,11 @@ public class BatchProfileDAO implements IBatchProfileDAO {
 			}
 	}
 
-		public void editBatchProfile(BatchProfile bp){
+		public void editBatchProfile(BatchProfile bp, String newId) throws DataBaseException{
+			NewBatchController nbc = null;
+			nbc.loadBatchSettingsPressed(bp.getProfileName());
+		}
+		public void saveEditedBatchSettings(BatchProfile oldProfile) throws DataBaseException {
 			
 		}
 }

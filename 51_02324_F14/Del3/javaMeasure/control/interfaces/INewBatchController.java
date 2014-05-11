@@ -30,6 +30,9 @@ public interface INewBatchController {
 	void loadBatchSettingsPressed(String profilename);
 
 	void annullerPressed();
+
+	void saveEditedBatchSettingsPressed(String profileNameEdit,
+			ArrayList<String> savingSettingsEdit) throws DataBaseException;
 	
 	
 

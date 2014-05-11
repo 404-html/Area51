@@ -117,4 +117,13 @@ public class DataBaseController implements IDatabaseController {
 	public void editBatchProfile(BatchProfile bp) throws DataBaseException {
 		((IDatabaseController) batchProfileDAO).editBatchProfile(bp);
 	}
+	
+
+	@Override
+	public void saveEditedBatchProfile(BatchProfile oldProfile, String newName)
+			throws DataBaseException {
+		
+		
+	}
+	
 }

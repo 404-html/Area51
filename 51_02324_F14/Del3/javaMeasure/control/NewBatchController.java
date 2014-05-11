@@ -165,6 +165,13 @@ public class NewBatchController implements INewBatchController {
 		mainController.getDatabaseController().editBatchProfile(bp);
 	}
 
+	@Override
+	public void saveEditedBatchSettingsPressed(String profileNameEdit,
+			ArrayList<String> savingSettingsEdit) throws DataBaseException {
+		deleteBatchProfilePressed(profileNameEdit);
+		
+	}
+
 
 	
 
