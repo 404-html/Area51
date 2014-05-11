@@ -38,8 +38,8 @@
 					<p>Indtast Brugernavn og password</p>
 					<%
 						} else if (database.validateUser(new User(userName, -1, password))) {
-							javaMeasure.User user = database.getUserFromString(userName);
-							if(user.getUserName().equals(userName)) // password should be part of this later
+							User user = database.getUserFromString(userName);
+							if(user.getUserName().equals(userName))
 							{
 								session.setAttribute("username", userName);
 								response.sendRedirect("form.jsp");
