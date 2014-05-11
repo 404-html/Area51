@@ -162,7 +162,7 @@ public class NewBatchController implements INewBatchController {
 		} catch (DataBaseException e) {
 			e.printStackTrace();
 		}
-		
+		mainController.getDatabaseController().editBatchProfile(bp);
 	}
 
 
