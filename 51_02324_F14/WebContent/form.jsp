@@ -1,3 +1,4 @@
+<%@page import="javaMeasure.control.interfaces.IDatabaseController.DataBaseException"%>
 <%@page import="javaMeasure.control.MainController"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -9,35 +10,41 @@
 <%
 	String username = (String) session.getAttribute("username");
 %>
-<title>Noliac Form logged in as: <%
-	out.println(username);
-%></title>
+<title>Noliac : <%out.println(username);%> | udtræk</title>
 <link rel="stylesheet" type="text/css" href="view.css" media="all" />
 <script type="text/javascript" src="view.js"></script>
 <script type="text/javascript" src="calendar.js"></script>
 </head>
 <body id="main-body">
 
-	<jsp:useBean id="database"
-		class="javaMeasure.control.DataBaseController" scope="session" />
 	<%
-		if (username == null) {
-			response.sendRedirect("userlogin.jsp");
-		} else {
+		javaMeasure.control.DataBaseController database = (javaMeasure.control.DataBaseController) session.getAttribute("database");
+		javaMeasure.Batch batch = null;
+			if (username == null) {
+		response.sendRedirect("userlogin.jsp");
+			} else {
 
-			String batchname = request.getParameter("element_3");
-			if (batchname == null) {
-
-			} else if (!batchname.equalsIgnoreCase("")) {
-				javaMeasure.Batch batch = database.getBatch(batchname);
-				if (batch != null) {
-
-					javaMeasure.BatchProfile profile = database
-							.getBatchProfile(batch.getProfileID());
-					session.setAttribute("batch", batch);
-					session.setAttribute("profile", profile);
-					response.sendRedirect("report.jsp");
+		String batchname = request.getParameter("element_3");
+		String submit = request.getParameter("submit");
+		String logout = request.getParameter("logout");
+		if (submit != null)
+		{
+				if (batchname != null) {
+					try {
+						batch = database.getBatch(batchname);
+					} catch (DataBaseException dbe) {
+						response.sendRedirect("form.jsp");
+					}
+					if (batch != null) {
+						javaMeasure.BatchProfile profile = database.getBatchProfile(batch.getProfileID());
+						session.setAttribute("batch", batch);
+						session.setAttribute("profile", profile);
+						response.sendRedirect("report.jsp");
+					}
 				}
+			} else if (logout != null) {
+				session.setAttribute("username", null);
+				response.sendRedirect("userlogin.jsp");
 			}
 		}
 	%>
@@ -111,9 +118,10 @@
 						});
 					</script></li>
 
-					<li class="buttons"><input type="hidden" name="form_id"
-						value="812583" /> <input id="saveForm" class="button_text"
-						type="submit" name="submit" value="Indsend" /></li>
+					<li class="buttons"><input type="hidden" name="form_id"	value="812583" /> 
+						<input id="saveForm" class="button_text" type="submit" name="submit" value="Indsend" />
+						<input id="saveForm" class="button_text" type="submit" name="logout" value="logout"/>
+					</li>
 				</ul>
 			</form>
 			<div id="footer">

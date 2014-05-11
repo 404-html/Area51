@@ -12,30 +12,40 @@
 <script type="text/javascript" src="calendar.js"></script>
 </head>
 <%
-	String name = request.getParameter("submit");
-	String excel = request.getParameter("saveForm");
-	if(name == null){name = ""; }
-	if(excel == null){excel = ""; }
+	// input actions from buttons
+	String newReport = request.getParameter("newReport");
+	String excel = request.getParameter("saveAsExcel");
+	
+	// batch and profile for table input
+	javaMeasure.Batch batch = (javaMeasure.Batch) session.getAttribute("batch");
+	javaMeasure.BatchProfile profile = (javaMeasure.BatchProfile) session.getAttribute("profile");
+
 	if(session.getAttribute("username") == null)
 	{	
 		response.sendRedirect("userlogin.jsp");
-	}else if(name.equals("Ny rapport"))
+	}
+	else if(newReport != null)
 	{
+		session.setAttribute("corruptSettings", null);
 		response.sendRedirect("form.jsp");
 	}
-	else if(excel.equals("saveAsExcel"))
+	else if(profile.getProfileSettings().size() < 40)
 	{
+		session.setAttribute("corruptSettings", "corrupt");
+		response.sendRedirect("form.jsp");
+	}
+	else if(excel != null)
+	{
+		session.setAttribute("corruptSettings", null);
 		response.sendRedirect("form.jsp"); // should be something else later on
 	}
 	else{
-	javaMeasure.Batch batch = (javaMeasure.Batch) session.getAttribute("batch");
-	javaMeasure.BatchProfile profile = (javaMeasure.BatchProfile) session.getAttribute("profile");
-	
 	// values
 	String lengthNorm = profile.getProfileSettings().get(0).getValue();
 	String lengthMin = String.valueOf(Double.parseDouble(lengthNorm) - Double.parseDouble(profile.getProfileSettings().get(12).getValue()));
 	String lengthMax = String.valueOf(Double.parseDouble(lengthNorm) + Double.parseDouble(profile.getProfileSettings().get(12).getValue()));
 	String lengthInsp = profile.getProfileSettings().get(21).getValue();
+	String mLengthNorm = String.valueOf(batch.getAverageLeak());
 	
 	String widthNorm = profile.getProfileSettings().get(1).getValue();
 	String widthMin = String.valueOf(Double.parseDouble(widthNorm) - Double.parseDouble(profile.getProfileSettings().get(13).getValue()));
@@ -265,8 +275,8 @@
 
 					<li class="buttons">
 					<input type="hidden" name="form_id"	value="812583" /> 
-					<input id="saveForm" class="button_text" type="submit" name="submit" value="Ny rapport" />
-					<input id="saveAsExcel" class="button_text" type="submit" name="saveForm" value="saveAsExcel" />
+					<input id="newReport" class="button_text" type="submit" name="newReport" value="Ny rapport" />
+					<input id="saveAsExcel" class="button_text" type="submit" name="saveAsExcel" value="gem som Excel" />
 					</li>
 				</ul>
 			</form>

@@ -346,6 +346,17 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 			newBatchController.saveBatchSettingsPressed(profileName, savingSettings);
 			System.out.println("save batch settings");
 			break;
+		case "saveBatchSettingsEdit":
+			String profileNameEdit = JOptionPane.showInputDialog(getContentPane(), "Enter profile name: ", "Saving profile", JOptionPane.QUESTION_MESSAGE);
+			ArrayList<String> savingSettingsEdit = getSettings();
+			try {
+				newBatchController.saveEditedBatchSettingsPressed(profileNameEdit, savingSettingsEdit);
+			} catch (DataBaseException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+			System.out.println("save batch settings");
+			break;
 		case "annuller":
 			newBatchController.annullerPressed();
 			break;
@@ -356,6 +367,19 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 				 profileName = o2.toString();
 				 try {
 					newBatchController.deleteBatchProfilePressed(profileName);
+				} catch (DataBaseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			 }
+			break;
+		case "editProfile":
+			 ArrayList<String> list3 = newBatchController.getSavedBatchProfiles();
+			 Object o3 = JOptionPane.showInputDialog(getContentPane(), "Choose profile to edit: ", "Edit Profile", JOptionPane.QUESTION_MESSAGE, null, list3.toArray(), list3.get(0));
+			 if(o3 != null){
+				 profileName = o3.toString();
+				 try {
+					newBatchController.editBatchProfilePressed(profileName);
 				} catch (DataBaseException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

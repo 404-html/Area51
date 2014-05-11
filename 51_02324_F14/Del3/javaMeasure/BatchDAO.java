@@ -63,6 +63,8 @@ public class BatchDAO implements IBatchDAO {
 	 */
 	public Batch getBatch(String batchname) throws DataBaseException {
 		// TODO needs testing   measurements (elementnumber, measurementtype, measurementvalue, timestamp)
+		ArrayList<Measurement> stroke = new ArrayList<>(); // list needed for new way of adding measurements to batch
+		ArrayList<Measurement> leak = new ArrayList<>();	// list needed for new way of adding measurements to batch
 		Batch returBatch;
 		Measurement.MeasurementType type; 
 		String query1 = "SELECT * FROM batches WHERE name=?";
@@ -81,20 +83,17 @@ public class BatchDAO implements IBatchDAO {
 
 				while(result.next()){
 					if(result.getString("measurementtype").equals("LEAK")){
-						type = Measurement.MeasurementType.LEAK;						
+						leak.add(new Measurement(result.getInt("batchid"), result.getInt("elementnumber"), result.getFloat("measurementvalue"), Measurement.MeasurementType.LEAK, result.getLong("timestamp")));						
 					}
-					else{
-						type = Measurement.MeasurementType.STROKE;
+					else if (result.getString("measurementtype").equals("STROKE")){
+						stroke.add(new Measurement(result.getInt("batchid"), result.getInt("elementnumber"), result.getFloat("measurementvalue"), Measurement.MeasurementType.STROKE, result.getLong("timestamp")));
 					}
-					returBatch.addMeasurement(new Measurement(result.getInt("batchid"), result.getInt("elementnumber"), result.getFloat("measurementvalue"), type, result.getLong("timestamp")));
-
-
 				}
 			}
 			else {
 				throw new DataBaseException();
 			}
-
+			returBatch.setMeasurementList(stroke, leak);
 			return returBatch;
 
 		} catch (SQLException e) {
