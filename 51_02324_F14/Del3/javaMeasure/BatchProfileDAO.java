@@ -32,7 +32,8 @@ public class BatchProfileDAO implements IBatchProfileDAO {
 				statement.setString(1, profileName);
 				result = statement.executeQuery();
 				if(result.next()){
-					profileId = result.getInt(1);	
+					profileId = result.getInt(1); 
+					batchProfile.setProfileID(profileId);
 				} else {
 					throw new DataBaseException();
 				}
@@ -155,6 +156,7 @@ public class BatchProfileDAO implements IBatchProfileDAO {
 			String query = "DELETE FROM batchsettings WHERE profileid=?";
 			PreparedStatement s = sqlConnector.getPreparedStatement(query);
 			try{
+				System.out.println(bp.getProfileID());
 				s.setInt(1, bp.getProfileID());
 				s.executeUpdate();
 			} catch (SQLException e){
@@ -175,4 +177,7 @@ public class BatchProfileDAO implements IBatchProfileDAO {
 			}
 	}
 
+		public void editBatchProfile(BatchProfile bp){
+			
+		}
 }
