@@ -11,7 +11,6 @@
 <script type="text/javascript" src="calendar.js"></script>
 </head>
 <body id="main-body">
-
 	<jsp:useBean id="database"
 		class="javaMeasure.control.DataBaseController" scope="session" />
 
