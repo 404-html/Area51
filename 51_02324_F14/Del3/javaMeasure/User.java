@@ -3,11 +3,20 @@ package javaMeasure;
 public class User {
 	private String userName;
 	private int userID;
+	private String passWord; 
 	
 	public User(String userName, int userID) {
 		super();
 		this.userName = userName;
 		this.userID = userID;
+		this.passWord = null;
+	}
+	
+	public User(String userName, int userID, String passWord) {
+		super();
+		this.userName = userName;
+		this.userID = userID;
+		this.passWord = passWord;
 	}
 	
 	public String getUserName() {
@@ -24,6 +33,14 @@ public class User {
 
 	public void setUserID(int userID) {
 		this.userID = userID;
+	}
+
+	public String getPassWord() {
+		return passWord;
+	}
+
+	public void setPassWord(String passWord) {
+		this.passWord = passWord;
 	}
 
 	@Override

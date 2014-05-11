@@ -58,7 +58,29 @@ public class UserDAO implements IUserDAO {
 		}
 		return false;
 	}
-
+	
+	@Override
+	public boolean validateUser(User user) throws DataBaseException {
+		String query = "SELECT * FROM users WHERE username=? AND password=?";
+		ResultSet result = null;
+		PreparedStatement pstat = sqlConnector.getPreparedStatement(query);
+		try {
+			pstat.setString(1, user.getUserName());
+			pstat.setString(2, user.getPassWord());
+			result = pstat.executeQuery();
+		} catch (SQLException e) {
+			throw new DataBaseException();
+		}
+		try {
+			if (result.next()){
+				return true;
+			}
+		} catch (SQLException e) {
+			throw new DataBaseException();
+		}
+		return false;
+	}
+	
 	
 	public void addToDB(User user) throws DataBaseException{
 		String query = "INSERT INTO users (username) VALUES (?)";
@@ -97,5 +119,6 @@ public class UserDAO implements IUserDAO {
 
 		throw new UserNotFoundException();
 	}
+	
 
 }

@@ -1,3 +1,4 @@
+<%@page import="javaMeasure.User"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -31,18 +32,18 @@
 
 					<%
 						session.setAttribute("database", database);
-						String username = request.getParameter("username");
+						String userName = request.getParameter("username");
 						String password = request.getParameter("pass");
-						if ((username == null || username.equals(""))
+						if ((userName == null || userName.equals(""))
 								&& (password == null || password.equals(""))) {
 					%>
 					<p>Indtast Brugernavn og password</p>
 					<%
-						} else if (database.isUserNameInDB(username)) {
-							javaMeasure.User user = database.getUserFromString(username);
-							if(user.getUserName().equals(username)) // password should be part of this later
+						} else if (database.validateUser(new User(userName, -1, password))) {
+							javaMeasure.User user = database.getUserFromString(userName);
+							if(user.getUserName().equals(userName)) // password should be part of this later
 							{
-								session.setAttribute("username", username);
+								session.setAttribute("username", userName);
 								response.sendRedirect("form.jsp");
 							} else
 							{

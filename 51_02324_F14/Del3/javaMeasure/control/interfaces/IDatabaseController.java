@@ -1,16 +1,14 @@
 package javaMeasure.control.interfaces;
 import java.util.ArrayList;
 
-import javax.xml.bind.DataBindingException;
-
 import javaMeasure.*;
-import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 
 public interface IDatabaseController {
 	
 	//User functionality
 	ArrayList<User> getUserList() throws DataBaseException;
 	boolean isUserNameInDB(String userName) throws DataBaseException;
+	boolean validateUser(User user) throws DataBaseException;
 	User getUserFromString(String userString) throws DataBaseException, UserNotFoundException;
 	void addToDB(User user) throws DataBaseException;
 	

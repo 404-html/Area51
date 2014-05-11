@@ -39,6 +39,11 @@ public class DataBaseController implements IDatabaseController {
 	}
 
 	@Override
+	public boolean validateUser(User user) throws DataBaseException {
+		return this.userDAO.validateUser(user);
+	}
+	
+	@Override
 	public void addToDB(User user) throws DataBaseException{
 		this.userDAO.addToDB(user);
 
@@ -125,5 +130,6 @@ public class DataBaseController implements IDatabaseController {
 		
 		
 	}
+
 	
 }
