@@ -154,6 +154,17 @@ public class NewBatchController implements INewBatchController {
 		mainController.getDatabaseController().deleteBatchProfile(bp);
 		
 	}
+	
+	public void editBatchProfilePressed(String profileName)	throws DataBaseException {
+		BatchProfile bp = null;
+		try{
+			bp = getBatchProfile(profileName);
+		} catch (DataBaseException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
 
 	
 

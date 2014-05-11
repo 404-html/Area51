@@ -2,6 +2,7 @@ package javaMeasure.control;
 
 import java.sql.*;
 import java.util.ArrayList;
+
 import javaMeasure.*;
 import javaMeasure.interfaces.*;
 import javaMeasure.control.interfaces.IDatabaseController;
@@ -112,5 +113,8 @@ public class DataBaseController implements IDatabaseController {
 	@Override
 	public void deleteBatchProfile(BatchProfile bp) throws DataBaseException {
 		batchProfileDAO.deleteBatchProfile(bp);
+	}
+	public void editBatchProfile(BatchProfile bp) throws DataBaseException {
+		((IDatabaseController) batchProfileDAO).editBatchProfile(bp);
 	}
 }

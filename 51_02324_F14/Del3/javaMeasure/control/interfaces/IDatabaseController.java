@@ -34,7 +34,7 @@ public interface IDatabaseController {
 	
 	
 	void deleteBatchProfile(BatchProfile bp) throws DataBaseException;
-	
+	void editBatchProfile(BatchProfile bp) throws DataBaseException; 
 	//Exceptions
 	@SuppressWarnings("serial")
 	public class DataBaseException extends Exception {
