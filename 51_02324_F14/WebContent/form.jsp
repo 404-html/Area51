@@ -62,7 +62,7 @@
 		</div>
 		<!-- Form begins-->
 		<div id="form_container">
-			<form id="batch_form" class="appnitro" method="post" action="NoliacServlet">
+			<form id="batch_form" class="appnitro" method="post">
 				<div class="form_description">
 					<h1>Noliac Batch-udtræk</h1>
 					<p>Indtast selv Batch ID eller vælg Batch ID fra rullemenu</p>
