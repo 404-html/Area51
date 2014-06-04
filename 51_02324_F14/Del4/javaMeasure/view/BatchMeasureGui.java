@@ -31,6 +31,7 @@ import javaMeasure.view.interfaces.IBatchMeasureGui;
 
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
+import java.awt.event.ActionListener;
 
 @SuppressWarnings("serial")
 public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
@@ -69,14 +70,19 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		btnGetBatch.setBounds(471, 12, 100, 25);
 		getContentPane().add(btnGetBatch);
 
+		JButton btnNewBatchUsingPrevious = new JButton("Load Batch Settings");
+		btnNewBatchUsingPrevious.setActionCommand("newBatchUsingPrevious");
+		btnNewBatchUsingPrevious.setBounds(361, 48, 210, 23);
+		getContentPane().add(btnNewBatchUsingPrevious);
+		
 		JButton btnLeakCurrentMeasurement = new JButton("Leak Current Measurement");
 		btnLeakCurrentMeasurement.setActionCommand("leakCurrent");
-		btnLeakCurrentMeasurement.setBounds(361, 48, 213, 25);
+		btnLeakCurrentMeasurement.setBounds(361, 82, 213, 25);
 		getContentPane().add(btnLeakCurrentMeasurement);
 
 		JButton btnStrokeMeasurement = new JButton("Stroke Measurement");
 		btnStrokeMeasurement.setActionCommand("stroke");
-		btnStrokeMeasurement.setBounds(361, 84, 213, 25);
+		btnStrokeMeasurement.setBounds(361, 118, 213, 25);
 		getContentPane().add(btnStrokeMeasurement);
 
 		JButton btnLogout = new JButton("Log out");
@@ -377,6 +383,9 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 			break;
 		case "newBatch": 
 			batchMeasureController.btnNewBatchPressed();
+			break;
+		case "newBatchUsingPrevious":
+			batchMeasureController.btnNewBatchUsingPreviousPressed();
 			break;
 		case "getBatch":
 			batchMeasureController.btnGetBatchPressed();
