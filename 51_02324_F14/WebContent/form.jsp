@@ -60,22 +60,24 @@
 		<div id="header">
 			<img src="noliac_logo.png" alt="Logo">
 		</div>
-
+		<!-- Form begins-->
 		<div id="form_container">
-			<form id="batch_form" class="appnitro" method="post">
+			<form id="batch_form" class="appnitro" method="post" action="NoliacServlet">
 				<div class="form_description">
 					<h1>Noliac Batch-udtræk</h1>
 					<p>Indtast selv Batch ID eller vælg Batch ID fra rullemenu</p>
 				</div>
-				<ul>
+				
+                <!-- Input Fields contained in table-->
 					<table width="100%" border="0" cellpadding="2" cellspacing="0">
 						<tr>
-							<td><li id="li_3" name="li_3"><label
-									class="description" for="element_3">
-										<%
+							<td>
+                            <ul>
+                            <li id="li_3" name="li_3"><label
+									class="description" for="batchname">
+										<% //Checks if Batch was found
 											if (request.getParameter("fail") != null) out.print("Batch navn ikke genkendt! -");
-										%>Indtast
-										Batch navn
+										%> Indtast Batch navn
 								</label>
 									<div>
 										<input id="batchname" name="batchname"
@@ -96,13 +98,15 @@
 										<small>Batch # du ønsker</small>
 									</p></li>
 								<li id="li_1"><label class="description" for="element_1">Start
-										dato </label> <span> <input id="element_1_1" name="element_1_1"
-										class="element text" size="2" maxlength="2" value=""
-										type="text"> / <label for="element_1_1">MM</label>
-								</span> <span> <input id="element_1_2" name="element_1_2"
+										dato </label> 
+                                 <span> <input id="element_1_2" name="element_1_2"
 										class="element text" size="2" maxlength="2" value=""
 										type="text"> / <label for="element_1_2">DD</label>
-								</span> <span> <input id="element_1_3" name="element_1_3"
+								</span>
+                                <span> <input id="element_1_1" name="element_1_1"
+										class="element text" size="2" maxlength="2" value=""
+										type="text"> / <label for="element_1_1">MM</label>
+								</span>  <span> <input id="element_1_3" name="element_1_3"
 										class="element text" size="4" maxlength="4" value=""
 										type="text"> <label for="element_1_3">YYYY</label>
 								</span> <span id="calendar_1"> <img id="cal_img_1"
@@ -118,13 +122,15 @@
 									});
 								</script></li>
 								<li id="li_2" name="li_2"><label class="description" for="element_2">Slut
-										dato </label> <span> <input id="element_2_1" name="element_2_1"
-										class="element text" size="2" maxlength="2" value=""
-										type="text"> / <label for="element_2_1">MM</label>
-								</span> <span> <input id="element_2_2" name="element_2_2"
+										dato </label> 
+                                        <span> <input id="element_2_2" name="element_2_2"
 										class="element text" size="2" maxlength="2" value=""
 										type="text"> / <label for="element_2_2">DD</label>
-								</span> <span> <input id="element_2_3" name="element_2_3"
+								</span>
+                                        <span> <input id="element_2_1" name="element_2_1"
+										class="element text" size="2" maxlength="2" value=""
+										type="text"> / <label for="element_2_1">MM</label>
+								</span>  <span> <input id="element_2_3" name="element_2_3"
 										class="element text" size="4" maxlength="4" value=""
 										type="text"> <label for="element_2_3">YYYY</label>
 								</span> <span id="calendar_2"> <img id="cal_img_2"
@@ -138,14 +144,17 @@
 										ifFormat : "%B %e, %Y",
 										onSelect : selectDate
 									});
-								</script></li></td>
+								</script></li>
+                                </ul>
+                                </td>
 							<td width="50%"><label class="description" for="element_7">
 									Fundne batches </label> <select name="selectedbatch" id="selectedbatch"
 								size="10">
-									<option value="volvo" selected="selected">Volvo</option>
-									<option value="saab">Saab</option>
-									<option value="opel">Opel</option>
-									<option value="audi">Audi</option>
+                            <%    for (String batchName : batchNames){ %>
+										<option>
+											<%=batchName%></option>
+									  <%
+											}%>
 							</select></td>
 						</tr>
 					</table>
@@ -156,7 +165,7 @@
 						type="submit" name="submit" value="Indsend" /> <input
 						id="saveForm" class="button_text" type="submit" name="logout"
 						value="logout" /></li>
-				</ul>
+				
 			</form>
 			<div id="footer">By Area51</div>
 
