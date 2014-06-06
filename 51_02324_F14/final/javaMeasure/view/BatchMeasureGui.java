@@ -58,7 +58,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
 
-		setBounds(100, 100, 1040, 500);
+		setBounds(100, 100, 1040, 650);
 
 		JButton btnNewBatch = new JButton("New Batch");
 		btnNewBatch.setActionCommand("newBatch");
@@ -136,13 +136,74 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 			getContentPane().add(lblTitle);
 		}
 
-		JLabel lblSettings = new JLabel("Settings:");
-		lblSettings.setBounds(636, 12, 46, 14);
-		getContentPane().add(lblSettings);
-
 		JLabel lbllog = new JLabel("<html><b>Event log: </b></html>");
 		lbllog.setBounds(10, 273, 87, 14);
 		getContentPane().add(lbllog);
+		profileSettings.add(lbllog);
+		
+		JLabel lblCustomer = new JLabel("Customer:");
+		lblCustomer.setBounds(598, 17, 87, 14);
+		getContentPane().add(lblCustomer);
+		
+		JLabel lblItemDescription = new JLabel("Item description:");
+		lblItemDescription.setBounds(598, 42, 87, 14);
+		getContentPane().add(lblItemDescription);
+		
+		JLabel lblItemCode = new JLabel("Item code:");
+		lblItemCode.setBounds(598, 67, 87, 14);
+		getContentPane().add(lblItemCode);
+		
+		JLabel lblInternalOrderNumber = new JLabel("Internal order number:");
+		lblInternalOrderNumber.setBounds(598, 93, 110, 14);
+		getContentPane().add(lblInternalOrderNumber);
+		
+		JLabel lblDrawingNumber = new JLabel("Drawing number:");
+		lblDrawingNumber.setBounds(814, 42, 84, 14);
+		getContentPane().add(lblDrawingNumber);
+		
+		JLabel lblSpecification = new JLabel("Specification");
+		lblSpecification.setBounds(814, 67, 84, 14);
+		getContentPane().add(lblSpecification);
+		
+		JLabel lblVisualInspection = new JLabel("Visual inspection");
+		lblVisualInspection.setBounds(814, 93, 84, 14);
+		getContentPane().add(lblVisualInspection);
+		
+		JLabel lblCustomertxt = new JLabel("-");
+		lblCustomertxt.setBounds(718, 17, 138, 14);
+		getContentPane().add(lblCustomertxt);
+		profileSettings.add(lblCustomertxt);
+		
+		JLabel lvlItemtxt = new JLabel("-");
+		lvlItemtxt.setBounds(718, 42, 86, 14);
+		getContentPane().add(lvlItemtxt);
+		profileSettings.add(lvlItemtxt);
+		
+		JLabel lblItemCodetxt = new JLabel("-");
+		lblItemCodetxt.setBounds(718, 67, 79, 14);
+		getContentPane().add(lblItemCodetxt);
+		profileSettings.add(lblItemCodetxt);
+		
+		JLabel lblInternaltxt = new JLabel("-");
+		lblInternaltxt.setBounds(718, 93, 86, 14);
+		getContentPane().add(lblInternaltxt);
+		profileSettings.add(lblInternaltxt);
+		
+		JLabel lblDrawingtxt = new JLabel("-");
+		lblDrawingtxt.setBounds(945, 42, 86, 14);
+		getContentPane().add(lblDrawingtxt);
+		profileSettings.add(lblDrawingtxt);
+		
+		JLabel lblSpecificationtxt = new JLabel("-");
+		lblSpecificationtxt.setBounds(945, 67, 79, 14);
+		getContentPane().add(lblSpecificationtxt);
+		profileSettings.add(lblSpecificationtxt);
+		
+		JLabel lblVisualtxt = new JLabel("-");
+		lblVisualtxt.setBounds(945, 93, 79, 14);
+		getContentPane().add(lblVisualtxt);
+		profileSettings.add(lblVisualtxt);
+
 
 		// labels for the "+-" label 
 		for(int i = 0; i < 14 ; i++){
