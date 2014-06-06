@@ -29,24 +29,24 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 
 	private INewBatchController newBatchController;
 	private JButton btnSaveBatchSettings;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_5;
-	private JTextField textField_6;
-	private JTextField textField_7;
+	private JTextField customer;
+	private JTextField item_description;
+	private JTextField item_code;
+	private JTextField internal_order;
+	private JTextField drawing_number;
+	private JTextField specification;
+	private JTextField visual_inspection;
 	
 	public NewBatchGui(INewBatchController newBatchController) {
 		setTitle("New Batch");
 		this.newBatchController = newBatchController;
 		getContentPane().setLayout(null);
-		setBounds(0, 0, 552, 802);
+		setBounds(0, 0, 552, 764);
 		setResizable(false);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
 		JPanel panel = new JPanel();
-		panel.setBounds(10, 282, 529, 481);
+		panel.setBounds(10, 250, 529, 481);
 		getContentPane().add(panel);
 		panel.setLayout(null);
 
@@ -130,6 +130,59 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 		panel.add(lblNormValue);
 		//		PropertyHelper.writeToProperty("newBatchGuiSetup", "16", "<html> <b>norm value</b></html>");
 
+		// textfields for batchdescription
+		JPanel panel_1 = new JPanel();
+		panel_1.setBounds(10, 11, 529, 239);
+		getContentPane().add(panel_1);
+		panel_1.setLayout(null);
+		
+		customer = new JTextField();
+		customer.setBounds(131, 115, 139, 20);
+		panel_1.add(customer);
+		customer.setColumns(10);
+		profileSettings.add(customer);
+		
+		item_description = new JTextField();
+		item_description.setColumns(10);
+		item_description.setBounds(131, 146, 111, 20);
+		panel_1.add(item_description);
+		profileSettings.add(item_description);
+		
+		item_code = new JTextField();
+		item_code.setColumns(10);
+		item_code.setBounds(131, 177, 111, 20);
+		panel_1.add(item_code);
+		profileSettings.add(item_code);
+		
+		internal_order = new JTextField();
+		internal_order.setColumns(10);
+		internal_order.setBounds(131, 208, 111, 20);
+		panel_1.add(internal_order);
+		profileSettings.add(internal_order);
+		
+		drawing_number = new JTextField();
+		drawing_number.setColumns(10);
+		drawing_number.setBounds(408, 146, 111, 20);
+		panel_1.add(drawing_number);
+		profileSettings.add(drawing_number);
+		
+		specification = new JTextField();
+		specification.setColumns(10);
+		specification.setBounds(408, 177, 111, 20);
+		panel_1.add(specification);
+		profileSettings.add(specification);
+		
+		visual_inspection = new JTextField();
+		visual_inspection.setColumns(10);
+		visual_inspection.setBounds(408, 208, 111, 20);
+		panel_1.add(visual_inspection);
+		profileSettings.add(visual_inspection);
+		
+		
+		
+		
+		
+		
 		// textfields for normal value
 		for(int i = 0; i < 14; i++){
 			if(i == 11 || i == 12){
@@ -222,11 +275,6 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 		lblInspectionLevel.setBounds(352, 11, 110, 14);
 		panel.add(lblInspectionLevel);
 
-		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(10, 11, 529, 260);
-		getContentPane().add(panel_1);
-		panel_1.setLayout(null);
-
 		lblBatch = new JLabel("<html><b> Batch:</b></html>");
 		lblBatch.setBounds(75, 70, 46, 14);
 		panel_1.add(lblBatch);
@@ -269,43 +317,8 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 				panel_1.add(btnDeleteSettings);
 				
 				JLabel lblCustomer = new JLabel("Customer:");
-				lblCustomer.setBounds(10, 109, 129, 14);
+				lblCustomer.setBounds(10, 118, 129, 14);
 				panel_1.add(lblCustomer);
-				
-				textField = new JTextField();
-				textField.setBounds(149, 106, 370, 20);
-				panel_1.add(textField);
-				textField.setColumns(10);
-				
-				textField_1 = new JTextField();
-				textField_1.setColumns(10);
-				textField_1.setBounds(149, 140, 111, 20);
-				panel_1.add(textField_1);
-				
-				textField_2 = new JTextField();
-				textField_2.setColumns(10);
-				textField_2.setBounds(149, 177, 111, 20);
-				panel_1.add(textField_2);
-				
-				textField_3 = new JTextField();
-				textField_3.setColumns(10);
-				textField_3.setBounds(149, 208, 111, 20);
-				panel_1.add(textField_3);
-				
-				textField_5 = new JTextField();
-				textField_5.setColumns(10);
-				textField_5.setBounds(408, 140, 111, 20);
-				panel_1.add(textField_5);
-				
-				textField_6 = new JTextField();
-				textField_6.setColumns(10);
-				textField_6.setBounds(409, 177, 111, 20);
-				panel_1.add(textField_6);
-				
-				textField_7 = new JTextField();
-				textField_7.setColumns(10);
-				textField_7.setBounds(408, 208, 111, 20);
-				panel_1.add(textField_7);
 				
 				JLabel lblItemCode = new JLabel("Item code:");
 				lblItemCode.setBounds(10, 180, 111, 14);
@@ -316,7 +329,7 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 				panel_1.add(lblInternalOrderNumber);
 				
 				JLabel lblDrawingNumber = new JLabel("Drawing number:");
-				lblDrawingNumber.setBounds(270, 143, 129, 14);
+				lblDrawingNumber.setBounds(270, 149, 129, 14);
 				panel_1.add(lblDrawingNumber);
 				
 				JLabel lblSpecification = new JLabel("Specification:");
@@ -328,7 +341,7 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 				panel_1.add(lblVisualInspection);
 				
 				JLabel lblItemDescription = new JLabel("Item description:");
-				lblItemDescription.setBounds(10, 143, 129, 14);
+				lblItemDescription.setBounds(10, 146, 129, 14);
 				panel_1.add(lblItemDescription);
 				
 
