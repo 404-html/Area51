@@ -1,4 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@page import="java.util.Enumeration"%>
 <%@page import="com.mysql.jdbc.util.LRUCache"%>
 <%@page import="javaMeasure.BatchSetting"%>
 <%@page import="javaMeasure.Batch"%>
@@ -314,6 +315,17 @@
 
 		</div>
 	</div>
+	<% 
+	out.println(request);
+ out.println(request.getParameterNames());
+ Enumeration paramNames = request.getParameterNames();
+ while(paramNames.hasMoreElements())
+ {
+       String paramName =
+ (String)paramNames.nextElement();
+       out.print(paramName);
+ }
+	%>
 </body>
 <%
 	}
