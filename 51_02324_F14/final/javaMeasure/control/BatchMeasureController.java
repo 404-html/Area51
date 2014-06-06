@@ -41,7 +41,7 @@ public class BatchMeasureController implements IBatchMeasureController {
 	}
 
 	// TODO Finish this - Martin
-	public void btnNewBatchUsingPreviousPressed(){
+	public void btnEditBatchSettingsPressed(){
 		ArrayList<Batch> list = null;
 		batchGUI.updateLog("Loading batchnames...");
 		try {
