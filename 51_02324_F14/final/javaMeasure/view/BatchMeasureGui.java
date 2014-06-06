@@ -129,7 +129,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 			if(i>17){
 				lblTitle.setBounds(670+90*(i-17), 35, 130, 15);
 			} else{
-				lblTitle.setBounds(610, 10+25*i, 130, 15);
+				lblTitle.setBounds(610, 99+25*i, 130, 15);
 			}
 			String text = PropertyHelper.readFromProperty("newBatchGuiSetup", String.valueOf(i));
 			lblTitle.setText(text);
@@ -203,6 +203,10 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		lblVisualtxt.setBounds(945, 93, 79, 14);
 		getContentPane().add(lblVisualtxt);
 		profileSettings.add(lblVisualtxt);
+		
+		JSeparator separator = new JSeparator();
+		separator.setBounds(584, 118, 440, 2);
+		getContentPane().add(separator);
 
 
 		// labels for the "+-" label 
@@ -210,7 +214,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 			if(i == 3 || i == 4  || i == 10 || i == 11 || i == 12 ){}
 			else{
 				JLabel label = new JLabel("\u00B1");
-				label.setBounds(835, 60+25*i, 15, 15);
+				label.setBounds(835, 114+25*i, 15, 15);
 				getContentPane().add(label);
 			}
 		}
