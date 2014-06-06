@@ -2,6 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="Legacy"/>
 	<classpathentry excluding="mysqlconnector/" kind="src" path="Del4"/>
+	<classpathentry kind="src" path="3Uger"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7">
 		<attributes>
 			<attribute name="owner.project.facets" value="java"/>
@@ -12,5 +13,6 @@
 	<classpathentry kind="lib" path="miglayout15-swing.jar" sourcepath="miglayout-src.zip"/>
 	<classpathentry kind="lib" path="sqlConnector/mysql-connector-java-5.1.30-bin.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="C:/tomcat/lib/servlet-api.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
