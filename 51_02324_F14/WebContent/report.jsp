@@ -8,95 +8,133 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<% String username = (String) session.getAttribute("username"); %>
-<title>Noliac : <%out.println(username);%> | Final report</title>
+
+<title>Noliac : <%
+	out.println("username here");
+%> | Final report
+</title>
 <link rel="stylesheet" type="text/css" href="view.css" media="all" />
 <script type="text/javascript" src="view.js"></script>
 <script type="text/javascript" src="calendar.js"></script>
 </head>
 <%
-String relativeWebPath = "/file.csv";
-String absoluteDiskPath = getServletContext().getRealPath(relativeWebPath);
+	String relativeWebPath = "/file.csv";
+	String absoluteDiskPath = getServletContext().getRealPath(
+			relativeWebPath);
 	// input actions from buttons
 	String newReport = request.getParameter("newReport");
 	String excel = request.getParameter("saveAsExcel");
-	
-	// batch and profile for table input
-	javaMeasure.Batch batch = (javaMeasure.Batch) session.getAttribute("batch");
-	javaMeasure.BatchProfile profile = (javaMeasure.BatchProfile) session.getAttribute("profile");
 
-	if(session.getAttribute("username") == null)
-	{	
-		response.sendRedirect("userlogin.jsp");
-	}
-	else if(newReport != null)
-	{
+	// batch and profile for table input
+	javaMeasure.Batch batch = (javaMeasure.Batch) session
+			.getAttribute("batch");
+	javaMeasure.BatchProfile profile = (javaMeasure.BatchProfile) session
+			.getAttribute("profile");
+
+	if (newReport != null) {
 		session.setAttribute("corruptSettings", null);
 		response.sendRedirect("form.jsp");
-	}
-	else if(profile.getProfileSettings().size() < 40)
-	{
+	} else if (profile.getProfileSettings().size() < 40) {
 		session.setAttribute("corruptSettings", "corrupt");
 		response.sendRedirect("form.jsp");
-	}
-	else if(excel != null)
-	{
+	} else if (excel != null) {
 		session.setAttribute("corruptSettings", null);
 		response.sendRedirect(absoluteDiskPath); // should be something else later on
-	}
-	else{
-	// values
-	//TODO robustness against empty sets...
-	String lengthNorm = profile.getProfileSettings().get(0).getValue();
-	String lengthMin = String.valueOf(Double.parseDouble(lengthNorm) - Double.parseDouble(profile.getProfileSettings().get(12).getValue()));
-	String lengthMax = String.valueOf(Double.parseDouble(lengthNorm) + Double.parseDouble(profile.getProfileSettings().get(12).getValue()));
-	String lengthInsp = profile.getProfileSettings().get(21).getValue();
-	String mLengthNorm = String.valueOf(batch.getAverageLeak());
-	
-	String widthNorm = profile.getProfileSettings().get(1).getValue();
-	String widthMin = String.valueOf(Double.parseDouble(widthNorm) - Double.parseDouble(profile.getProfileSettings().get(13).getValue()));
-	String widthMax = String.valueOf(Double.parseDouble(widthNorm) + Double.parseDouble(profile.getProfileSettings().get(13).getValue()));
-	String widthInsp = profile.getProfileSettings().get(22).getValue();
-	
-	String thickNorm = profile.getProfileSettings().get(2).getValue();
-	String thickMin = String.valueOf(Double.parseDouble(thickNorm) - Double.parseDouble(profile.getProfileSettings().get(14).getValue()));
-	String thickMax = String.valueOf(Double.parseDouble(thickNorm) + Double.parseDouble(profile.getProfileSettings().get(14).getValue()));
-	String thickInsp = profile.getProfileSettings().get(23).getValue();
-	
-	String capNorm = profile.getProfileSettings().get(7).getValue();
-	String capMin = String.valueOf(Double.parseDouble(capNorm) - Double.parseDouble(profile.getProfileSettings().get(17).getValue()));
-	String capMax = String.valueOf(Double.parseDouble(capNorm) + Double.parseDouble(profile.getProfileSettings().get(17).getValue()));
-	String capInsp = profile.getProfileSettings().get(28).getValue();
-	
-	String strokeNorm = profile.getProfileSettings().get(8).getValue();
-	String strokeMin = String.valueOf(Double.parseDouble(strokeNorm) - Double.parseDouble(profile.getProfileSettings().get(18).getValue()));
-	String strokeMax = String.valueOf(Double.parseDouble(strokeNorm) + Double.parseDouble(profile.getProfileSettings().get(18).getValue()));
-	String strokeInsp = profile.getProfileSettings().get(29).getValue();
-	
-	String leakNorm = profile.getProfileSettings().get(38).getValue();
-	String leakInsp = profile.getProfileSettings().get(33).getValue();
-	
-	String visualNorm = profile.getProfileSettings().get(40).getValue();
-	String visualInsp = profile.getProfileSettings().get(35).getValue();
-	Writer writer = null;
+	} else {
+		// values
+		//TODO robustness against empty sets...
+		String lengthNorm = profile.getProfileSettings().get(0)
+				.getValue();
+		String lengthMin = String.valueOf(Double
+				.parseDouble(lengthNorm)
+				- Double.parseDouble(profile.getProfileSettings()
+						.get(12).getValue()));
+		String lengthMax = String.valueOf(Double
+				.parseDouble(lengthNorm)
+				+ Double.parseDouble(profile.getProfileSettings()
+						.get(12).getValue()));
+		String lengthInsp = profile.getProfileSettings().get(21)
+				.getValue();
+		String mLengthNorm = String.valueOf(batch.getAverageLeak());
 
- relativeWebPath = "/file.csv";
- absoluteDiskPath = getServletContext().getRealPath(relativeWebPath);
-	try {
-		writer = new BufferedWriter(new OutputStreamWriter(
-    	new FileOutputStream(absoluteDiskPath), "utf-8"));
-    	writer.write(lengthNorm + "," + lengthMin +","+lengthMax+","+lengthInsp+","+mLengthNorm);
-    	System.out.println(absoluteDiskPath);
-    	System.out.println("YAYA");
-	} 
-	
-	catch (IOException ex) {
-		System.out.println(absoluteDiskPath);
- 		System.out.println("Fuck you");
-	} finally {
-   try {writer.close();} catch (Exception ex) {System.out.println("WOOOT");}
-	}
+		String widthNorm = profile.getProfileSettings().get(1)
+				.getValue();
+		String widthMin = String.valueOf(Double.parseDouble(widthNorm)
+				- Double.parseDouble(profile.getProfileSettings()
+						.get(13).getValue()));
+		String widthMax = String.valueOf(Double.parseDouble(widthNorm)
+				+ Double.parseDouble(profile.getProfileSettings()
+						.get(13).getValue()));
+		String widthInsp = profile.getProfileSettings().get(22)
+				.getValue();
 
+		String thickNorm = profile.getProfileSettings().get(2)
+				.getValue();
+		String thickMin = String.valueOf(Double.parseDouble(thickNorm)
+				- Double.parseDouble(profile.getProfileSettings()
+						.get(14).getValue()));
+		String thickMax = String.valueOf(Double.parseDouble(thickNorm)
+				+ Double.parseDouble(profile.getProfileSettings()
+						.get(14).getValue()));
+		String thickInsp = profile.getProfileSettings().get(23)
+				.getValue();
+
+		String capNorm = profile.getProfileSettings().get(7).getValue();
+		String capMin = String.valueOf(Double.parseDouble(capNorm)
+				- Double.parseDouble(profile.getProfileSettings()
+						.get(17).getValue()));
+		String capMax = String.valueOf(Double.parseDouble(capNorm)
+				+ Double.parseDouble(profile.getProfileSettings()
+						.get(17).getValue()));
+		String capInsp = profile.getProfileSettings().get(28)
+				.getValue();
+
+		String strokeNorm = profile.getProfileSettings().get(8)
+				.getValue();
+		String strokeMin = String.valueOf(Double
+				.parseDouble(strokeNorm)
+				- Double.parseDouble(profile.getProfileSettings()
+						.get(18).getValue()));
+		String strokeMax = String.valueOf(Double
+				.parseDouble(strokeNorm)
+				+ Double.parseDouble(profile.getProfileSettings()
+						.get(18).getValue()));
+		String strokeInsp = profile.getProfileSettings().get(29)
+				.getValue();
+
+		String leakNorm = profile.getProfileSettings().get(38)
+				.getValue();
+		String leakInsp = profile.getProfileSettings().get(33)
+				.getValue();
+
+		String visualNorm = profile.getProfileSettings().get(40)
+				.getValue();
+		String visualInsp = profile.getProfileSettings().get(35)
+				.getValue();
+		Writer writer = null;
+
+		relativeWebPath = "/file.csv";
+		absoluteDiskPath = getServletContext().getRealPath(
+				relativeWebPath);
+		try {
+			writer = new BufferedWriter(new OutputStreamWriter(
+					new FileOutputStream(absoluteDiskPath), "utf-8"));
+			writer.write(lengthNorm + "," + lengthMin + "," + lengthMax
+					+ "," + lengthInsp + "," + mLengthNorm);
+			System.out.println(absoluteDiskPath);
+			System.out.println("YAYA");
+		}
+
+		catch (IOException ex) {
+			System.out.println(absoluteDiskPath);
+			System.out.println("Fuck you");
+		} finally {
+			try {
+				writer.close();
+			} catch (Exception ex) {
+				System.out.println("WOOOT");
+			}
+		}
 %>
 
 <body id="main-body">
@@ -143,65 +181,213 @@ String absoluteDiskPath = getServletContext().getRealPath(relativeWebPath);
 							</tr>
 							<tr>
 								<td>Length (mm):</td>
-								<td><% out.println(lengthNorm); %></td>
-								<td><% out.println(lengthMin); %></td>
-								<td><% out.println(lengthMax); %></td>
-								<td><% out.println(lengthInsp); %></td>
-								<td><% out.println(leakNorm); // not finished %></td>
-								<td><% out.println(leakNorm); // not finished %></td>
-								<td><% out.println(leakNorm); // not finished %></td>
+								<td>
+									<%
+										out.println(lengthNorm);
+									%>
+								</td>
+								<td>
+									<%
+										out.println(lengthMin);
+									%>
+								</td>
+								<td>
+									<%
+										out.println(lengthMax);
+									%>
+								</td>
+								<td>
+									<%
+										out.println(lengthInsp);
+									%>
+								</td>
+								<td>
+									<%
+										out.println(leakNorm); // not finished
+									%>
+								</td>
+								<td>
+									<%
+										out.println(leakNorm); // not finished
+									%>
+								</td>
+								<td>
+									<%
+										out.println(leakNorm); // not finished
+									%>
+								</td>
 								<td>&nbsp;</td>
 							</tr>
 							<tr>
 								<td>Width (mm):</td>
-								<td><% out.println(widthNorm); %></td>
-								<td><% out.println(widthMin); %></td>
-								<td><% out.println(widthMax); %></td>
-								<td><% out.println(widthInsp); %></td>
-								<td><% out.println(lengthNorm); %></td>
-								<td><% out.println(lengthNorm); %></td>
-								<td><% out.println(lengthNorm); %></td>
+								<td>
+									<%
+										out.println(widthNorm);
+									%>
+								</td>
+								<td>
+									<%
+										out.println(widthMin);
+									%>
+								</td>
+								<td>
+									<%
+										out.println(widthMax);
+									%>
+								</td>
+								<td>
+									<%
+										out.println(widthInsp);
+									%>
+								</td>
+								<td>
+									<%
+										out.println(lengthNorm);
+									%>
+								</td>
+								<td>
+									<%
+										out.println(lengthNorm);
+									%>
+								</td>
+								<td>
+									<%
+										out.println(lengthNorm);
+									%>
+								</td>
 								<td>&nbsp;</td>
 							</tr>
 							<tr>
 								<td>Thickness (mm):</td>
-								<td><% out.println(thickNorm); %></td>
-								<td><% out.println(thickMin); %></td>
-								<td><% out.println(thickMax); %></td>
-								<td><% out.println(thickInsp); %></td>
-								<td><% out.println(lengthNorm); %></td>
-								<td><% out.println(lengthNorm); %></td>
-								<td><% out.println(lengthNorm); %></td>
+								<td>
+									<%
+										out.println(thickNorm);
+									%>
+								</td>
+								<td>
+									<%
+										out.println(thickMin);
+									%>
+								</td>
+								<td>
+									<%
+										out.println(thickMax);
+									%>
+								</td>
+								<td>
+									<%
+										out.println(thickInsp);
+									%>
+								</td>
+								<td>
+									<%
+										out.println(lengthNorm);
+									%>
+								</td>
+								<td>
+									<%
+										out.println(lengthNorm);
+									%>
+								</td>
+								<td>
+									<%
+										out.println(lengthNorm);
+									%>
+								</td>
 								<td>&nbsp;</td>
 							</tr>
 							<tr>
 								<td>Capacitance (nF):</td>
-								<td><% out.println(capNorm); %></td>
-								<td><% out.println(capMin); %></td>
-								<td><% out.println(capMax); %></td>
-								<td><% out.println(capInsp); %></td>
-								<td><% out.println(lengthNorm); %></td>
-								<td><% out.println(lengthNorm); %></td>
-								<td><% out.println(lengthNorm); %></td>
+								<td>
+									<%
+										out.println(capNorm);
+									%>
+								</td>
+								<td>
+									<%
+										out.println(capMin);
+									%>
+								</td>
+								<td>
+									<%
+										out.println(capMax);
+									%>
+								</td>
+								<td>
+									<%
+										out.println(capInsp);
+									%>
+								</td>
+								<td>
+									<%
+										out.println(lengthNorm);
+									%>
+								</td>
+								<td>
+									<%
+										out.println(lengthNorm);
+									%>
+								</td>
+								<td>
+									<%
+										out.println(lengthNorm);
+									%>
+								</td>
 								<td>&nbsp;</td>
 							</tr>
 							<tr>
 								<td>Stroke (&mu;m):</td>
-								<td><% out.println(strokeNorm); %></td>
-								<td><% out.println(strokeMin); %></td>
-								<td><% out.println(strokeMax); %></td>
-								<td><% out.println(strokeInsp); %></td>
-								<td><% out.println(lengthNorm); %></td>
-								<td><% out.println(lengthNorm); %></td>
-								<td><% out.println(lengthNorm); %></td>
+								<td>
+									<%
+										out.println(strokeNorm);
+									%>
+								</td>
+								<td>
+									<%
+										out.println(strokeMin);
+									%>
+								</td>
+								<td>
+									<%
+										out.println(strokeMax);
+									%>
+								</td>
+								<td>
+									<%
+										out.println(strokeInsp);
+									%>
+								</td>
+								<td>
+									<%
+										out.println(lengthNorm);
+									%>
+								</td>
+								<td>
+									<%
+										out.println(lengthNorm);
+									%>
+								</td>
+								<td>
+									<%
+										out.println(lengthNorm);
+									%>
+								</td>
 								<td>&nbsp;</td>
 							</tr>
 							<tr>
 								<td>Leakage current:</td>
-								<td><% out.println(leakNorm); %></td>
+								<td>
+									<%
+										out.println(leakNorm);
+									%>
+								</td>
 								<td>&nbsp;</td>
 								<td>&nbsp;</td>
-								<td><% out.println(leakInsp); %></td>
+								<td>
+									<%
+										out.println(leakInsp);
+									%>
+								</td>
 								<td>&nbsp;</td>
 								<td>&nbsp;</td>
 								<td>&nbsp;</td>
@@ -209,10 +395,18 @@ String absoluteDiskPath = getServletContext().getRealPath(relativeWebPath);
 							</tr>
 							<tr>
 								<td>Visual inspection:</td>
-								<td><% out.println(visualNorm); %></td>
+								<td>
+									<%
+										out.println(visualNorm);
+									%>
+								</td>
 								<td>&nbsp;</td>
 								<td>&nbsp;</td>
-								<td><% out.println(visualInsp); %></td>
+								<td>
+									<%
+										out.println(visualInsp);
+									%>
+								</td>
 								<td>&nbsp;</td>
 								<td>&nbsp;</td>
 								<td>&nbsp;</td>
@@ -298,13 +492,11 @@ String absoluteDiskPath = getServletContext().getRealPath(relativeWebPath);
 						</table>
 					</li>
 
-					<li class="buttons">
-					<input type="hidden" name="form_id"	value="812583" /> 
-					<input id="newReport" class="button_text" type="submit" name="newReport" value="Ny rapport" />
-					
-
-                    <input id="saveAsExcel" class="button_text" type="submit" name="saveAsExcel" value="gem som Excel" />
-					</li>
+					<li class="buttons"><input type="hidden" name="form_id"
+						value="812583" /> <input id="newReport" class="button_text"
+						type="submit" name="newReport" value="Ny rapport" /> <input
+						id="saveAsExcel" class="button_text" type="submit"
+						name="saveAsExcel" value="gem som Excel" /></li>
 				</ul>
 			</form>
 			<div id="footer">

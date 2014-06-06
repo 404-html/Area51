@@ -36,19 +36,20 @@
 				try {
 					batch = database.getBatch(batchname);
 				} catch (DataBaseException dbe) {
-					response.sendRedirect("form.jsp?fail=notfound");
+					response.sendRedirect("WEB-INF/form.jsp?fail=notfound");
 				}
 				if (batch != null) {
 					javaMeasure.BatchProfile profile = database
 							.getBatchProfile(batch.getProfileID());
 					session.setAttribute("batch", batch);
 					session.setAttribute("profile", profile);
-					response.sendRedirect("report.jsp");
+					//TODO Rewrite to servlet
+					response.sendRedirect("WEB-INF/report.jsp");
 				}
 			}
 		} else if (logout != null) {
-			session.setAttribute("username", null);
-			response.sendRedirect("userlogin.jsp");
+			session.setAttribute("user", null);
+			response.sendRedirect("LoginServlet");
 		}
 	%>
 	<div id="wrapper">
@@ -139,7 +140,7 @@
 								</script></li>
 							</ul>
 						</td>
-						<td width="50%"><label class="description" for="element_7">
+						<td width="50%"><label class="description" for="selectedbatch">
 								Fundne batches </label> <select name="selectedbatch" id="selectedbatch"
 							size="10">
 								<%    for (String batchName : batchNames){ %>

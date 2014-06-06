@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/NoliacServlet")
 public class NoliacServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	DataBaseController dbctrl = new DataBaseController();
 
     /**
      * Default constructor. 
