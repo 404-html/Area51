@@ -28,7 +28,7 @@ public class NoliacServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if (request.getSession().getAttribute("username") != null) {
+		if (request.getSession().getAttribute("user") != null) {
 			request.getRequestDispatcher("form.jsp").forward(request, response);
 		} else {
 		request.getRequestDispatcher("LoginServlet").forward(request, response);
@@ -39,7 +39,11 @@ public class NoliacServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		if (request.getSession().getAttribute("user") != null){
+			System.out.println("doPost in noliacServlet");
+			request.getRequestDispatcher("WEB-INF/form.jsp").forward(request, response);
+		} else {
+			request.getRequestDispatcher("LoginServlet");
+		}
 	}
-
 }

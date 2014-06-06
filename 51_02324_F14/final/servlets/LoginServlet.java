@@ -5,7 +5,6 @@ import java.io.IOException;
 import javaMeasure.User;
 import javaMeasure.control.DataBaseController;
 import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
-import javaMeasure.control.interfaces.ISQLConnector.DBConnectFailedException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -32,28 +31,36 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String username = (String) request.getAttribute("username");
-		String password = (String) request.getAttribute("password");
-		boolean loginSuccess = false;
-		try {
-			loginSuccess = dbctrl.validateUser(new User(username, 0, password));
-		} catch (DataBaseException e) {
-			e.printStackTrace();
-		}
-		if (loginSuccess){
-			request.getSession().setAttribute("username", request.getAttribute("username")); 
-			request.getRequestDispatcher("NoliacServlet").forward(request, response);
-		} else {
-			request.setAttribute("loginFail", "true");
-			request.getRequestDispatcher("userlogin.jsp").forward(request, response);
-		}
+		//User gets loginpage
+		request.getRequestDispatcher("userlogin.jsp").forward(request, response);
+		
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		//User posts login data
+		System.out.println("posting userdata");
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+		System.out.println(username + password);
+		boolean loginSuccess = false;
+		User loginUser = new User(username, 0, password);
+		System.out.println(loginUser);
+		try {loginSuccess = dbctrl.validateUser(loginUser);
+		} catch (DataBaseException e) {		e.printStackTrace();	}
+		System.out.println(loginSuccess);
+		if (loginSuccess) {
+			System.out.println("forwarding");
+			request.getSession().setAttribute("user", loginUser);
+			request.getSession().setAttribute("database", dbctrl);
+			request.getRequestDispatcher("NoliacServlet").forward(request, response);
+			System.out.println("forward finished");
+		} else {
+			request.getRequestDispatcher("userlogin.jsp").forward(request, response);
+		}
 	}
+	
 
 }
