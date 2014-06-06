@@ -70,10 +70,10 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		btnGetBatch.setBounds(471, 12, 100, 25);
 		getContentPane().add(btnGetBatch);
 
-		JButton btnNewBatchUsingPrevious = new JButton("Load Batch Settings");
-		btnNewBatchUsingPrevious.setActionCommand("newBatchUsingPrevious");
-		btnNewBatchUsingPrevious.setBounds(361, 48, 210, 23);
-		getContentPane().add(btnNewBatchUsingPrevious);
+		JButton btnEditBatchSettings = new JButton("Edit Settings");
+		btnEditBatchSettings.setActionCommand("editBatchSettings");
+		btnEditBatchSettings.setBounds(361, 48, 210, 23);
+		getContentPane().add(btnEditBatchSettings);
 		
 		JButton btnLeakCurrentMeasurement = new JButton("Leak Current Measurement");
 		btnLeakCurrentMeasurement.setActionCommand("leakCurrent");
@@ -384,8 +384,8 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		case "newBatch": 
 			batchMeasureController.btnNewBatchPressed();
 			break;
-		case "newBatchUsingPrevious":
-			batchMeasureController.btnNewBatchUsingPreviousPressed();
+		case "editBatchSettings":
+			batchMeasureController.btnEditBatchSettingsPressed();
 			break;
 		case "getBatch":
 			batchMeasureController.btnGetBatchPressed();
