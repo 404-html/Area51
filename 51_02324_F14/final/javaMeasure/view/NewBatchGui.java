@@ -29,17 +29,24 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 
 	private INewBatchController newBatchController;
 	private JButton btnSaveBatchSettings;
+	private JTextField customer;
+	private JTextField item_description;
+	private JTextField item_code;
+	private JTextField internal_order;
+	private JTextField drawing_number;
+	private JTextField specification;
+	private JTextField visual_inspection;
 	
 	public NewBatchGui(INewBatchController newBatchController) {
 		setTitle("New Batch");
 		this.newBatchController = newBatchController;
 		getContentPane().setLayout(null);
-		setBounds(0, 0, 552, 633);
+		setBounds(0, 0, 552, 764);
 		setResizable(false);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
 		JPanel panel = new JPanel();
-		panel.setBounds(10, 124, 529, 470);
+		panel.setBounds(10, 250, 529, 481);
 		getContentPane().add(panel);
 		panel.setLayout(null);
 
@@ -123,6 +130,59 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 		panel.add(lblNormValue);
 		//		PropertyHelper.writeToProperty("newBatchGuiSetup", "16", "<html> <b>norm value</b></html>");
 
+		// textfields for batchdescription
+		JPanel panel_1 = new JPanel();
+		panel_1.setBounds(10, 11, 529, 239);
+		getContentPane().add(panel_1);
+		panel_1.setLayout(null);
+		
+		customer = new JTextField();
+		customer.setBounds(131, 115, 139, 20);
+		panel_1.add(customer);
+		customer.setColumns(10);
+		profileSettings.add(customer);
+		
+		item_description = new JTextField();
+		item_description.setColumns(10);
+		item_description.setBounds(131, 146, 111, 20);
+		panel_1.add(item_description);
+		profileSettings.add(item_description);
+		
+		item_code = new JTextField();
+		item_code.setColumns(10);
+		item_code.setBounds(131, 177, 111, 20);
+		panel_1.add(item_code);
+		profileSettings.add(item_code);
+		
+		internal_order = new JTextField();
+		internal_order.setColumns(10);
+		internal_order.setBounds(131, 208, 111, 20);
+		panel_1.add(internal_order);
+		profileSettings.add(internal_order);
+		
+		drawing_number = new JTextField();
+		drawing_number.setColumns(10);
+		drawing_number.setBounds(408, 146, 111, 20);
+		panel_1.add(drawing_number);
+		profileSettings.add(drawing_number);
+		
+		specification = new JTextField();
+		specification.setColumns(10);
+		specification.setBounds(408, 177, 111, 20);
+		panel_1.add(specification);
+		profileSettings.add(specification);
+		
+		visual_inspection = new JTextField();
+		visual_inspection.setColumns(10);
+		visual_inspection.setBounds(408, 208, 111, 20);
+		panel_1.add(visual_inspection);
+		profileSettings.add(visual_inspection);
+		
+		
+		
+		
+		
+		
 		// textfields for normal value
 		for(int i = 0; i < 14; i++){
 			if(i == 11 || i == 12){
@@ -215,17 +275,12 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 		lblInspectionLevel.setBounds(352, 11, 110, 14);
 		panel.add(lblInspectionLevel);
 
-		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(10, 11, 529, 113);
-		getContentPane().add(panel_1);
-		panel_1.setLayout(null);
-
 		lblBatch = new JLabel("<html><b> Batch:</b></html>");
-		lblBatch.setBounds(10, 70, 46, 14);
+		lblBatch.setBounds(75, 70, 46, 14);
 		panel_1.add(lblBatch);
 
 		textBatch = new JTextField();
-		textBatch.setBounds(66, 67, 86, 20);
+		textBatch.setBounds(131, 67, 129, 20);
 		panel_1.add(textBatch);
 		textBatch.setColumns(10);
 
@@ -260,6 +315,34 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 				btnDeleteSettings.setActionCommand("deleteSettings");
 				btnDeleteSettings.setBounds(131, 32, 129, 23);
 				panel_1.add(btnDeleteSettings);
+				
+				JLabel lblCustomer = new JLabel("Customer:");
+				lblCustomer.setBounds(10, 118, 129, 14);
+				panel_1.add(lblCustomer);
+				
+				JLabel lblItemCode = new JLabel("Item code:");
+				lblItemCode.setBounds(10, 180, 111, 14);
+				panel_1.add(lblItemCode);
+				
+				JLabel lblInternalOrderNumber = new JLabel("Internal order number:");
+				lblInternalOrderNumber.setBounds(10, 211, 129, 14);
+				panel_1.add(lblInternalOrderNumber);
+				
+				JLabel lblDrawingNumber = new JLabel("Drawing number:");
+				lblDrawingNumber.setBounds(270, 149, 129, 14);
+				panel_1.add(lblDrawingNumber);
+				
+				JLabel lblSpecification = new JLabel("Specification:");
+				lblSpecification.setBounds(270, 180, 129, 14);
+				panel_1.add(lblSpecification);
+				
+				JLabel lblVisualInspection = new JLabel("Visual Inspection:");
+				lblVisualInspection.setBounds(270, 211, 129, 14);
+				panel_1.add(lblVisualInspection);
+				
+				JLabel lblItemDescription = new JLabel("Item description:");
+				lblItemDescription.setBounds(10, 146, 129, 14);
+				panel_1.add(lblItemDescription);
 				
 
 		btnLoadBatchSettings.addActionListener(this);

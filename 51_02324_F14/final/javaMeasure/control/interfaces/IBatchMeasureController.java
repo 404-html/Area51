@@ -10,7 +10,7 @@ public interface IBatchMeasureController {
 
 	void btnNewBatchPressed();
 	
-	void btnNewBatchUsingPreviousPressed();
+	void btnEditBatchSettingsPressed();
 
 	void btnLeakCurrent(String dasyPath);
 

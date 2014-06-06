@@ -15,6 +15,8 @@
 <script type="text/javascript" src="calendar.js"></script>
 </head>
 <%
+String relativeWebPath = "/file.csv";
+String absoluteDiskPath = getServletContext().getRealPath(relativeWebPath);
 	// input actions from buttons
 	String newReport = request.getParameter("newReport");
 	String excel = request.getParameter("saveAsExcel");
@@ -40,7 +42,7 @@
 	else if(excel != null)
 	{
 		session.setAttribute("corruptSettings", null);
-		response.sendRedirect("newfile.csv"); // should be something else later on
+		response.sendRedirect(absoluteDiskPath); // should be something else later on
 	}
 	else{
 	// values
@@ -76,26 +78,23 @@
 	
 	String visualNorm = profile.getProfileSettings().get(40).getValue();
 	String visualInsp = profile.getProfileSettings().get(35).getValue();
-	/*
-	File file = new File("newfile.csv");
-	file.createNewFile();
-	
-	PrintWriter pw = new PrintWriter(new FileOutputStream("newfile.csv"));
-	pw.println(lengthNorm + "," + lengthMin +","+lengthMax+","+lengthInsp+","+mLengthNorm);
-	pw.close();
-*/
 	Writer writer = null;
-	ServletContext context = session.getServletContext();
-	String realContextPath = context.getRealPath(request.getContextPath()); 
+
+ relativeWebPath = "/file.csv";
+ absoluteDiskPath = getServletContext().getRealPath(relativeWebPath);
 	try {
-    writer = new BufferedWriter(new OutputStreamWriter(
-          new FileOutputStream(realContextPath+"\\"+"newfile.csv"), "utf-8"));
-    writer.write(lengthNorm + "," + lengthMin +","+lengthMax+","+lengthInsp+","+mLengthNorm);
-    System.err.println(realContextPath);
-	} catch (IOException ex) {
-  // report
+		writer = new BufferedWriter(new OutputStreamWriter(
+    	new FileOutputStream(absoluteDiskPath), "utf-8"));
+    	writer.write(lengthNorm + "," + lengthMin +","+lengthMax+","+lengthInsp+","+mLengthNorm);
+    	System.out.println(absoluteDiskPath);
+    	System.out.println("YAYA");
+	} 
+	
+	catch (IOException ex) {
+		System.out.println(absoluteDiskPath);
+ 		System.out.println("Fuck you");
 	} finally {
-   try {writer.close();} catch (Exception ex) {}
+   try {writer.close();} catch (Exception ex) {System.out.println("WOOOT");}
 	}
 
 %>
