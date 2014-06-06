@@ -3,6 +3,8 @@
 <%@page import="com.mysql.jdbc.util.LRUCache"%>
 <%@page import="javaMeasure.BatchSetting"%>
 <%@page import="javaMeasure.Batch"%>
+<%@page import="java.io.*"%>´
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -38,7 +40,7 @@
 	else if(excel != null)
 	{
 		session.setAttribute("corruptSettings", null);
-		response.sendRedirect("form.jsp"); // should be something else later on
+		response.sendRedirect("newfile.csv"); // should be something else later on
 	}
 	else{
 	// values
@@ -74,6 +76,27 @@
 	
 	String visualNorm = profile.getProfileSettings().get(40).getValue();
 	String visualInsp = profile.getProfileSettings().get(35).getValue();
+	/*
+	File file = new File("newfile.csv");
+	file.createNewFile();
+	
+	PrintWriter pw = new PrintWriter(new FileOutputStream("newfile.csv"));
+	pw.println(lengthNorm + "," + lengthMin +","+lengthMax+","+lengthInsp+","+mLengthNorm);
+	pw.close();
+*/
+	Writer writer = null;
+	ServletContext context = session.getServletContext();
+	String realContextPath = context.getRealPath(request.getContextPath()); 
+	try {
+    writer = new BufferedWriter(new OutputStreamWriter(
+          new FileOutputStream(realContextPath+"\\"+"newfile.csv"), "utf-8"));
+    writer.write(lengthNorm + "," + lengthMin +","+lengthMax+","+lengthInsp+","+mLengthNorm);
+    System.err.println(realContextPath);
+	} catch (IOException ex) {
+  // report
+	} finally {
+   try {writer.close();} catch (Exception ex) {}
+	}
 
 %>
 
@@ -279,7 +302,9 @@
 					<li class="buttons">
 					<input type="hidden" name="form_id"	value="812583" /> 
 					<input id="newReport" class="button_text" type="submit" name="newReport" value="Ny rapport" />
-					<input id="saveAsExcel" class="button_text" type="submit" name="saveAsExcel" value="gem som Excel" />
+					
+
+                    <input id="saveAsExcel" class="button_text" type="submit" name="saveAsExcel" value="gem som Excel" />
 					</li>
 				</ul>
 			</form>
