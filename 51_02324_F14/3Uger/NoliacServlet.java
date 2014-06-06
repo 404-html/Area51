@@ -27,7 +27,13 @@ public class NoliacServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		if (request.getSession().getAttribute("login") != null) {
+			request.getRequestDispatcher(request.getPathInfo()).forward(request, response);
+		} else {
+		    PrintWriter out = response.getWriter();
+		    out.println(request.getPathInfo());
+			//request.getRequestDispatcher("\\userlogin.jsp").forward(request, response);
+		}
 		response.setContentType("text/html");
 	    PrintWriter out = response.getWriter();
 	    out.println("<html>");
