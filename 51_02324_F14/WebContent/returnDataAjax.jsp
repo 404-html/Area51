@@ -19,7 +19,7 @@ String username = (String) session.getAttribute("username");
 		// Checks if request parameters are set
 		String batchname = request.getParameter("batchname");
 		if(batchname == ""){
-			response
+			//response
 		}
 	}
 
