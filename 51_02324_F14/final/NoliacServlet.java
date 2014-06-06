@@ -2,6 +2,7 @@
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import javaMeasure.control.DataBaseController;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,39 +16,23 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/NoliacServlet")
 public class NoliacServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	DataBaseController dbctrl = new DataBaseController();
 
     /**
      * Default constructor. 
      */
     public NoliacServlet() {
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if (request.getSession().getAttribute("login") != null) {
-			request.getRequestDispatcher(request.getPathInfo()).forward(request, response);
+		if (request.getSession().getAttribute("username") != null) {
+			request.getRequestDispatcher("form.jsp").forward(request, response);
 		} else {
-		    PrintWriter out = response.getWriter();
-		    out.println(request.getPathInfo());
-			//request.getRequestDispatcher("\\userlogin.jsp").forward(request, response);
+		request.getRequestDispatcher("LoginServlet").forward(request, response);
 		}
-		response.setContentType("text/html");
-	    PrintWriter out = response.getWriter();
-	    out.println("<html>");
-	    out.println("<head><title>Syvtabellen - fra en servlet</title></head>");
-	    out.println("<body>");
-	    out.println(request.getPathInfo() + "<br>");
-	    out.println("<p>Her er syv-tabellen:<br>");
-	 
-	    for (int i=1; i<=10; i++)
-	    {
-	      out.println("Syv gange "+ i +" er: "+ 7*i +".<br>");
-	    } 
-	    out.println("</body>");
-	    out.println("</html>");
 	}
 
 	/**
