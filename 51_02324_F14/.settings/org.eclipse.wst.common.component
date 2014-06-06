@@ -3,7 +3,7 @@
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/Legacy"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/Del4"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/3Uger"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/final"/>
         <property name="context-root" value="51_02324_F14"/>
         <property name="java-output-path" value="/51_02324_F14/build/classes"/>
     </wb-module>

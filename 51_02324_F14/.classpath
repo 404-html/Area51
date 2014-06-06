@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="Legacy"/>
 	<classpathentry excluding="mysqlconnector/" kind="src" path="Del4"/>
-	<classpathentry kind="src" path="3Uger"/>
+	<classpathentry kind="src" path="final"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7">
 		<attributes>
 			<attribute name="owner.project.facets" value="java"/>
