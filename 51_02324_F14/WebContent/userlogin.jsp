@@ -38,7 +38,7 @@
 					<p>Indtast Brugernavn og password</p>
 					<%
 						} else if (database.validateUser(new User(userName, -1, password))) {
-
+								
 								session.setAttribute("username", userName);
 								response.sendRedirect("form.jsp");
 						} else
