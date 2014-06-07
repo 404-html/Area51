@@ -50,9 +50,9 @@ public class BatchMeasureController implements IBatchMeasureController {
 		for(int i = 0; i < list.size(); i++){
 			batchList[i] = list.get(i).getBatchString();
 		}
-	
+
 	}
-	
+
 	// user need to enter a batchnumber before this method is running. that is being taken care of in BatchMeasureGui
 	public void btnGetBatchPressed() {
 		ArrayList<Batch> list = null;
@@ -112,7 +112,7 @@ public class BatchMeasureController implements IBatchMeasureController {
 							mainController.getDatabaseController().addToDB(measurement[0]);
 							batchGUI.updateTable(activeBatch);
 						}
-						
+
 					} catch (DataBaseException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -129,21 +129,30 @@ public class BatchMeasureController implements IBatchMeasureController {
 	}
 
 	public void btnLeakCurrent() {
+
 		
-		String path = batchGUI.getDasyPath();
 
 		if(activeBatch == null){
 			batchGUI.showInformationMessage("You have to create batch before reading measurements", "No batch settings loaded");
 		} else{
-			// for now using JOptionPane, later we may be able to make it automatic..?
+			String path = batchGUI.getDasyPath();
 			if(path != null){
-				this.dl = new DirectoryListener(path, mainController, batchGUI, activeBatch);
-				dl.start();
+				if(this.dl != null){
+					this.dl.setPath(path);
+				}
+				else{
+					this.dl = new DirectoryListener(path, mainController, batchGUI, activeBatch);
+					dl.start();
+				}
 			}
 		}
 	}
 
 	public void btnLogOutPressed() {
+		if(this.dl != null){
+		this.dl.interrupt();
+		System.out.println(this.dl.interrupted());
+		}
 		mainController.logOut();
 	}
 
@@ -170,7 +179,7 @@ public class BatchMeasureController implements IBatchMeasureController {
 	public Batch getActiveBatch(){
 		return activeBatch;
 	}
-	
+
 	public IBatchMeasureGui getBatchMeasureGui(){
 		return batchGUI;
 	}

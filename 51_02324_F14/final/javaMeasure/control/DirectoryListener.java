@@ -19,73 +19,53 @@ import javaMeasure.view.interfaces.IBatchMeasureGui;
 
 public class DirectoryListener extends Thread
 {
-	private Thread thread;
-	private ListenerThread listenerThread;
+	private Thread thread;	
+	private String path;
+	private Path dir;
+	private WatchService watcher;
+	private IMainController mainController;
+	private IBatchMeasureGui batchMeasureGui;
+	private Batch activeBatch;
+	
+	
 	public DirectoryListener(String path, IMainController mainController, IBatchMeasureGui batchMeasureGui, Batch activeBatch)
 	{
+		this.path = path;
+		this.mainController = mainController;
+		this.batchMeasureGui = batchMeasureGui;
+		this.activeBatch = activeBatch;
 		try {
-			this.listenerThread = new ListenerThread(path, mainController, batchMeasureGui, activeBatch);
-		} catch (IOException e) {
+			this.watcher = FileSystems.getDefault().newWatchService();
+		} catch (IOException e1) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			this.batchMeasureGui.updateLog("something went wrong when newWatchService() was called"); 
 		}
+		this.dir = Paths.get(path);
+		
 	}
 	public void run()
 	{
-		synchronized(this.listenerThread){
-			this.listenerThread.watch();
-		}
-	}
-	public void start()
-	{
-		if(thread == null)
-		{
-			thread = new Thread(this);
-			thread.start();
-		}
-	}
-	private class ListenerThread
-	{
-		private String path;
-		private Path dir;
-		private WatchService watcher;
-		private IMainController mainController;
-		private IBatchMeasureGui batchMeasureGui;
-		private Batch activeBatch;
-		
-		public ListenerThread(String dirPath, IMainController mainController, IBatchMeasureGui batchMeasureGui, Batch activeBatch) throws IOException{
-			this.path = "C:/Dropbox/Mín mappa/Programmering/Area51/DasyLabFiles";
-			this.mainController = mainController;
-			this.batchMeasureGui = batchMeasureGui;
-			this.activeBatch = activeBatch;
-			this.watcher = FileSystems.getDefault().newWatchService();
-			this.dir = Paths.get(dirPath);
-		}
-		public void watch()
-		{
+		synchronized(this){
 			boolean deletedFile, createdFile, modifiedFile;
 			try
 			{
-
 				// wait for key to be signaled
 				WatchService watcher = this.dir.getFileSystem().newWatchService();
-				System.out.println("run 1");
 				this.dir.register(watcher, StandardWatchEventKinds.ENTRY_CREATE,
 						StandardWatchEventKinds.ENTRY_DELETE, StandardWatchEventKinds.ENTRY_MODIFY);
-				System.out.println("run 2");
 
-
+				batchMeasureGui.updateLog("DasyLab files are automatically being read from: " + path);
 				WatchKey watchKey = null;
 				watchKey = watcher.take(); // waits until any changes occur
 				System.out.println("step one");
-				for(;;)
+				while(!this.isInterrupted())
 				{
 					String filename = null;
 					deletedFile = false;
 					createdFile = false;
 					modifiedFile = false;
 					Thread.sleep(3000);
-					
+					System.out.println(this.isInterrupted());
 					List<WatchEvent<?>> events = watchKey.pollEvents();
 					// one change can trigger up to 3 events
 					for (WatchEvent event : events)
@@ -122,7 +102,7 @@ public class DirectoryListener extends Thread
 						System.out.println("timestamp: " + timestamp);
 						System.out.println(path + "/" + filename);
 						
-						Measurement measurement = mainController.getDasyController().getCurrentValue(timestamp, path + "/" + filename);
+						Measurement measurement = mainController.getDasyController().getCurrentValue(timestamp, this.path + "/" + filename);
 						measurement.setBatchID(activeBatch.getBatchID());
 						measurement.setElementNo(activeBatch.getCurrentLeakElement());
 						// adds the measurement to guis JTable before saved in database
@@ -164,10 +144,23 @@ public class DirectoryListener extends Thread
 				System.out.println("Error: " + e.toString());
 			}
 		}
-		
 	}
-	
+	public void start()
+	{
+		if(this.thread == null)
+		{
+			this.thread = new Thread(this);
+			this.thread.start();
+		}
+	}
+	public void setPath(String path){
+		this.path = path;
+		this.dir = Paths.get(path);
+	}
 
+	public void interrupt(){
+		this.thread.interrupt();
+	}
 	public static void main(String[] args) throws IOException
 	{
 //		MainController m1 = new MainController();
