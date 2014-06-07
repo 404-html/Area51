@@ -14,6 +14,7 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
+
 import javax.swing.JTable;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -24,6 +25,7 @@ import javax.swing.table.TableCellRenderer;
 import java.io.File;
 import java.util.ArrayList;
 
+import javaMeasure.Batch;
 import javaMeasure.BatchSetting;
 import javaMeasure.PropertyHelper;
 import javaMeasure.control.interfaces.IBatchMeasureController;
@@ -31,6 +33,7 @@ import javaMeasure.view.interfaces.IBatchMeasureGui;
 
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
+
 import java.awt.event.ActionListener;
 
 @SuppressWarnings("serial")
@@ -53,7 +56,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 	public BatchMeasureGui(IBatchMeasureController batchMeasureController) {
 
 		this.batchMeasureController = batchMeasureController;
-		setTitle("Logged in as: " + batchMeasureController.getMainController().getActiveUser().getUserName());
+//		setTitle("Logged in as: " + batchMeasureController.getMainController().getActiveUser().getUserName());
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
@@ -139,7 +142,6 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		JLabel lbllog = new JLabel("<html><b>Event log: </b></html>");
 		lbllog.setBounds(10, 275, 90, 15);
 		getContentPane().add(lbllog);
-		profileSettings.add(lbllog);
 		
 		JLabel lblCustomer = new JLabel("Customer:");
 		lblCustomer.setBounds(600, 20, 90, 15);
@@ -394,6 +396,17 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 	public void updateTable(ArrayList<ArrayList<String>> data) {
 		updateTable(arrayListToArray(data));
 	}
+	
+	public void updateTable(Batch batch){
+		ArrayList<Object[]> list = batch.getMeasurementsList();
+		Object[][] updatedList = new Object[list.size()][3];
+		for(int i = 0; i < list.size(); i++){
+			updatedList[i][0] = list.get(i)[0];
+			updatedList[i][1] = list.get(i)[1];
+			updatedList[i][2] = list.get(i)[2];
+		}
+		updateTable(updatedList);
+	}
 
 	// updates whole table
 	public void updateTable(Object[][] data){
@@ -457,7 +470,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 			batchMeasureController.btnGetBatchPressed();
 			break;
 		case "leakCurrent":
-			batchMeasureController.btnLeakCurrent(getDasyPath());
+			batchMeasureController.btnLeakCurrent();
 			break;
 		case "logout":
 			System.out.println("logging out");
@@ -477,9 +490,9 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		JOptionPane.showMessageDialog(getContentPane(), jcb, "Enter batchnumber:", JOptionPane.QUESTION_MESSAGE);
 		return (String) jcb.getSelectedItem();
 	}
-
+	// TODO not up to date because of the new feature: DirectoryListener
 	// browse for file to read
-	private String getDasyPath(){
+	public String getDasyPath(){
 		File f = null;
 		File defaultPath = null;
 		// the PropertyHelper class is made in a way that, if no filename is chosen, it will read the default "config" file
@@ -494,9 +507,10 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		chooser.setDialogTitle("Select DasyLab file");
 
 		// a filter is added to the FileChooser, so there can only be loaded ascii/asc files. other files are not visible
-		FileNameExtensionFilter filter = new FileNameExtensionFilter(
-				"ASCII", "ascii", "asc");
-		chooser.setFileFilter(filter);
+//		FileNameExtensionFilter filter = new FileNameExtensionFilter(
+//				"ASCII", "ascii", "asc");
+		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+//		chooser.setFileFilter(filter);
 
 		// checks if ok is pressed or if the browse window is canceled. if canceled null is returned
 		if(chooser.showOpenDialog(getParent()) == JFileChooser.APPROVE_OPTION){
