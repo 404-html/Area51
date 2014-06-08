@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import javaMeasure.Batch;
 import javaMeasure.BatchProfile;
 import javaMeasure.BatchSetting;
+import javaMeasure.PropertyHelper;
 import javaMeasure.control.interfaces.*;
 import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 import javaMeasure.view.interfaces.*;
@@ -18,6 +19,12 @@ public class NewBatchController implements INewBatchController {
 
 		this.mainController = mainController;
 		this.newBatchGui = new NewBatchGui(this);
+		try {
+			this.newBatchGui.setSettings(getDefaultBatchProfile());
+		} catch (DataBaseException e) {
+			System.err.println("Database error when trying to retrieve default batch profile");
+			System.err.println(e);
+		}
 		this.newBatchGui.setVisibility(true);
 	}
 
@@ -25,16 +32,27 @@ public class NewBatchController implements INewBatchController {
 		return mainController;
 	}
 
+	/**
+	 * call to this method should handle null pointer exceptions in case. key, value, or profile with specific key does not exist
+	 * should probably be a private method. Not sure if it is needed elsewhere - Rúni
+	 */
 	@Override
 	public BatchProfile getDefaultBatchProfile() throws DataBaseException {
-		return getBatchProfile("standard");
+		return getBatchProfile(PropertyHelper.readFromProperty("defaultProfile"));
+	}
+	
+	/**
+	 * is currently not being used, but should be in the future - Rúni
+	 */
+	public void setDefaultBatchProfile(String batchProfilename) {
+		PropertyHelper.writeToProperty("defaultProfile", batchProfilename);
 	}
 
 	@Override
 	public BatchProfile getBatchProfile(String profileName) throws DataBaseException {
 		return mainController.getDatabaseController().getBatchProfile(profileName);
 	}
-//TODO cleanup and handle exceptions
+	//TODO cleanup and handle exceptions
 	@Override
 	public ArrayList<String> getSavedBatchProfiles(){
 		try{
@@ -44,17 +62,17 @@ public class NewBatchController implements INewBatchController {
 		}
 	}
 
-/**
- * saves batch settings with chosen name.
- * notice that the name can not be under 2 characters. 
- * the null check appears when the user presses cancel instead, then we just have to make sure that code is not run.
- */
+	/**
+	 * saves batch settings with chosen name.
+	 * notice that the name can not be under 2 characters. 
+	 * the null check appears when the user presses cancel instead, then we just have to make sure that code is not run.
+	 */
 	@Override
 	public void saveBatchSettingsPressed(String profileName, ArrayList<String> profileSettings) {
 
 		if(profileName == null){System.out.println("canceled profile saving");}
 		else if(profileName.length() < 2){
-			this.newBatchGui.showInformationMessage("Name should be at least 2 characters", "Invalid name"); //TODO remove hardcoded 2
+			this.newBatchGui.showInformationMessage("Name should be at least 2 characters", "Invalid name"); //TODO remove hardcoded 2, should be regular expression input verification - Rúni 
 		}
 		else if(profileName != null){
 			ArrayList<BatchSetting> profile = new ArrayList<>();
@@ -97,14 +115,14 @@ public class NewBatchController implements INewBatchController {
 		else if(verification){
 			newBatchGui.showInformationMessage("A batch with this ID already exists!", "Could not create batch");;
 		} else{
-		// Creating batchProfile with settings from above
+			// Creating batchProfile with settings from above
 			BatchProfile bp = new BatchProfile(null, settings);
 			int profileID = -1;
 			try {
-			//Saves batchProfile in DB and creates a batch with the batchProfile ID
+				//Saves batchProfile in DB and creates a batch with the batchProfile ID
 				profileID = mainController.getDatabaseController().saveBatchProfile(bp);
 				Batch b = new Batch(-1, batchString, profileID);
-			//Saves batch and sets the active batch in batchMeasureController
+				//Saves batch and sets the active batch in batchMeasureController
 				mainController.getDatabaseController().addToDB(b);
 				mainController.getBatchMeasureController().setActiveBatch(b);
 			} catch (DataBaseException e) {
@@ -133,7 +151,7 @@ public class NewBatchController implements INewBatchController {
 	public void annullerPressed() {
 		newBatchGui.setVisibility(false);
 		mainController.getBatchMeasureController().showGui(true);
-		
+
 	}
 
 	@Override
@@ -152,9 +170,9 @@ public class NewBatchController implements INewBatchController {
 			e.printStackTrace();
 		}
 		mainController.getDatabaseController().deleteBatchProfile(bp);
-		
+
 	}
-	
+
 	public void editBatchProfilePressed(String profileName)	throws DataBaseException {
 		BatchProfile bp = null;
 		try{
@@ -169,14 +187,6 @@ public class NewBatchController implements INewBatchController {
 	public void saveEditedBatchSettingsPressed(String profileNameEdit,
 			ArrayList<String> savingSettingsEdit) throws DataBaseException {
 		deleteBatchProfilePressed(profileNameEdit);
-		
+
 	}
-
-
-	
-
-
-
-
-
 }

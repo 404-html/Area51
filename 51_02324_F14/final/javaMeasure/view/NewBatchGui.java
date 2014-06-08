@@ -176,12 +176,7 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 		visual_inspection.setColumns(10);
 		visual_inspection.setBounds(408, 208, 111, 20);
 		panel_1.add(visual_inspection);
-		profileSettings.add(visual_inspection);
-		
-		
-		
-		
-		
+		profileSettings.add(visual_inspection);	
 		
 		// textfields for normal value
 		for(int i = 0; i < 14; i++){
@@ -249,8 +244,6 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 		profileSettings.add(chckbxLeakCurrentMax);
 		panel.add(chckbxLeakCurrentMax);
 
-		
-
 		JCheckBox chckbxSpecialVisualInspection = new JCheckBox("");
 		chckbxSpecialVisualInspection.setHorizontalTextPosition(SwingConstants.CENTER);
 		chckbxSpecialVisualInspection.setHorizontalAlignment(SwingConstants.CENTER);
@@ -264,8 +257,6 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 		chckbxSpectrum.setBounds(149, 408, 68, 23);
 		profileSettings.add(chckbxSpectrum);
 		panel.add(chckbxSpectrum);
-
-
 
 		JLabel lblDynamicTest = new JLabel("dynamic test:");
 		lblDynamicTest.setBounds(10, 312, 129, 14);
@@ -288,7 +279,8 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 		separator.setBounds(10, 100, 509, 2);
 		panel_1.add(separator);
 
-		setDefaultSettings();
+		// TODO should not be made here
+//		setDefaultSettings();
 
 		JButton btnLoadBatchSettings = new JButton("Load Batch Settings");
 		btnLoadBatchSettings.setBounds(270, 66, 129, 23);
@@ -353,15 +345,6 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 
-	public void setDefaultSettings() {
-
-		try {
-			setSettings(newBatchController.getDefaultBatchProfile());
-		} catch (DataBaseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}		
-	}
 	// TODO not up to date need refreshening
 	public void setSettings(BatchProfile settingList){
 		if(settingList != null){
@@ -384,10 +367,6 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 		}
 	}
 
-	public void setVisibility(boolean visible) {
-		setVisible(visible);
-
-	}
 	public ArrayList<String> getSettings(){
 		ArrayList<String> settings = new ArrayList<>();
 		for(int i = 0; i < profileSettings.size(); i++){
@@ -471,6 +450,10 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 			break;
 		default: System.err.println("ActionCommand is not recognized");
 		}		
+	}
+	
+	public void setVisibility(boolean visible) {
+		setVisible(visible);
 	}
 
 	@Override
