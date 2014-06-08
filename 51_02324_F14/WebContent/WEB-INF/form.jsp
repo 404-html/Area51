@@ -54,7 +54,7 @@
 	<div id="wrapper">
 		<!-- wrapper for whole page  -->
 		<div id="header">
-			<img src="noliac_logo.png" alt="Logo">
+			<img src="/noliac_logo.png" alt="Logo">
 		</div>
 		<!-- Form begins-->
 		<div id="form_container">
