@@ -9,15 +9,28 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script>
 	$(document).on('keyup', '#input_text', function() {
-		//skriver ud i div elementet der hedder return_data
-		$("#return_data").html("<b>Hello world! "+$("#input_text").val() + "</b>");
+		//skriver det indtastede ud i div elementet der hedder test
+		$("#test").html($("#input_text").val());
+		
+		//$("#return_data").html("<b>Hello world! "+$("#input_text").val() + "</b>");
+		
+		//henter siden returnDataAjax 
+		$.get("returnDataAjax.jsp",function(data,status){
+		    //alert("Data: " + data + "\nStatus: " + status);
+		    if(status = "success")
+		    {
+		    	//indsæt de hentede data i div element
+		    	$("#return_data").html(data);
+		    }
+		});
+		
 	});
 
 </script>
 </head>
 <body id="main-body">
 	<div id="wrapper">
-		<p>Test af ajax</p>
+		<p id="test">Test af ajax</p>
 		<div id="form_container">
 			<form id="formGetAjax" class="appnitro"  method="post" action="">
 			<ul>
@@ -30,7 +43,7 @@
 	
 			</ul>
 			</form>
-
+		<p>
 		</div>
 		<div id="return_data">
 		
