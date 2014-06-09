@@ -56,7 +56,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 	public BatchMeasureGui(IBatchMeasureController batchMeasureController) {
 
 		this.batchMeasureController = batchMeasureController;
-//		setTitle("Logged in as: " + batchMeasureController.getMainController().getActiveUser().getUserName());
+		setTitle("Logged in as: " + batchMeasureController.getMainController().getActiveUser().getUserName());
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
@@ -357,11 +357,9 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 			{
 				model.getRowCount();
 				if(model.getRowCount() != rowCount){
-					System.out.println(scrollPane.getVerticalScrollBar().getMaximum());
 				scrollPane.getVerticalScrollBar().setValue(model.getRowCount() * 16);
 				
 				}
-				System.out.println(model.getRowCount());
 				rowCount = model.getRowCount();
 				// TODO Auto-generated method stub	
 			}

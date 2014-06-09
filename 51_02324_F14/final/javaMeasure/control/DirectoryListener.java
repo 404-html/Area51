@@ -57,7 +57,7 @@ public class DirectoryListener extends Thread
 				batchMeasureGui.updateLog("DasyLab files are automatically being read from: " + path);
 				WatchKey watchKey = null;
 				watchKey = watcher.take(); // waits until any changes occur
-				System.out.println("step one");
+				System.out.println(path + " is being watched");
 				while(!this.isInterrupted())
 				{
 					String filename = null;
@@ -65,7 +65,7 @@ public class DirectoryListener extends Thread
 					createdFile = false;
 					modifiedFile = false;
 					Thread.sleep(3000);
-					System.out.println(this.isInterrupted());
+					System.out.println("checking: " + path);
 					List<WatchEvent<?>> events = watchKey.pollEvents();
 					// one change can trigger up to 3 events
 					for (WatchEvent event : events)
