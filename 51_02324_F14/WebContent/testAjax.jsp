@@ -12,8 +12,6 @@
 		//skriver det indtastede ud i div elementet der hedder test
 		$("#test").html($("#input_text").val());
 		
-		//$("#return_data").html("<b>Hello world! "+$("#input_text").val() + "</b>");
-		
 		//henter siden returnDataAjax 
 		$.get("returnDataAjax.jsp",function(data,status){
 		    //alert("Data: " + data + "\nStatus: " + status);
@@ -25,8 +23,30 @@
 		});
 		
 	});
+	
+	$(document).on('click', 'tr.returnRow', function(event) {
+		alert(event.target.id);
+		console.log("click");
+		//$(this).not(':first-child').css("background","green");
+		//skriver det indtastede ud i div elementet der hedder test
+		//$("#test").html($("#input_text").val());
+		
+		//$("#return_data").html("<b>Hello world! "+$("#input_text").val() + "</b>");
+		
+		//henter siden returnDataAjax 
+/* 		$.get("returnDataAjax.jsp",function(data,status){
+		    //alert("Data: " + data + "\nStatus: " + status);
+		    if(status = "success")
+		    {
+		    	//indsæt de hentede data i div element
+		    	$("#return_data").html(data);
+		    }
+		});
+		 */
+	});
 
 </script>
+
 </head>
 <body id="main-body">
 	<div id="wrapper">
