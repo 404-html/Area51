@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>User Edit</title>
 </head>
 <body>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -27,12 +27,14 @@
 
 			<form id="user_edit" class="appnitro" method="post">
 				<div class="form_description">
-					<h1>Noliac User login</h1>
+					<h1>Noliac User Edit</h1>
 					
 				</div>
 				
 				
-				
+	<table width="100%" border="0" cellpadding="2" cellspacing="0">
+		<tr>
+			<td>
 				<ul>
 					<li id="li_3"><label class="description" for="username" >User
 							name</label>
@@ -40,25 +42,37 @@
 							<input id="username" name="username" class="element text medium"
 								type="text" maxlength="255" value="guest" />
 						</div>
-						<p class="guidelines" id="guide_3">
-							<small>Indtast brugernavn</small>
-						</p></li>
+
 						
 					<li id="li_"><label class="description" for="element_4">Password</label>
 						<div>
 							<input id="element_4" name="pass" class="element text medium"
 								type="text" maxlength="255" value="123456" />
-						</div>
-						<p class="guidelines" id="guide_">
-							<small>Indtast kode</small>
-						</p></li>
-					<li class="buttons">
-					<input type="hidden" name="form_id"
-						value="812583" /> 
-						<input id="saveForm" class="button_text"
-						type="submit" name="login" value="Login" /></li>
+						  <input type="hidden" name="form_id"
+						value="812583" />
+				  </div>                    
 				</ul>
-				
+          </td>
+		  <td width="50%">
+                            <input type="checkbox" name="active" value="active"> active<BR>
+		  <input type="checkbox" name="super" value="super"> super<BR></tr>
+		  </table>
+				<form ACTION="jspCheckBox.jsp">
+       <table width="100%" border="0" cellpadding="2" cellspacing="0">
+		<tr>
+			<td>
+				  <span class="buttons">
+				  <input id="saveForm" class="button_text"
+						type="submit" name="save" value="save" />
+                         </td>
+				  </span>
+                  <td width="95%"><span class="buttons">
+                
+				  <input id="cancel" class="button_text"
+						type="submit" name="cancel" value="cancel" />
+				  </span>
+                  </table>
+				</form>
 				
 				
 				

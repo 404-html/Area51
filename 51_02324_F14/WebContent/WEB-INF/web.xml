@@ -18,4 +18,14 @@
     <servlet-name>NoliacServlet</servlet-name>
     <url-pattern>/</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>EditServlet</display-name>
+    <servlet-name>EditServlet</servlet-name>
+    <servlet-class>servlets.LoginServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>EditServlet</servlet-name>
+    <url-pattern>/EditServlet</url-pattern>
+  </servlet-mapping>
 </web-app>
