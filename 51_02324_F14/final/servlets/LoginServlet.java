@@ -32,7 +32,7 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//User gets loginpage
-		request.getRequestDispatcher("userlogin.jsp").forward(request, response);
+		request.getRequestDispatcher("WEB-INF/userlogin.jsp").forward(request, response);
 		
 	}
 
@@ -41,15 +41,17 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//User posts login data
-		System.out.println("posting userdata");
+		System.out.println("UserLogin - Post");
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-		System.out.println(username + password);
+
 		boolean loginSuccess = false;
 		User loginUser = new User(username, 0, password);
 		System.out.println(loginUser);
+		//Validating user
 		try {loginSuccess = dbctrl.validateUser(loginUser);
 		} catch (DataBaseException e) {		e.printStackTrace();	}
+		
 		System.out.println(loginSuccess);
 		if (loginSuccess) {
 			System.out.println("forwarding");
@@ -58,7 +60,9 @@ public class LoginServlet extends HttpServlet {
 			request.getRequestDispatcher("NoliacServlet").forward(request, response);
 			System.out.println("forward finished");
 		} else {
-			request.getRequestDispatcher("userlogin.jsp").forward(request, response);
+			if (request.getParameter("username")  != null) 
+				request.setAttribute("loginFail", true);
+			request.getRequestDispatcher("WEB-INF/userlogin.jsp").forward(request, response);
 		}
 	}
 	

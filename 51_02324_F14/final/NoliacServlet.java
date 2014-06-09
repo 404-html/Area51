@@ -28,22 +28,23 @@ public class NoliacServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if (request.getSession().getAttribute("user") != null) {
-			request.getRequestDispatcher("form.jsp").forward(request, response);
-		} else {
-		request.getRequestDispatcher("LoginServlet").forward(request, response);
-		}
+			processReq(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		processReq(request, response);
+	}
+
+	private void processReq(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		if (request.getSession().getAttribute("user") != null){
-			System.out.println("doPost in noliacServlet");
 			request.getRequestDispatcher("WEB-INF/form.jsp").forward(request, response);
 		} else {
-			request.getRequestDispatcher("LoginServlet");
+			request.getRequestDispatcher("LoginServlet").forward(request, response);;
 		}
 	}
+	
 }

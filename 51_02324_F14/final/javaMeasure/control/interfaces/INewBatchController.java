@@ -12,6 +12,8 @@ public interface INewBatchController {
 
 	BatchProfile getDefaultBatchProfile() throws DataBaseException;
 	
+	void setDefaultBatchProfile(String batchProfilename);
+	
 	BatchProfile getBatchProfile(String profileName) throws DataBaseException;
 
 	ArrayList<String> getSavedBatchProfiles();

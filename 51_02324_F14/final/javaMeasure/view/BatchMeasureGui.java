@@ -14,6 +14,7 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
+
 import javax.swing.JTable;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -24,6 +25,7 @@ import javax.swing.table.TableCellRenderer;
 import java.io.File;
 import java.util.ArrayList;
 
+import javaMeasure.Batch;
 import javaMeasure.BatchSetting;
 import javaMeasure.PropertyHelper;
 import javaMeasure.control.interfaces.IBatchMeasureController;
@@ -31,6 +33,7 @@ import javaMeasure.view.interfaces.IBatchMeasureGui;
 
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
+
 import java.awt.event.ActionListener;
 
 @SuppressWarnings("serial")
@@ -53,40 +56,40 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 	public BatchMeasureGui(IBatchMeasureController batchMeasureController) {
 
 		this.batchMeasureController = batchMeasureController;
-		setTitle("Logged in as: " + batchMeasureController.getMainController().getActiveUser().getUserName());
+//		setTitle("Logged in as: " + batchMeasureController.getMainController().getActiveUser().getUserName());
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
 
-		setBounds(100, 100, 1040, 500);
+		setBounds(100, 100, 1040, 650);
 
 		JButton btnNewBatch = new JButton("New Batch");
 		btnNewBatch.setActionCommand("newBatch");
-		btnNewBatch.setBounds(361, 12, 100, 25);
+		btnNewBatch.setBounds(360, 10, 100, 25);
 		getContentPane().add(btnNewBatch);
 
 		JButton btnGetBatch = new JButton("Load Batch");
 		btnGetBatch.setActionCommand("getBatch");
-		btnGetBatch.setBounds(471, 12, 100, 25);
+		btnGetBatch.setBounds(470, 10, 100, 25);
 		getContentPane().add(btnGetBatch);
 
 		JButton btnEditBatchSettings = new JButton("Edit Settings");
 		btnEditBatchSettings.setActionCommand("editBatchSettings");
-		btnEditBatchSettings.setBounds(361, 48, 210, 23);
+		btnEditBatchSettings.setBounds(360, 50, 215, 25);
 		getContentPane().add(btnEditBatchSettings);
 		
 		JButton btnLeakCurrentMeasurement = new JButton("Leak Current Measurement");
 		btnLeakCurrentMeasurement.setActionCommand("leakCurrent");
-		btnLeakCurrentMeasurement.setBounds(361, 82, 213, 25);
+		btnLeakCurrentMeasurement.setBounds(360, 90, 215, 25);
 		getContentPane().add(btnLeakCurrentMeasurement);
 
 		JButton btnStrokeMeasurement = new JButton("Stroke Measurement");
 		btnStrokeMeasurement.setActionCommand("stroke");
-		btnStrokeMeasurement.setBounds(361, 118, 213, 25);
+		btnStrokeMeasurement.setBounds(360, 130, 215, 25);
 		getContentPane().add(btnStrokeMeasurement);
 
 		JButton btnLogout = new JButton("Log out");
-		btnLogout.setBounds(361, 438, 213, 23);
+		btnLogout.setBounds(360, 440, 215, 25);
 		btnLogout.setActionCommand("logout");
 		getContentPane().add(btnLogout);
 
@@ -94,7 +97,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		separator.setOrientation(SwingConstants.VERTICAL);
 		separator.setBackground(Color.WHITE);
 		separator.setForeground(Color.GRAY);
-		separator.setBounds(581, 11, 7, 450);
+		separator.setBounds(580, 10, 10, 450);
 		getContentPane().add(separator);
 
 		//setup for the log
@@ -105,7 +108,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		log.ensureIndexIsVisible(log.getMaxSelectionIndex());
 		logScroll.setViewportView(log);
 		log.setEnabled(false);
-		logScroll.setBounds(10, 298, 341, 163);
+		logScroll.setBounds(10, 300, 340, 165);
 		getContentPane().add(logScroll);
 
 		// table setup for measurements
@@ -127,41 +130,106 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		for(int i = 1; i < 21; i++){
 			JLabel lblTitle = new JLabel();
 			if(i>17){
-				lblTitle.setBounds(670+90*(i-17), 35, 130, 15);
+				lblTitle.setBounds(670+90*(i-17), 125, 130, 15);
 			} else{
-				lblTitle.setBounds(610, 10+25*i, 130, 15);
+				lblTitle.setBounds(610, 100+25*i, 130, 15);
 			}
 			String text = PropertyHelper.readFromProperty("newBatchGuiSetup", String.valueOf(i));
 			lblTitle.setText(text);
 			getContentPane().add(lblTitle);
 		}
 
-		JLabel lblSettings = new JLabel("Settings:");
-		lblSettings.setBounds(636, 12, 46, 14);
-		getContentPane().add(lblSettings);
-
 		JLabel lbllog = new JLabel("<html><b>Event log: </b></html>");
-		lbllog.setBounds(10, 273, 87, 14);
+		lbllog.setBounds(10, 275, 90, 15);
 		getContentPane().add(lbllog);
+		
+		JLabel lblCustomer = new JLabel("Customer:");
+		lblCustomer.setBounds(600, 20, 90, 15);
+		getContentPane().add(lblCustomer);
+		
+		JLabel lblItemDescription = new JLabel("Item description:");
+		lblItemDescription.setBounds(600, 45, 90, 15);
+		getContentPane().add(lblItemDescription);
+		
+		JLabel lblItemCode = new JLabel("Item code:");
+		lblItemCode.setBounds(600, 70, 90, 15);
+		getContentPane().add(lblItemCode);
+		
+		JLabel lblInternalOrderNumber = new JLabel("Internal order number:");
+		lblInternalOrderNumber.setBounds(600, 95, 110, 15);
+		getContentPane().add(lblInternalOrderNumber);
+		
+		JLabel lblDrawingNumber = new JLabel("Drawing number:");
+		lblDrawingNumber.setBounds(815, 45, 85, 15);
+		getContentPane().add(lblDrawingNumber);
+		
+		JLabel lblSpecification = new JLabel("Specification");
+		lblSpecification.setBounds(815, 70, 85, 15);
+		getContentPane().add(lblSpecification);
+		
+		JLabel lblVisualInspection = new JLabel("Visual inspection");
+		lblVisualInspection.setBounds(815, 95, 85, 15);
+		getContentPane().add(lblVisualInspection);
+		
+		JLabel lblCustomertxt = new JLabel("-");
+		lblCustomertxt.setBounds(720, 20, 140, 15);
+		getContentPane().add(lblCustomertxt);
+		profileSettings.add(lblCustomertxt);
+		
+		JLabel lvlItemtxt = new JLabel("-");
+		lvlItemtxt.setBounds(720, 45, 90, 15);
+		getContentPane().add(lvlItemtxt);
+		profileSettings.add(lvlItemtxt);
+		
+		JLabel lblItemCodetxt = new JLabel("-");
+		lblItemCodetxt.setBounds(720, 70, 80, 15);
+		getContentPane().add(lblItemCodetxt);
+		profileSettings.add(lblItemCodetxt);
+		
+		JLabel lblInternaltxt = new JLabel("-");
+		lblInternaltxt.setBounds(720, 95, 90, 15);
+		getContentPane().add(lblInternaltxt);
+		profileSettings.add(lblInternaltxt);
+		
+		JLabel lblDrawingtxt = new JLabel("-");
+		lblDrawingtxt.setBounds(945, 45, 90, 15);
+		getContentPane().add(lblDrawingtxt);
+		profileSettings.add(lblDrawingtxt);
+		
+		JLabel lblSpecificationtxt = new JLabel("-");
+		lblSpecificationtxt.setBounds(945, 70, 80, 15);
+		getContentPane().add(lblSpecificationtxt);
+		profileSettings.add(lblSpecificationtxt);
+		
+		JLabel lblVisualtxt = new JLabel("-");
+		lblVisualtxt.setBounds(945, 95, 80, 15);
+		getContentPane().add(lblVisualtxt);
+		profileSettings.add(lblVisualtxt);
+		
+		JSeparator separator = new JSeparator();
+		separator.setBounds(585, 120, 440, 2);
+		getContentPane().add(separator);
+
 
 		// labels for the "+-" label 
 		for(int i = 0; i < 14 ; i++){
 			if(i == 3 || i == 4  || i == 10 || i == 11 || i == 12 ){}
 			else{
 				JLabel label = new JLabel("\u00B1");
-				label.setBounds(835, 60+25*i, 15, 15);
+				label.setBounds(835, 150+25*i, 15, 15);
 				getContentPane().add(label);
 			}
 		}
 		//*************************** PROFILE SETTINGS*************************************
 		//		 textfields for normal value
+		// notice that textboxes that should only have true/false values, are not added here, but further down
 		for(int i = 0; i < 14; i++){
 			if(i == 11 || i == 12 ){
 
 			}
 			else{
 				JLabel text = new JLabel();
-				text.setBounds(775, 60+25*i, 50, 20);
+				text.setBounds(775, 150+25*i, 50, 20);
 				text.setText("-");
 				getContentPane().add(text);
 				profileSettings.add(text);
@@ -174,7 +242,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 			if(i == 3 || i == 4 || i == 10 || i == 11 || i == 12){}
 			else{
 				JLabel text = new JLabel();
-				text.setBounds(885, 60 + 25*i, 30, 20);
+				text.setBounds(885, 150 + 25*i, 30, 20);
 				text.setText("-");
 				getContentPane().add(text);
 				profileSettings.add(text);
@@ -185,7 +253,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		// text fields for inspection level
 		for(int i = 0; i < 16; i++){
 			JLabel text = new JLabel();
-			text.setBounds(955, 60+25*i, 30, 20);
+			text.setBounds(955, 150+25*i, 30, 20);
 			text.setText("-");
 			getContentPane().add(text);
 			profileSettings.add(text);
@@ -198,7 +266,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 			}
 			else{
 				JLabel text = new JLabel();
-				text.setBounds(775, 335+25*i, 50, 20);
+				text.setBounds(775, 425+25*i, 50, 20);
 				text.setText("-");
 				getContentPane().add(text);
 				profileSettings.add(text);
@@ -260,7 +328,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		};
 
 		table.setEditingColumn(0);
-		table.setBounds(10, 12, 341, 239);
+		table.setBounds(10, 10, 340, 240);
 		table.getModel().addTableModelListener(new TableModelListener() {
 
 			@Override
@@ -278,7 +346,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 
 		scrollPane = new JScrollPane();
 		scrollPane.setViewportView(table);
-		scrollPane.setBounds(10, 12, 341, 244);
+		scrollPane.setBounds(10, 10, 340, 245);
 		table.setFillsViewportHeight(true);
 		getContentPane().add(scrollPane);
 		
@@ -327,6 +395,17 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 	// not used yet, but propably will be
 	public void updateTable(ArrayList<ArrayList<String>> data) {
 		updateTable(arrayListToArray(data));
+	}
+	
+	public void updateTable(Batch batch){
+		ArrayList<Object[]> list = batch.getMeasurementsList();
+		Object[][] updatedList = new Object[list.size()][3];
+		for(int i = 0; i < list.size(); i++){
+			updatedList[i][0] = list.get(i)[0];
+			updatedList[i][1] = list.get(i)[1];
+			updatedList[i][2] = list.get(i)[2];
+		}
+		updateTable(updatedList);
 	}
 
 	// updates whole table
@@ -391,7 +470,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 			batchMeasureController.btnGetBatchPressed();
 			break;
 		case "leakCurrent":
-			batchMeasureController.btnLeakCurrent(getDasyPath());
+			batchMeasureController.btnLeakCurrent();
 			break;
 		case "logout":
 			System.out.println("logging out");
@@ -411,9 +490,9 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		JOptionPane.showMessageDialog(getContentPane(), jcb, "Enter batchnumber:", JOptionPane.QUESTION_MESSAGE);
 		return (String) jcb.getSelectedItem();
 	}
-
+	// TODO not up to date because of the new feature: DirectoryListener
 	// browse for file to read
-	private String getDasyPath(){
+	public String getDasyPath(){
 		File f = null;
 		File defaultPath = null;
 		// the PropertyHelper class is made in a way that, if no filename is chosen, it will read the default "config" file
@@ -428,9 +507,10 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		chooser.setDialogTitle("Select DasyLab file");
 
 		// a filter is added to the FileChooser, so there can only be loaded ascii/asc files. other files are not visible
-		FileNameExtensionFilter filter = new FileNameExtensionFilter(
-				"ASCII", "ascii", "asc");
-		chooser.setFileFilter(filter);
+//		FileNameExtensionFilter filter = new FileNameExtensionFilter(
+//				"ASCII", "ascii", "asc");
+		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+//		chooser.setFileFilter(filter);
 
 		// checks if ok is pressed or if the browse window is canceled. if canceled null is returned
 		if(chooser.showOpenDialog(getParent()) == JFileChooser.APPROVE_OPTION){

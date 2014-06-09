@@ -12,7 +12,7 @@ public interface IBatchMeasureController {
 	
 	void btnEditBatchSettingsPressed();
 
-	void btnLeakCurrent(String dasyPath);
+	void btnLeakCurrent();
 
 	void btnLogOutPressed();
 	
