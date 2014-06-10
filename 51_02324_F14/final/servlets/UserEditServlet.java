@@ -53,7 +53,7 @@ public class UserEditServlet extends HttpServlet {
 				request.setAttribute("editfail", null);
 				request.setAttribute("edited", true);
 				System.out.println("forwarding");
-				request.getRequestDispatcher("").forward(request, response);
+				request.getRequestDispatcher("WEB-INF/useredit.jsp").forward(request, response);
 				System.out.println("WEB-INF/useredit.jsp");
 			} else {
 				if (request.getParameter("username")  != null) 
