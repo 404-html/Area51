@@ -130,9 +130,9 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		for(int i = 1; i < 21; i++){
 			JLabel lblTitle = new JLabel();
 			if(i>17){
-				lblTitle.setBounds(670+90*(i-17), 125, 130, 15);
+				lblTitle.setBounds(670+90*(i-17), 135, 130, 15);
 			} else{
-				lblTitle.setBounds(610, 100+25*i, 130, 15);
+				lblTitle.setBounds(610, 110+25*i, 130, 15);
 			}
 			String text = PropertyHelper.readFromProperty("newBatchGuiSetup", String.valueOf(i));
 			lblTitle.setText(text);
@@ -216,7 +216,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 			if(i == 3 || i == 4  || i == 10 || i == 11 || i == 12 ){}
 			else{
 				JLabel label = new JLabel("\u00B1");
-				label.setBounds(835, 150+25*i, 15, 15);
+				label.setBounds(835, 160+25*i, 15, 15);
 				getContentPane().add(label);
 			}
 		}
@@ -229,7 +229,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 			}
 			else{
 				JLabel text = new JLabel();
-				text.setBounds(775, 150+25*i, 50, 20);
+				text.setBounds(775, 160+25*i, 50, 20);
 				text.setText("-");
 				getContentPane().add(text);
 				profileSettings.add(text);
@@ -242,7 +242,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 			if(i == 3 || i == 4 || i == 10 || i == 11 || i == 12){}
 			else{
 				JLabel text = new JLabel();
-				text.setBounds(885, 150 + 25*i, 30, 20);
+				text.setBounds(885, 160 + 25*i, 30, 20);
 				text.setText("-");
 				getContentPane().add(text);
 				profileSettings.add(text);
@@ -253,7 +253,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		// text fields for inspection level
 		for(int i = 0; i < 16; i++){
 			JLabel text = new JLabel();
-			text.setBounds(955, 150+25*i, 30, 20);
+			text.setBounds(955, 160+25*i, 30, 20);
 			text.setText("-");
 			getContentPane().add(text);
 			profileSettings.add(text);
@@ -266,7 +266,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 			}
 			else{
 				JLabel text = new JLabel();
-				text.setBounds(775, 425+25*i, 50, 20);
+				text.setBounds(775, 435+25*i, 50, 20);
 				text.setText("-");
 				getContentPane().add(text);
 				profileSettings.add(text);
