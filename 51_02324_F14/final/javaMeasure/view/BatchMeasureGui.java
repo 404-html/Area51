@@ -14,6 +14,12 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
+import java.awt.event.ContainerEvent;
+import java.awt.event.ContainerListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JTable;
 import javax.swing.event.TableModelEvent;
@@ -27,6 +33,7 @@ import java.util.ArrayList;
 
 import javaMeasure.Batch;
 import javaMeasure.BatchSetting;
+import javaMeasure.Measurement;
 import javaMeasure.PropertyHelper;
 import javaMeasure.control.interfaces.IBatchMeasureController;
 import javaMeasure.view.interfaces.IBatchMeasureGui;
@@ -44,6 +51,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 	private JTable table;
 	private JScrollPane scrollPane;
 	private DefaultTableModel logModel;
+	private Object[][] tableData;
 	private ArrayList<String> logInfo = new ArrayList<>(); // list used to update log. updates are added to this list
 	private JList<Object> log; // actual log list.
 
@@ -112,6 +120,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		getContentPane().add(logScroll);
 
 		// table setup for measurements
+		this.tableData = new String[][]{{null,null,null,null}};
 		setupTable();
 		// label setup for settings. settings are all shown on labels
 		setupLabels();
@@ -277,9 +286,9 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 	// extracted method because it is so large. sets up the JTable with all the extra features needed
 	private void setupTable() {
 
-		String[][] data = new String[][]{{null,null,null,null}};
+		
 
-		model = new DefaultTableModel(data, columnNames);
+		model = new DefaultTableModel(tableData, columnNames);
 		table = new JTable(model){
 			// overwriting jtable to highlight background colour of the last row
 			public Component prepareRenderer(
@@ -293,11 +302,11 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 					c.setForeground(Color.BLACK);
 				} else {
 					if(getValueAt(row, 0).toString().equalsIgnoreCase("false")){
-						batchMeasureController.verifyElement(false, row);
+//						batchMeasureController.verifyElement(false, row);
 						c.setBackground(Color.RED);
 						c.setForeground(Color.BLACK);
 					} else{
-						batchMeasureController.verifyElement(true, row);
+//						batchMeasureController.verifyElement(true, row);
 						c.setBackground(Color.WHITE);
 						c.setForeground(Color.BLACK);
 					}
@@ -329,6 +338,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 					return Boolean.class;
 				}
 			}
+			
 		};
 
 		table.setEditingColumn(0);
@@ -369,6 +379,29 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 			}
 		});
 
+		table.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// column 0 is where checkboxes are
+				if(table.columnAtPoint(e.getPoint()) == 0){
+					int row = table.rowAtPoint(e.getPoint());
+					System.out.println("table data verified: " + tableData[row][0]);
+					
+					boolean verified = (boolean) table.getValueAt(row, 0);
+					System.out.println("verified: " + verified);
+					batchMeasureController.updateMeasurements(row, verified);
+				}
+			}
+			@Override
+			public void mousePressed(MouseEvent e) {}
+			@Override
+			public void mouseExited(MouseEvent e) {}
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+			@Override
+			public void mouseClicked(MouseEvent e) {}
+		});;;
 	}
 
 	// updates batch settings. used when batch is created or loaded 
@@ -401,29 +434,39 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 	
 	public void updateTable(Batch batch){
 		ArrayList<Object[]> list = batch.getMeasurementsList();
-		Object[][] updatedList = new Object[list.size()][3];
+		Object[][] updatedList = new Object[list.size()][4];
 		for(int i = 0; i < list.size(); i++){
 			updatedList[i][0] = list.get(i)[0];
 			updatedList[i][1] = list.get(i)[1];
 			updatedList[i][2] = list.get(i)[2];
+			updatedList[i][3] = list.get(i)[3];
 		}
 		updateTable(updatedList);
 	}
 
 	// updates whole table
 	public void updateTable(Object[][] data){
+		this.tableData = data;
 		Object[][] list = new Object[data.length][COLUMNS_LENGTH];
 		for(int i = 0; i < data.length; i++)
 		{
-			list[i][0] = true;
-			for(int j = 1; j < COLUMNS_LENGTH; j++)
-			{
-				try{
-					list[i][j] = data[i][j-1];
-				} catch(IndexOutOfBoundsException e){
-					list[i][j] = null;
-				}
+			try{
+			list[i][0] = data[i][0];
+			list[i][1] = data[i][1];
+			
+			Measurement m = (Measurement) data[i][2];
+			if(m != null){
+			list[i][2] = m.getMeasureValue();
 			}
+			m = (Measurement) data[i][3];
+			if(m != null){
+			list[i][3] = m.getMeasureValue();
+			}
+				} catch(Exception e){
+					System.out.println("out of bounds when updating table");
+//					list[i][j] = null;
+				}
+			
 		}
 		table.setGridColor(Color.BLUE); // just for fun
 		model.setDataVector(list, columnNames);
@@ -447,7 +490,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		if(list.size() > 2)
 			for(int i = 0; i < list.size(); i++)
 			{
-				data[i][0] = true;
+				data[i][0] = list.get(i).get(0);
 				for(int j = 1; j < COLUMNS_LENGTH; j++)
 				{
 					data[i][j] =	list.get(i).get(j);

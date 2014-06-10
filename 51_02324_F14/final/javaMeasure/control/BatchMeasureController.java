@@ -235,6 +235,13 @@ public class BatchMeasureController implements IBatchMeasureController {
 		
 	}
 
+	@Override
+	public void updateMeasurements(int elementNumber, boolean verified) {
+		System.out.println("updateMeasurements, verified: " + verified);
+		activeBatch.updateMeasurements(elementNumber, verified);
+		
+	}
+
 
 
 }
