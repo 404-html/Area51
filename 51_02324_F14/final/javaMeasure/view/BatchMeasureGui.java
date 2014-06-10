@@ -144,65 +144,65 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		getContentPane().add(lbllog);
 		
 		JLabel lblCustomer = new JLabel("Customer:");
-		lblCustomer.setBounds(600, 20, 90, 15);
+		lblCustomer.setBounds(610, 20, 90, 15);
 		getContentPane().add(lblCustomer);
 		
 		JLabel lblItemDescription = new JLabel("Item description:");
-		lblItemDescription.setBounds(600, 45, 90, 15);
+		lblItemDescription.setBounds(610, 45, 90, 15);
 		getContentPane().add(lblItemDescription);
 		
 		JLabel lblItemCode = new JLabel("Item code:");
-		lblItemCode.setBounds(600, 70, 90, 15);
+		lblItemCode.setBounds(610, 70, 90, 15);
 		getContentPane().add(lblItemCode);
 		
 		JLabel lblInternalOrderNumber = new JLabel("Internal order number:");
-		lblInternalOrderNumber.setBounds(600, 95, 110, 15);
+		lblInternalOrderNumber.setBounds(610, 95, 110, 15);
 		getContentPane().add(lblInternalOrderNumber);
 		
 		JLabel lblDrawingNumber = new JLabel("Drawing number:");
-		lblDrawingNumber.setBounds(815, 45, 85, 15);
+		lblDrawingNumber.setBounds(825, 45, 85, 15);
 		getContentPane().add(lblDrawingNumber);
 		
 		JLabel lblSpecification = new JLabel("Specification");
-		lblSpecification.setBounds(815, 70, 85, 15);
+		lblSpecification.setBounds(825, 70, 85, 15);
 		getContentPane().add(lblSpecification);
 		
 		JLabel lblVisualInspection = new JLabel("Visual inspection");
-		lblVisualInspection.setBounds(815, 95, 85, 15);
+		lblVisualInspection.setBounds(825, 95, 85, 15);
 		getContentPane().add(lblVisualInspection);
 		
 		JLabel lblCustomertxt = new JLabel("-");
-		lblCustomertxt.setBounds(720, 20, 140, 15);
+		lblCustomertxt.setBounds(730, 20, 140, 15);
 		getContentPane().add(lblCustomertxt);
 		profileSettings.add(lblCustomertxt);
 		
 		JLabel lvlItemtxt = new JLabel("-");
-		lvlItemtxt.setBounds(720, 45, 90, 15);
+		lvlItemtxt.setBounds(730, 45, 90, 15);
 		getContentPane().add(lvlItemtxt);
 		profileSettings.add(lvlItemtxt);
 		
 		JLabel lblItemCodetxt = new JLabel("-");
-		lblItemCodetxt.setBounds(720, 70, 80, 15);
+		lblItemCodetxt.setBounds(730, 70, 80, 15);
 		getContentPane().add(lblItemCodetxt);
 		profileSettings.add(lblItemCodetxt);
 		
 		JLabel lblInternaltxt = new JLabel("-");
-		lblInternaltxt.setBounds(720, 95, 90, 15);
+		lblInternaltxt.setBounds(730, 95, 90, 15);
 		getContentPane().add(lblInternaltxt);
 		profileSettings.add(lblInternaltxt);
 		
 		JLabel lblDrawingtxt = new JLabel("-");
-		lblDrawingtxt.setBounds(945, 45, 90, 15);
+		lblDrawingtxt.setBounds(955, 45, 90, 15);
 		getContentPane().add(lblDrawingtxt);
 		profileSettings.add(lblDrawingtxt);
 		
 		JLabel lblSpecificationtxt = new JLabel("-");
-		lblSpecificationtxt.setBounds(945, 70, 80, 15);
+		lblSpecificationtxt.setBounds(955, 70, 80, 15);
 		getContentPane().add(lblSpecificationtxt);
 		profileSettings.add(lblSpecificationtxt);
 		
 		JLabel lblVisualtxt = new JLabel("-");
-		lblVisualtxt.setBounds(945, 95, 80, 15);
+		lblVisualtxt.setBounds(955, 95, 80, 15);
 		getContentPane().add(lblVisualtxt);
 		profileSettings.add(lblVisualtxt);
 		
