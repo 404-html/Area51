@@ -26,6 +26,8 @@ public interface IBatchMeasureController {
 	
 	void addLeakMeasurement(String path, String filename);
 	
+	void verifyElement(boolean verified, int elementNumber);
+	
 	
 	
 }
