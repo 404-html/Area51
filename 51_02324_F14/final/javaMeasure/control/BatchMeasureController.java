@@ -39,8 +39,8 @@ public class BatchMeasureController implements IBatchMeasureController {
 
 	// TODO Finish this - Martin
 	public void btnEditBatchSettingsPressed(){
-		getActiveBatch();
-		
+		mainController.startNewBatchController(getActiveBatch());
+		batchGUI.updateLog("Edit batch settings window opened...");
 	}
 
 	// user need to enter a batchnumber before this method is running. that is being taken care of in BatchMeasureGui

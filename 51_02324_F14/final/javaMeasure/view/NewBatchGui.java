@@ -38,14 +38,16 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 	private JTextField drawing_number;
 	private JTextField specification;
 	private JTextField visual_inspection;
-	
+
 	public NewBatchGui(INewBatchController newBatchController, boolean editMode) {
-		setTitle("New Batch");
-		this.newBatchController = newBatchController;
-		getContentPane().setLayout(null);
-		setBounds(0, 0, 552, 764);
-		setResizable(false);
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		if(!editMode){
+			setTitle("New Batch");
+			this.newBatchController = newBatchController;
+			getContentPane().setLayout(null);
+			setBounds(0, 0, 552, 764);
+			setResizable(false);
+			setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		}
 
 		JPanel panel = new JPanel();
 		panel.setBounds(10, 250, 529, 481);
@@ -137,49 +139,49 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 		panel_1.setBounds(10, 11, 529, 239);
 		getContentPane().add(panel_1);
 		panel_1.setLayout(null);
-		
+
 		customer = new JTextField();
 		customer.setBounds(131, 115, 139, 20);
 		panel_1.add(customer);
 		customer.setColumns(10);
 		profileSettings.add(customer);
-		
+
 		item_description = new JTextField();
 		item_description.setColumns(10);
 		item_description.setBounds(131, 146, 111, 20);
 		panel_1.add(item_description);
 		profileSettings.add(item_description);
-		
+
 		item_code = new JTextField();
 		item_code.setColumns(10);
 		item_code.setBounds(131, 177, 111, 20);
 		panel_1.add(item_code);
 		profileSettings.add(item_code);
-		
+
 		internal_order = new JTextField();
 		internal_order.setColumns(10);
 		internal_order.setBounds(131, 208, 111, 20);
 		panel_1.add(internal_order);
 		profileSettings.add(internal_order);
-		
+
 		drawing_number = new JTextField();
 		drawing_number.setColumns(10);
 		drawing_number.setBounds(408, 146, 111, 20);
 		panel_1.add(drawing_number);
 		profileSettings.add(drawing_number);
-		
+
 		specification = new JTextField();
 		specification.setColumns(10);
 		specification.setBounds(408, 177, 111, 20);
 		panel_1.add(specification);
 		profileSettings.add(specification);
-		
+
 		visual_inspection = new JTextField();
 		visual_inspection.setColumns(10);
 		visual_inspection.setBounds(408, 208, 111, 20);
 		panel_1.add(visual_inspection);
 		profileSettings.add(visual_inspection);	
-		
+
 		// textfields for normal value
 		for(int i = 0; i < 14; i++){
 			if(i == 11 || i == 12){
@@ -231,7 +233,7 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 		JLabel lblLeakCurrentMax = new JLabel("leak current, max:");
 		lblLeakCurrentMax.setBounds(10, 337, 129, 14);
 		panel.add(lblLeakCurrentMax);
-		
+
 		JCheckBox chckbxDynamicTest = new JCheckBox("");
 		chckbxDynamicTest.setHorizontalTextPosition(SwingConstants.CENTER);
 		chckbxDynamicTest.setHorizontalAlignment(SwingConstants.CENTER);
@@ -282,67 +284,75 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 		panel_1.add(separator);
 
 		// TODO should not be made here
-//		setDefaultSettings();
+		//		setDefaultSettings();
 
-		JButton btnLoadBatchSettings = new JButton("Load Batch Settings");
-		btnLoadBatchSettings.setBounds(270, 66, 129, 23);
-		btnLoadBatchSettings.setActionCommand("loadSettings");
-		panel_1.add(btnLoadBatchSettings);
+		
 
+		//TODO might have overload in controller when in editmode - martin
 		btnSaveBatchSettings = new JButton("Save Batch Settings");
 		btnSaveBatchSettings.setBounds(270, 32, 129, 23);
 		btnSaveBatchSettings.setActionCommand("saveBatchSettings");
 		panel_1.add(btnSaveBatchSettings);
-		
-		
-				JButton btnCreateBatch = new JButton("Create Batch");
-				btnCreateBatch.setBounds(409, 32, 110, 23);
-				panel_1.add(btnCreateBatch);
-				btnCreateBatch.setActionCommand("createBatch");
-				
-				JButton btnAnnuller = new JButton("Annuller");
-				btnAnnuller.setBounds(409, 66, 110, 23);
-				btnAnnuller.setActionCommand("annuller");
-				panel_1.add(btnAnnuller);
-				
-				JButton btnDeleteSettings = new JButton("Delete Settings");
-				btnDeleteSettings.setActionCommand("deleteSettings");
-				btnDeleteSettings.setBounds(131, 32, 129, 23);
-				panel_1.add(btnDeleteSettings);
-				
-				JLabel lblCustomer = new JLabel("Customer:");
-				lblCustomer.setBounds(10, 118, 129, 14);
-				panel_1.add(lblCustomer);
-				
-				JLabel lblItemCode = new JLabel("Item code:");
-				lblItemCode.setBounds(10, 180, 111, 14);
-				panel_1.add(lblItemCode);
-				
-				JLabel lblInternalOrderNumber = new JLabel("Internal order number:");
-				lblInternalOrderNumber.setBounds(10, 211, 129, 14);
-				panel_1.add(lblInternalOrderNumber);
-				
-				JLabel lblDrawingNumber = new JLabel("Drawing number:");
-				lblDrawingNumber.setBounds(270, 149, 129, 14);
-				panel_1.add(lblDrawingNumber);
-				
-				JLabel lblSpecification = new JLabel("Specification:");
-				lblSpecification.setBounds(270, 180, 129, 14);
-				panel_1.add(lblSpecification);
-				
-				JLabel lblVisualInspection = new JLabel("Visual Inspection:");
-				lblVisualInspection.setBounds(270, 211, 129, 14);
-				panel_1.add(lblVisualInspection);
-				
-				JLabel lblItemDescription = new JLabel("Item description:");
-				lblItemDescription.setBounds(10, 146, 129, 14);
-				panel_1.add(lblItemDescription);
-				
 
+
+
+		JButton btnAnnuller = new JButton("Annuller");
+		btnAnnuller.setBounds(409, 66, 110, 23);
+		btnAnnuller.setActionCommand("annuller");
+		panel_1.add(btnAnnuller);
+
+	if(!editMode){
+		
+		JButton btnLoadBatchSettings = new JButton("Load Batch Settings");
+		btnLoadBatchSettings.setBounds(270, 66, 129, 23);
+		btnLoadBatchSettings.setActionCommand("loadSettings");
+		panel_1.add(btnLoadBatchSettings);
+		
+		JButton btnCreateBatch = new JButton("Create Batch");
+		btnCreateBatch.setBounds(409, 32, 110, 23);
+		panel_1.add(btnCreateBatch);
+		btnCreateBatch.setActionCommand("createBatch");
+	
+		JButton btnDeleteSettings = new JButton("Delete Settings");
+		btnDeleteSettings.setActionCommand("deleteSettings");
+		btnDeleteSettings.setBounds(131, 32, 129, 23);
+		panel_1.add(btnDeleteSettings);
+		
 		btnLoadBatchSettings.addActionListener(this);
-		btnSaveBatchSettings.addActionListener(this);
 		btnDeleteSettings.addActionListener(this);
 		btnCreateBatch.addActionListener(this);
+	}
+
+		JLabel lblCustomer = new JLabel("Customer:");
+		lblCustomer.setBounds(10, 118, 129, 14);
+		panel_1.add(lblCustomer);
+
+		JLabel lblItemCode = new JLabel("Item code:");
+		lblItemCode.setBounds(10, 180, 111, 14);
+		panel_1.add(lblItemCode);
+
+		JLabel lblInternalOrderNumber = new JLabel("Internal order number:");
+		lblInternalOrderNumber.setBounds(10, 211, 129, 14);
+		panel_1.add(lblInternalOrderNumber);
+
+		JLabel lblDrawingNumber = new JLabel("Drawing number:");
+		lblDrawingNumber.setBounds(270, 149, 129, 14);
+		panel_1.add(lblDrawingNumber);
+
+		JLabel lblSpecification = new JLabel("Specification:");
+		lblSpecification.setBounds(270, 180, 129, 14);
+		panel_1.add(lblSpecification);
+
+		JLabel lblVisualInspection = new JLabel("Visual Inspection:");
+		lblVisualInspection.setBounds(270, 211, 129, 14);
+		panel_1.add(lblVisualInspection);
+
+		JLabel lblItemDescription = new JLabel("Item description:");
+		lblItemDescription.setBounds(10, 146, 129, 14);
+		panel_1.add(lblItemDescription);
+
+		btnSaveBatchSettings.addActionListener(this);
+	
 		btnAnnuller.addActionListener(this);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
@@ -396,12 +406,12 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 			newBatchController.createBatchpressed(batchNumber, settings);
 			break;
 		case "loadSettings":
-			 ArrayList<String> list = newBatchController.getSavedBatchProfiles();
-			 Object o = JOptionPane.showInputDialog(getContentPane(), "Choose profile: ", "Profile selection", JOptionPane.QUESTION_MESSAGE, null, list.toArray(), list.get(0));
-			 if(o != null){
-			 String profilename = o.toString();
-			 newBatchController.loadBatchSettingsPressed(profilename);
-			 }
+			ArrayList<String> list = newBatchController.getSavedBatchProfiles();
+			Object o = JOptionPane.showInputDialog(getContentPane(), "Choose profile: ", "Profile selection", JOptionPane.QUESTION_MESSAGE, null, list.toArray(), list.get(0));
+			if(o != null){
+				String profilename = o.toString();
+				newBatchController.loadBatchSettingsPressed(profilename);
+			}
 			// TODO finish implementation when loading saved settings
 			break;
 		case "saveBatchSettings":
@@ -425,35 +435,35 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 			newBatchController.annullerPressed();
 			break;
 		case "deleteSettings":
-			 ArrayList<String> list2 = newBatchController.getSavedBatchProfiles();
-			 Object o2 = JOptionPane.showInputDialog(getContentPane(), "Choose profile to delete: ", "Delete Profile", JOptionPane.QUESTION_MESSAGE, null, list2.toArray(), list2.get(0));
-			 if(o2 != null){
-				 profileName = o2.toString();
-				 try {
+			ArrayList<String> list2 = newBatchController.getSavedBatchProfiles();
+			Object o2 = JOptionPane.showInputDialog(getContentPane(), "Choose profile to delete: ", "Delete Profile", JOptionPane.QUESTION_MESSAGE, null, list2.toArray(), list2.get(0));
+			if(o2 != null){
+				profileName = o2.toString();
+				try {
 					newBatchController.deleteBatchProfilePressed(profileName);
 				} catch (DataBaseException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-			 }
+			}
 			break;
 		case "editProfile":
-			 ArrayList<String> list3 = newBatchController.getSavedBatchProfiles();
-			 Object o3 = JOptionPane.showInputDialog(getContentPane(), "Choose profile to edit: ", "Edit Profile", JOptionPane.QUESTION_MESSAGE, null, list3.toArray(), list3.get(0));
-			 if(o3 != null){
-				 profileName = o3.toString();
-				 try {
+			ArrayList<String> list3 = newBatchController.getSavedBatchProfiles();
+			Object o3 = JOptionPane.showInputDialog(getContentPane(), "Choose profile to edit: ", "Edit Profile", JOptionPane.QUESTION_MESSAGE, null, list3.toArray(), list3.get(0));
+			if(o3 != null){
+				profileName = o3.toString();
+				try {
 					newBatchController.editBatchProfilePressed(profileName);
 				} catch (DataBaseException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-			 }
+			}
 			break;
 		default: System.err.println("ActionCommand is not recognized");
 		}		
 	}
-	
+
 	public void setVisibility(boolean visible) {
 		setVisible(visible);
 	}

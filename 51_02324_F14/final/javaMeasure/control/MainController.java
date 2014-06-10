@@ -1,5 +1,6 @@
 package javaMeasure.control;
 
+import javaMeasure.Batch;
 import javaMeasure.User;
 import javaMeasure.control.interfaces.IBatchMeasureController;
 import javaMeasure.control.interfaces.ICConnector;
@@ -8,6 +9,7 @@ import javaMeasure.control.interfaces.IDatabaseController;
 import javaMeasure.control.interfaces.ILoginController;
 import javaMeasure.control.interfaces.IMainController;
 import javaMeasure.control.interfaces.INewBatchController;
+
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -38,6 +40,11 @@ public class MainController implements IMainController{
 	public void startNewBatchController(){
 		batchMeasureController.showGui(false);
 		newBatchController = new NewBatchController(this);
+	}
+	
+	public void startNewBatchController(Batch activeBatch){
+		batchMeasureController.showGui(false);
+		newBatchController = new NewBatchController(this, activeBatch);
 	}
 	
 	@Override
