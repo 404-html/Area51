@@ -1,14 +1,35 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@page import="java.util.ArrayList"%>
+<%@page
+	import="javaMeasure.control.interfaces.IDatabaseController.DataBaseException"%>
+<%@page import="javaMeasure.control.MainController"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@page import="javaMeasure.control.DataBaseController"%>
+
+<%@page import="javaMeasure.User"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html;  charset=UTF-8">
+<%
+	String username = (String) session.getAttribute("username");
+%>
 <title>User Edit</title>
 </head>
-<body>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Noliac Form</title>
+
+<title>Noliac : <%
+	out.println(username);
+%> | udtræk
+</title>
+					<%
+						if (request.getAttribute("editfail") != null) {
+							out.println(" <p>Fandt ikke brugernavn i database.</p>");
+						}
+						if (request.getAttribute("edited") !=null){
+							out.println("<p>Opdateret bruger.</p>");
+						}
+					%>
 <link rel="stylesheet" type="text/css" href="view.css" media="all" />
 <script type="text/javascript" src="view.js"></script>
 <script type="text/javascript" src="calendar.js"></script>
@@ -36,17 +57,31 @@
 		<tr>
 			<td>
 				<ul>
-					<li id="li_3"><label class="description" for="username" >User
-							name</label>
+					<li id="li_3"><label class="description" for="username" >
+					 <% //Checks if User was found
+											if (request.getParameter("fail") != null) out.print("Bruger ikke genkendt! -");
+											%>User name</label>
 						<div>
 							<input id="username" name="username" class="element text medium"
-								type="text" maxlength="255" value="guest" />
+								type="text" maxlength="255" 
+								list="batches" autocomplete="on" value="" />
+										<datalist id="batches"> <%
+ 						ArrayList<User> userNames = database.getUserList();
+ 						for (User u : userNames){
+ 							String name=u.getUserName();
+ %>
+ 
+										<option>
+											<%=name%></option>
+										<%
+											}
+										%> </datalist>
 						</div>
 
 						
 					<li id="li_"><label class="description" for="element_4">Password</label>
 						<div>
-							<input id="element_4" name="pass" class="element text medium"
+							<input id="element_4" name="password" class="element text medium"
 								type="text" maxlength="255" value="123456" />
 						  <input type="hidden" name="form_id"
 						value="812583" />
@@ -55,17 +90,18 @@
           </td>
 		  <td width="50%">
                             <input type="checkbox" name="active" value="active"> active<BR>
-		  <input type="checkbox" name="super" value="super"> super<BR></tr>
+		  <input type="checkbox" name="admin" value="admin"> admin<BR></tr>
 		  </table>
 				<form ACTION="jspCheckBox.jsp">
        <table width="100%" border="0" cellpadding="2" cellspacing="0">
 		<tr>
 			<td>
 				  <span class="buttons">
+				  
 				  <input id="saveForm" class="button_text"
 						type="submit" name="save" value="save" />
                          </td>
-				  </span>
+					</span>
                   <td width="95%"><span class="buttons">
                 
 				  <input id="cancel" class="button_text"
