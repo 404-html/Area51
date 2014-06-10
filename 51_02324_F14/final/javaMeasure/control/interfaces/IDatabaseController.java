@@ -2,6 +2,7 @@ package javaMeasure.control.interfaces;
 import java.util.ArrayList;
 
 import javaMeasure.*;
+import javaMeasure.Measurement.MeasurementType;
 
 public interface IDatabaseController {
 	
@@ -47,6 +48,7 @@ public interface IDatabaseController {
 	}
 	void saveBatchSetting(BatchSetting b, int profileID)
 			throws DataBaseException;
+	void deleteMeasurement(int batchID, int elementNumber, MeasurementType type);
 	
 //	ArrayList<BatchProfile> getBatchProfiles();
 	

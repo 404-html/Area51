@@ -186,6 +186,24 @@ public class BatchMeasureController implements IBatchMeasureController {
 			e.printStackTrace();
 		}
 	}
+	
+	public void deleteStrokeMeasurement(){
+		if(activeBatch.deleteLastStrokeMeasurement()){
+			mainController.getDatabaseController().deleteMeasurement(activeBatch.getBatchID(), activeBatch.getCurrentStrokeElement()-1, MeasurementType.STROKE);
+		}
+		else{
+			batchGUI.showInformationMessage("Not able to delete selected measurement!", "Error");
+		}
+	}
+	
+	public void deleteLeakMeasurement(){
+		if(activeBatch.deleteLastLeakMeasurement()){
+			mainController.getDatabaseController().deleteMeasurement(activeBatch.getBatchID(), activeBatch.getCurrentLeakElement()-1, MeasurementType.LEAK);
+		}
+		else{
+			batchGUI.showInformationMessage("Not able to delete selected measurement!", "Error");
+		}
+	}
 
 	public IMainController getMainController() {
 		return mainController;
