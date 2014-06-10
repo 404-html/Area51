@@ -40,7 +40,11 @@ public class MenuServlet extends HttpServlet {
 
 	private void processReq(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		DataBaseController dbctrl = (DataBaseController) request.getSession().getAttribute("database");
+		//DataBaseController dbctrl = (DataBaseController) request.getSession().getAttribute("database");
+		//Login Check
+		if (request.getSession().getAttribute("user") == null) 
+			request.getRequestDispatcher("NoliacServlet").forward(request, response);
+		//check if a batch was selected
 		if(request.getParameter("selectedbatch") ==null){
 		request.getRequestDispatcher("WEB-INF/form.jsp").forward(request, response);
 		} else {

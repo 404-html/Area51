@@ -130,6 +130,7 @@
 					value="logout" /></li>
 
 			</form>
+            <a href="UserEditServlet">Administrer brugere</a>
 			<div id="footer">By Area51</div>
 
 		</div>

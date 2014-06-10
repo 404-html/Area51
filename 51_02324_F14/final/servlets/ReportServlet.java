@@ -55,6 +55,7 @@ public class ReportServlet extends HttpServlet {
 		}
 		request.setAttribute("batch", batch);
 		request.setAttribute("profile", profile);
+		//TODO generate attributes for report....
 		request.getRequestDispatcher("WEB-INF/report.jsp").forward(request, response);
 
 	}
