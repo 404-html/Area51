@@ -289,18 +289,26 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 		
 
 		//TODO might have overload in controller when in editmode - martin
+	if(!editMode){
 		btnSaveBatchSettings = new JButton("Save Batch Settings");
 		btnSaveBatchSettings.setBounds(270, 32, 129, 23);
 		btnSaveBatchSettings.setActionCommand("saveBatchSettings");
 		panel_1.add(btnSaveBatchSettings);
-
-
-
+		btnSaveBatchSettings.addActionListener(this);
+	} else{
+		btnSaveBatchSettings = new JButton("Save Batch Settings");
+		btnSaveBatchSettings.setBounds(270, 66, 129, 23);
+		btnSaveBatchSettings.setActionCommand("saveBatchSettingsEditMode");
+		panel_1.add(btnSaveBatchSettings);
+		btnSaveBatchSettings.addActionListener(this);
+	}
 		JButton btnAnnuller = new JButton("Annuller");
 		btnAnnuller.setBounds(409, 66, 110, 23);
 		btnAnnuller.setActionCommand("annuller");
 		panel_1.add(btnAnnuller);
+		btnAnnuller.addActionListener(this);
 
+		
 	if(!editMode){
 		
 		JButton btnLoadBatchSettings = new JButton("Load Batch Settings");
@@ -351,9 +359,7 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 		lblItemDescription.setBounds(10, 146, 129, 14);
 		panel_1.add(lblItemDescription);
 
-		btnSaveBatchSettings.addActionListener(this);
-	
-		btnAnnuller.addActionListener(this);
+
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 
@@ -420,7 +426,7 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 			newBatchController.saveBatchSettingsPressed(profileName, savingSettings);
 			System.out.println("save batch settings");
 			break;
-		case "saveBatchSettingsEdit":
+		case "saveBatchSettingsEditMode":
 			String profileNameEdit = JOptionPane.showInputDialog(getContentPane(), "Enter profile name: ", "Saving profile", JOptionPane.QUESTION_MESSAGE);
 			ArrayList<String> savingSettingsEdit = getSettings();
 			try {
