@@ -21,6 +21,10 @@ public interface IBatchMeasureController {
 	void setActiveBatch(Batch b);
 
 	void btnGetBatchPressed();
+
+	void updateLog(String string);
+	
+	void addLeakMeasurement(String path, String filename);
 	
 	
 	

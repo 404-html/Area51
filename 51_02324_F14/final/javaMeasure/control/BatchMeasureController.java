@@ -141,7 +141,7 @@ public class BatchMeasureController implements IBatchMeasureController {
 					this.dl.setPath(path);
 				}
 				else{
-					this.dl = new DirectoryListener(path, mainController, batchGUI, activeBatch);
+					this.dl = new DirectoryListener(path, this);
 					dl.start();
 				}
 			}
@@ -154,6 +154,37 @@ public class BatchMeasureController implements IBatchMeasureController {
 		System.out.println(this.dl.interrupted());
 		}
 		mainController.logOut();
+	}
+	
+	public void addLeakMeasurement(String path, String filename){
+		// creating leak measurement to be added to batch and saved in database
+		long timestamp = Long.parseLong(PropertyHelper.readFromProperty("config", "leakvalue"));
+		
+		System.out.println("timestamp: " + timestamp);
+		System.out.println(path + "/" + filename);
+		
+		Measurement measurement = mainController.getDasyController().getCurrentValue(timestamp, path + "/" + filename);
+		measurement.setBatchID(activeBatch.getBatchID());
+		measurement.setElementNo(activeBatch.getCurrentLeakElement());
+		// adds the measurement to guis JTable before saved in database
+		
+		batchGUI.updateLog("new leak measurement: " + measurement.getMeasureValue());
+		batchGUI.updateLog("read from: " + filename);
+
+		try {
+			boolean measurementAdded = activeBatch.addMeasurement(measurement);
+			if(!measurementAdded)
+			{
+				batchGUI.showInformationMessage("measurements should be taken equally", "measurements not equal");
+			} else
+			{
+				mainController.getDatabaseController().addToDB(measurement);
+				batchGUI.updateTable(activeBatch);
+			}
+		} catch (DataBaseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public IMainController getMainController() {
@@ -182,6 +213,12 @@ public class BatchMeasureController implements IBatchMeasureController {
 
 	public IBatchMeasureGui getBatchMeasureGui(){
 		return batchGUI;
+	}
+
+	@Override
+	public void updateLog(String string) {
+		// TODO Auto-generated method stub
+		
 	}
 
 
