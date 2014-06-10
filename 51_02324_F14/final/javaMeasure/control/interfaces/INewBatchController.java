@@ -2,6 +2,7 @@ package javaMeasure.control.interfaces;
 
 import java.util.ArrayList;
 
+import javaMeasure.Batch;
 import javaMeasure.BatchProfile;
 import javaMeasure.BatchSetting;
 import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
@@ -22,7 +23,7 @@ public interface INewBatchController {
 	
 	void deleteBatchProfilePressed(String profileName) throws DataBaseException;
 	
-	void editBatchProfilePressed(String profileName) throws DataBaseException;
+//	void editBatchProfilePressed(String profileName) throws DataBaseException;
 
 	void createBatchpressed(String batchString,
 			ArrayList<String> profileSettings);
@@ -33,9 +34,8 @@ public interface INewBatchController {
 
 	void annullerPressed();
 
-	void saveEditedBatchSettingsPressed(String profileNameEdit,
-			ArrayList<String> savingSettingsEdit) throws DataBaseException;
+	void saveEditedBatchSettingsPressed() throws DataBaseException;
 	
-	
+	String getActiveBatchName(Batch activeBatch);
 
 }

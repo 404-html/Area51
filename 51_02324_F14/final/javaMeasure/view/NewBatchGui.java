@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import javaMeasure.Batch;
 import javaMeasure.BatchProfile;
+import javaMeasure.control.MainController;
 import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 import javaMeasure.control.interfaces.INewBatchController;
 import javaMeasure.view.interfaces.INewBatchGui;
@@ -273,11 +274,16 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 		lblBatch.setBounds(75, 70, 46, 14);
 		panel_1.add(lblBatch);
 
+
 		textBatch = new JTextField();
 		textBatch.setBounds(131, 67, 129, 20);
 		panel_1.add(textBatch);
 		textBatch.setColumns(10);
-
+//		Finish this - Martin
+		if(editMode){
+//			textBatch.setText(newBatchController.getActiveBatchName());
+			textBatch.enableInputMethods(false);
+		}
 		separator = new JSeparator();
 		separator.setBounds(10, 100, 509, 2);
 		panel_1.add(separator);
@@ -426,10 +432,8 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 			System.out.println("save batch settings");
 			break;
 		case "saveBatchSettingsEditMode":
-			String profileNameEdit = JOptionPane.showInputDialog(getContentPane(), "Enter profile name: ", "Saving profile", JOptionPane.QUESTION_MESSAGE);
-			ArrayList<String> savingSettingsEdit = getSettings();
 			try {
-				newBatchController.saveEditedBatchSettingsPressed(profileNameEdit, savingSettingsEdit);
+				newBatchController.saveEditedBatchSettingsPressed();
 			} catch (DataBaseException e2) {
 				// TODO Auto-generated catch block
 				e2.printStackTrace();
@@ -452,19 +456,19 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 				}
 			}
 			break;
-		case "editProfile":
-			ArrayList<String> list3 = newBatchController.getSavedBatchProfiles();
-			Object o3 = JOptionPane.showInputDialog(getContentPane(), "Choose profile to edit: ", "Edit Profile", JOptionPane.QUESTION_MESSAGE, null, list3.toArray(), list3.get(0));
-			if(o3 != null){
-				profileName = o3.toString();
-				try {
-					newBatchController.editBatchProfilePressed(profileName);
-				} catch (DataBaseException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-			break;
+//		case "editProfile":
+//			ArrayList<String> list3 = newBatchController.getSavedBatchProfiles();
+//			Object o3 = JOptionPane.showInputDialog(getContentPane(), "Choose profile to edit: ", "Edit Profile", JOptionPane.QUESTION_MESSAGE, null, list3.toArray(), list3.get(0));
+//			if(o3 != null){
+//				profileName = o3.toString();
+//				try {
+//					newBatchController.editBatchProfilePressed(profileName);
+//				} catch (DataBaseException e1) {
+//					// TODO Auto-generated catch block
+//					e1.printStackTrace();
+//				}
+//			}
+//			break;
 		default: System.err.println("ActionCommand is not recognized");
 		}		
 	}
