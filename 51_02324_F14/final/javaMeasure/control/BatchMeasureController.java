@@ -39,18 +39,8 @@ public class BatchMeasureController implements IBatchMeasureController {
 
 	// TODO Finish this - Martin
 	public void btnEditBatchSettingsPressed(){
-		ArrayList<Batch> list = null;
-		batchGUI.updateLog("Loading batchnames...");
-		try {
-			list = mainController.getDatabaseController().getBatches();
-		} catch (DataBaseException e1) {
-			batchGUI.updateLog("Error in receiving batches from database!");
-		}
-		String[] batchList = new String[list.size()];
-		for(int i = 0; i < list.size(); i++){
-			batchList[i] = list.get(i).getBatchString();
-		}
-
+		getActiveBatch();
+		
 	}
 
 	// user need to enter a batchnumber before this method is running. that is being taken care of in BatchMeasureGui

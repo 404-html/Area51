@@ -3,6 +3,7 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
+import javaMeasure.Batch;
 import javaMeasure.BatchProfile;
 import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 import javaMeasure.control.interfaces.INewBatchController;
@@ -17,6 +18,7 @@ import javax.swing.JCheckBox;
 import javax.swing.SwingConstants;
 import javax.swing.JSeparator;
 import javax.swing.JButton;
+
 import java.awt.event.ActionListener;
 
 @SuppressWarnings("serial")
@@ -37,7 +39,7 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 	private JTextField specification;
 	private JTextField visual_inspection;
 	
-	public NewBatchGui(INewBatchController newBatchController) {
+	public NewBatchGui(INewBatchController newBatchController, boolean editMode) {
 		setTitle("New Batch");
 		this.newBatchController = newBatchController;
 		getContentPane().setLayout(null);
