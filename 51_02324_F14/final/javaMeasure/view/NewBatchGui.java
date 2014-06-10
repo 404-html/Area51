@@ -40,14 +40,13 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 	private JTextField visual_inspection;
 
 	public NewBatchGui(INewBatchController newBatchController, boolean editMode) {
-		if(!editMode){
+
+		this.newBatchController = newBatchController;
 			setTitle("New Batch");
-			this.newBatchController = newBatchController;
 			getContentPane().setLayout(null);
 			setBounds(0, 0, 552, 764);
 			setResizable(false);
 			setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		}
 
 		JPanel panel = new JPanel();
 		panel.setBounds(10, 250, 529, 481);
