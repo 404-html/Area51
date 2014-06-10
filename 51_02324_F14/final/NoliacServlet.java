@@ -15,17 +15,17 @@ import javax.servlet.http.HttpServletResponse;
 public class NoliacServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    /**
-     * Default constructor. 
-     */
-    public NoliacServlet() {
-    }
+	/**
+	 * Default constructor. 
+	 */
+	public NoliacServlet() {
+	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-			processReq(request, response);
+		processReq(request, response);
 	}
 
 	/**
@@ -39,10 +39,20 @@ public class NoliacServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		if (request.getSession().getAttribute("user") != null){ 
 			// user is logged in
-			request.getRequestDispatcher("MenuServlet").forward(request, response);
+			switch (request.getParameter("cmd")) {
+			case "report":
+				request.getRequestDispatcher("ReportServlet").forward(request, response);
+				break;
+			case "admin":
+				request.getRequestDispatcher("UserEditServlet").forward(request, response);
+				break;
+			default:
+				request.getRequestDispatcher("MenuServlet").forward(request, response);;
+				break;
+			}
 		} else { //user not logged in
 			request.getRequestDispatcher("LoginServlet").forward(request, response);;
 		}
 	}
-	
+
 }
