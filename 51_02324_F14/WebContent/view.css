@@ -68,6 +68,20 @@ form.appnitro
 	padding:0 0 20px;
 }
 
+/**** Tables *****/
+
+.returnTable table, th, tr, td
+{
+	border:1px solid black;
+	border-collapse:collapse;
+	padding:0;
+	cellspacing:0;
+}
+
+.returnTable tr:not(:first-child):hover {
+	background-color:red;
+}
+
 /**** Logo Section  *****/
 /*h1
 {

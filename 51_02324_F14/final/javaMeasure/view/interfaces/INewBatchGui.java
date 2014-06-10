@@ -8,7 +8,6 @@ import javaMeasure.BatchProfile;
 
 public interface INewBatchGui extends ActionListener, EventListener, Runnable{
 	void setVisibility(boolean visible);
-	void setDefaultSettings(); // perhaps not neccessary
 	void setSettings(BatchProfile settingList);
 	ArrayList<String> getSettings();
 	void showInformationMessage(String message, String title);
