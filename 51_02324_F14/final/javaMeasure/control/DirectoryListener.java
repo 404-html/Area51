@@ -13,6 +13,7 @@ import java.util.List;
 import javaMeasure.Batch;
 import javaMeasure.Measurement;
 import javaMeasure.PropertyHelper;
+import javaMeasure.control.interfaces.IBatchMeasureController;
 import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 import javaMeasure.control.interfaces.IMainController;
 import javaMeasure.view.interfaces.IBatchMeasureGui;
@@ -25,15 +26,20 @@ public class DirectoryListener extends Thread
 	private WatchService watcher;
 	private IMainController mainController;
 	private IBatchMeasureGui batchMeasureGui;
+	private IBatchMeasureController batchMeasureController;
 	private Batch activeBatch;
 	
 	
-	public DirectoryListener(String path, IMainController mainController, IBatchMeasureGui batchMeasureGui, Batch activeBatch)
+//	public DirectoryListener(String path, IMainController mainController, IBatchMeasureGui batchMeasureGui, Batch activeBatch)
+//	{
+	public DirectoryListener(String path, IBatchMeasureController batchMeasureController)
 	{
+		System.out.println("initialize: " + System.nanoTime());
 		this.path = path;
-		this.mainController = mainController;
-		this.batchMeasureGui = batchMeasureGui;
-		this.activeBatch = activeBatch;
+		this.batchMeasureController = batchMeasureController;
+//		this.mainController = mainController;
+//		this.batchMeasureGui = batchMeasureGui;
+//		this.activeBatch = activeBatch;
 		try {
 			this.watcher = FileSystems.getDefault().newWatchService();
 		} catch (IOException e1) {
@@ -54,17 +60,25 @@ public class DirectoryListener extends Thread
 				this.dir.register(watcher, StandardWatchEventKinds.ENTRY_CREATE,
 						StandardWatchEventKinds.ENTRY_DELETE, StandardWatchEventKinds.ENTRY_MODIFY);
 
-				batchMeasureGui.updateLog("DasyLab files are automatically being read from: " + path);
+				batchMeasureController.updateLog("DasyLab files are automatically being read from: ");
+				batchMeasureController.updateLog(path);
+				
+//				batchMeasureGui.updateLog("DasyLab files are automatically being read from: ");
+//				batchMeasureGui.updateLog(path);
 				WatchKey watchKey = null;
+				System.out.println("before .take(): " + System.nanoTime());
 				watchKey = watcher.take(); // waits until any changes occur
 				System.out.println(path + " is being watched");
 				while(!this.isInterrupted())
 				{
+					
 					String filename = null;
 					deletedFile = false;
 					createdFile = false;
 					modifiedFile = false;
-					Thread.sleep(3000);
+					Thread.sleep(1000);
+
+					System.out.println("start check: " + System.nanoTime());
 					System.out.println("checking: " + path);
 					List<WatchEvent<?>> events = watchKey.pollEvents();
 					// one change can trigger up to 3 events
@@ -90,41 +104,11 @@ public class DirectoryListener extends Thread
 					}
 					if(deletedFile && createdFile && modifiedFile) // if file is renamed
 					{
-
-						System.out.println("renamed file");
-						
+						System.out.println("renamed file");	
 					}
 					else if(createdFile && modifiedFile) // if file is pasted
 					{			
-						// creating leak measurement to be added to batch and saved in database
-						long timestamp = Long.parseLong(PropertyHelper.readFromProperty("config", "leakvalue"));
-						
-						System.out.println("timestamp: " + timestamp);
-						System.out.println(path + "/" + filename);
-						
-						Measurement measurement = mainController.getDasyController().getCurrentValue(timestamp, this.path + "/" + filename);
-						measurement.setBatchID(activeBatch.getBatchID());
-						measurement.setElementNo(activeBatch.getCurrentLeakElement());
-						// adds the measurement to guis JTable before saved in database
-						
-						batchMeasureGui.updateLog("new leak measurement: " + measurement.getMeasureValue());
-						batchMeasureGui.updateLog("read from: " + filename);
-
-						try {
-							boolean measurementAdded = activeBatch.addMeasurement(measurement);
-							if(!measurementAdded)
-							{
-								batchMeasureGui.showInformationMessage("measurements should be taken equally", "measurements not equal");
-							} else
-							{
-								mainController.getDatabaseController().addToDB(measurement);
-								batchMeasureGui.updateTable(activeBatch);
-							}
-						} catch (DataBaseException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						
+						batchMeasureController.addLeakMeasurement(path, filename);
 					}
 					else if(deletedFile) // if file is deleted
 					{
@@ -138,11 +122,14 @@ public class DirectoryListener extends Thread
 					{
 						System.out.println("new file created");
 					}
+					System.out.println("after check: " + System.nanoTime());
 				}
+				
 			} catch (Exception e)
 			{
 				System.out.println("Error: " + e.toString());
 			}
+			
 		}
 	}
 	public void start()

@@ -89,7 +89,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		getContentPane().add(btnStrokeMeasurement);
 
 		JButton btnLogout = new JButton("Log out");
-		btnLogout.setBounds(360, 440, 215, 25);
+		btnLogout.setBounds(360, 583, 215, 25);
 		btnLogout.setActionCommand("logout");
 		getContentPane().add(btnLogout);
 
@@ -97,7 +97,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		separator.setOrientation(SwingConstants.VERTICAL);
 		separator.setBackground(Color.WHITE);
 		separator.setForeground(Color.GRAY);
-		separator.setBounds(580, 10, 10, 450);
+		separator.setBounds(580, 10, 10, 601);
 		getContentPane().add(separator);
 
 		//setup for the log
@@ -108,7 +108,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		log.ensureIndexIsVisible(log.getMaxSelectionIndex());
 		logScroll.setViewportView(log);
 		log.setEnabled(false);
-		logScroll.setBounds(10, 300, 340, 165);
+		logScroll.setBounds(10, 443, 340, 165);
 		getContentPane().add(logScroll);
 
 		// table setup for measurements
@@ -130,9 +130,9 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		for(int i = 1; i < 21; i++){
 			JLabel lblTitle = new JLabel();
 			if(i>17){
-				lblTitle.setBounds(670+90*(i-17), 125, 130, 15);
+				lblTitle.setBounds(670+90*(i-17), 135, 130, 15);
 			} else{
-				lblTitle.setBounds(610, 100+25*i, 130, 15);
+				lblTitle.setBounds(610, 110+25*i, 130, 15);
 			}
 			String text = PropertyHelper.readFromProperty("newBatchGuiSetup", String.valueOf(i));
 			lblTitle.setText(text);
@@ -140,69 +140,69 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		}
 
 		JLabel lbllog = new JLabel("<html><b>Event log: </b></html>");
-		lbllog.setBounds(10, 275, 90, 15);
+		lbllog.setBounds(10, 420, 90, 15);
 		getContentPane().add(lbllog);
 		
 		JLabel lblCustomer = new JLabel("Customer:");
-		lblCustomer.setBounds(600, 20, 90, 15);
+		lblCustomer.setBounds(610, 20, 90, 15);
 		getContentPane().add(lblCustomer);
 		
 		JLabel lblItemDescription = new JLabel("Item description:");
-		lblItemDescription.setBounds(600, 45, 90, 15);
+		lblItemDescription.setBounds(610, 45, 90, 15);
 		getContentPane().add(lblItemDescription);
 		
 		JLabel lblItemCode = new JLabel("Item code:");
-		lblItemCode.setBounds(600, 70, 90, 15);
+		lblItemCode.setBounds(610, 70, 90, 15);
 		getContentPane().add(lblItemCode);
 		
 		JLabel lblInternalOrderNumber = new JLabel("Internal order number:");
-		lblInternalOrderNumber.setBounds(600, 95, 110, 15);
+		lblInternalOrderNumber.setBounds(610, 95, 110, 15);
 		getContentPane().add(lblInternalOrderNumber);
 		
 		JLabel lblDrawingNumber = new JLabel("Drawing number:");
-		lblDrawingNumber.setBounds(815, 45, 85, 15);
+		lblDrawingNumber.setBounds(825, 45, 85, 15);
 		getContentPane().add(lblDrawingNumber);
 		
 		JLabel lblSpecification = new JLabel("Specification");
-		lblSpecification.setBounds(815, 70, 85, 15);
+		lblSpecification.setBounds(825, 70, 85, 15);
 		getContentPane().add(lblSpecification);
 		
 		JLabel lblVisualInspection = new JLabel("Visual inspection");
-		lblVisualInspection.setBounds(815, 95, 85, 15);
+		lblVisualInspection.setBounds(825, 95, 85, 15);
 		getContentPane().add(lblVisualInspection);
 		
 		JLabel lblCustomertxt = new JLabel("-");
-		lblCustomertxt.setBounds(720, 20, 140, 15);
+		lblCustomertxt.setBounds(730, 20, 140, 15);
 		getContentPane().add(lblCustomertxt);
 		profileSettings.add(lblCustomertxt);
 		
 		JLabel lvlItemtxt = new JLabel("-");
-		lvlItemtxt.setBounds(720, 45, 90, 15);
+		lvlItemtxt.setBounds(730, 45, 90, 15);
 		getContentPane().add(lvlItemtxt);
 		profileSettings.add(lvlItemtxt);
 		
 		JLabel lblItemCodetxt = new JLabel("-");
-		lblItemCodetxt.setBounds(720, 70, 80, 15);
+		lblItemCodetxt.setBounds(730, 70, 80, 15);
 		getContentPane().add(lblItemCodetxt);
 		profileSettings.add(lblItemCodetxt);
 		
 		JLabel lblInternaltxt = new JLabel("-");
-		lblInternaltxt.setBounds(720, 95, 90, 15);
+		lblInternaltxt.setBounds(730, 95, 90, 15);
 		getContentPane().add(lblInternaltxt);
 		profileSettings.add(lblInternaltxt);
 		
 		JLabel lblDrawingtxt = new JLabel("-");
-		lblDrawingtxt.setBounds(945, 45, 90, 15);
+		lblDrawingtxt.setBounds(955, 45, 90, 15);
 		getContentPane().add(lblDrawingtxt);
 		profileSettings.add(lblDrawingtxt);
 		
 		JLabel lblSpecificationtxt = new JLabel("-");
-		lblSpecificationtxt.setBounds(945, 70, 80, 15);
+		lblSpecificationtxt.setBounds(955, 70, 80, 15);
 		getContentPane().add(lblSpecificationtxt);
 		profileSettings.add(lblSpecificationtxt);
 		
 		JLabel lblVisualtxt = new JLabel("-");
-		lblVisualtxt.setBounds(945, 95, 80, 15);
+		lblVisualtxt.setBounds(955, 95, 80, 15);
 		getContentPane().add(lblVisualtxt);
 		profileSettings.add(lblVisualtxt);
 		
@@ -216,7 +216,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 			if(i == 3 || i == 4  || i == 10 || i == 11 || i == 12 ){}
 			else{
 				JLabel label = new JLabel("\u00B1");
-				label.setBounds(835, 150+25*i, 15, 15);
+				label.setBounds(835, 160+25*i, 15, 15);
 				getContentPane().add(label);
 			}
 		}
@@ -229,7 +229,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 			}
 			else{
 				JLabel text = new JLabel();
-				text.setBounds(775, 150+25*i, 50, 20);
+				text.setBounds(775, 160+25*i, 50, 20);
 				text.setText("-");
 				getContentPane().add(text);
 				profileSettings.add(text);
@@ -242,7 +242,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 			if(i == 3 || i == 4 || i == 10 || i == 11 || i == 12){}
 			else{
 				JLabel text = new JLabel();
-				text.setBounds(885, 150 + 25*i, 30, 20);
+				text.setBounds(885, 160 + 25*i, 30, 20);
 				text.setText("-");
 				getContentPane().add(text);
 				profileSettings.add(text);
@@ -253,7 +253,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		// text fields for inspection level
 		for(int i = 0; i < 16; i++){
 			JLabel text = new JLabel();
-			text.setBounds(955, 150+25*i, 30, 20);
+			text.setBounds(955, 160+25*i, 30, 20);
 			text.setText("-");
 			getContentPane().add(text);
 			profileSettings.add(text);
@@ -266,7 +266,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 			}
 			else{
 				JLabel text = new JLabel();
-				text.setBounds(775, 425+25*i, 50, 20);
+				text.setBounds(775, 435+25*i, 50, 20);
 				text.setText("-");
 				getContentPane().add(text);
 				profileSettings.add(text);
@@ -328,7 +328,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		};
 
 		table.setEditingColumn(0);
-		table.setBounds(10, 10, 340, 240);
+		table.setBounds(10, 10, 340, 380);
 		table.getModel().addTableModelListener(new TableModelListener() {
 
 			@Override
@@ -346,7 +346,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 
 		scrollPane = new JScrollPane();
 		scrollPane.setViewportView(table);
-		scrollPane.setBounds(10, 10, 340, 245);
+		scrollPane.setBounds(10, 10, 340, 380);
 		table.setFillsViewportHeight(true);
 		getContentPane().add(scrollPane);
 		
