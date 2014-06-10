@@ -43,6 +43,24 @@ public class Batch {
 		BatchString = batchString;
 	}
 
+	public boolean deleteLastStrokeMeasurement(){
+		if(currentStrokeElement < currentLeakElement || currentLeakElement == 0)
+			return false;
+		else{
+			getMeasurementsList().get(currentStrokeElement-1)[1] = null;
+			return true;
+		}
+	}
+	
+	public boolean deleteLastLeakMeasurement(){
+		if(currentLeakElement < currentStrokeElement || currentLeakElement == 0)
+			return false;
+		else{
+			getMeasurementsList().get(currentLeakElement-1)[2] = null;
+			return true;
+		}
+	}
+
 	// adds a single measurement to the batch
 	// as of now, the measurements kan be taken in any chronological order, which means as of now, you have to make all measurements on all elements
 	public boolean addMeasurement(Measurement measurement){
@@ -102,23 +120,23 @@ public class Batch {
 		for(int i = 0; i < measurementsList.size(); i++)
 		{
 			if(measurementsList.get(i)[1] != null){
-			float value = (float) measurementsList.get(i)[1];
-			total = total + value;
-			length++;
+				float value = (float) measurementsList.get(i)[1];
+				total = total + value;
+				length++;
 			}
 		}
 		return total/length;
 	}
-	
+
 	public float getAverageLeak(){
 		int length = 0;
 		float total = 0;
 		for(int i = 0; i < measurementsList.size(); i++)
 		{
 			if(measurementsList.get(i)[1] != null){
-			float value = (float)  measurementsList.get(i)[2];
-			total = total + value;
-			length++;
+				float value = (float)  measurementsList.get(i)[2];
+				total = total + value;
+				length++;
 			}
 		}
 		return total/length;

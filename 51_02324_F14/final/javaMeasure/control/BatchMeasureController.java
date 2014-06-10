@@ -39,18 +39,8 @@ public class BatchMeasureController implements IBatchMeasureController {
 
 	// TODO Finish this - Martin
 	public void btnEditBatchSettingsPressed(){
-		ArrayList<Batch> list = null;
-		batchGUI.updateLog("Loading batchnames...");
-		try {
-			list = mainController.getDatabaseController().getBatches();
-		} catch (DataBaseException e1) {
-			batchGUI.updateLog("Error in receiving batches from database!");
-		}
-		String[] batchList = new String[list.size()];
-		for(int i = 0; i < list.size(); i++){
-			batchList[i] = list.get(i).getBatchString();
-		}
-
+		mainController.startNewBatchController(getActiveBatch());
+		batchGUI.updateLog("Edit batch settings window opened...");
 	}
 
 	// user need to enter a batchnumber before this method is running. that is being taken care of in BatchMeasureGui
@@ -186,6 +176,24 @@ public class BatchMeasureController implements IBatchMeasureController {
 			e.printStackTrace();
 		}
 	}
+	
+	public void deleteStrokeMeasurement(){
+		if(activeBatch.deleteLastStrokeMeasurement()){
+			mainController.getDatabaseController().deleteMeasurement(activeBatch.getBatchID(), activeBatch.getCurrentStrokeElement()-1, MeasurementType.STROKE);
+		}
+		else{
+			batchGUI.showInformationMessage("Not able to delete selected measurement!", "Error");
+		}
+	}
+	
+	public void deleteLeakMeasurement(){
+		if(activeBatch.deleteLastLeakMeasurement()){
+			mainController.getDatabaseController().deleteMeasurement(activeBatch.getBatchID(), activeBatch.getCurrentLeakElement()-1, MeasurementType.LEAK);
+		}
+		else{
+			batchGUI.showInformationMessage("Not able to delete selected measurement!", "Error");
+		}
+	}
 
 	public IMainController getMainController() {
 		return mainController;
@@ -217,6 +225,12 @@ public class BatchMeasureController implements IBatchMeasureController {
 
 	@Override
 	public void updateLog(String string) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void verifyElement(boolean verified, int elementNumber) {
 		// TODO Auto-generated method stub
 		
 	}

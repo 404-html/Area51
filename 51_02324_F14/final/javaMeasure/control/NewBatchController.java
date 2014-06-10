@@ -18,7 +18,7 @@ public class NewBatchController implements INewBatchController {
 	public NewBatchController(IMainController mainController){
 
 		this.mainController = mainController;
-		this.newBatchGui = new NewBatchGui(this);
+		this.newBatchGui = new NewBatchGui(this, false);
 		try {
 			this.newBatchGui.setSettings(getDefaultBatchProfile());
 		} catch (DataBaseException e) {
@@ -28,10 +28,23 @@ public class NewBatchController implements INewBatchController {
 		this.newBatchGui.setVisibility(true);
 	}
 
+	public NewBatchController(IMainController mainController, Batch activeBatch){
+		this.mainController = mainController;
+		this.newBatchGui = new NewBatchGui(this, true);
+		try {
+			this.newBatchGui.setSettings(mainController.getDatabaseController().getBatchProfile(activeBatch.getProfileID()));
+		} catch (DataBaseException e) {
+			System.err.println("Database error when trying to retrieve active batch profile");
+			System.err.println(e);
+		}
+		this.newBatchGui.setVisibility(true);
+		
+	}
+	
 	public IMainController getMainController() {
 		return mainController;
 	}
-
+	
 	/**
 	 * call to this method should handle null pointer exceptions in case. key, value, or profile with specific key does not exist
 	 * should probably be a private method. Not sure if it is needed elsewhere - Rúni

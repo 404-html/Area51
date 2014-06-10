@@ -119,6 +119,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		// adding action listeners for all buttons
 		btnNewBatch.addActionListener(this);
 		btnGetBatch.addActionListener(this);
+		btnEditBatchSettings.addActionListener(this);
 		btnLeakCurrentMeasurement.addActionListener(this);
 		btnStrokeMeasurement.addActionListener(this);
 		btnLogout.addActionListener(this);
@@ -285,15 +286,19 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 			public Component prepareRenderer(
 					TableCellRenderer renderer, int row, int column) {
 				Component c = super.prepareRenderer(renderer, row, column);
-		
+				
+//				System.out.println("row: " + row);
+//				System.out.println("column: " + column);
 				if(row == getRowCount()-1){
 					c.setBackground(Color.YELLOW);
 					c.setForeground(Color.BLACK);
 				} else {
 					if(getValueAt(row, 0).toString().equalsIgnoreCase("false")){
+						batchMeasureController.verifyElement(false, row);
 						c.setBackground(Color.RED);
 						c.setForeground(Color.BLACK);
 					} else{
+						batchMeasureController.verifyElement(true, row);
 						c.setBackground(Color.WHITE);
 						c.setForeground(Color.BLACK);
 					}

@@ -24,9 +24,7 @@ public class UserDAO implements IUserDAO {
 
 		ArrayList<User> users = new ArrayList<>();		
 		try {
-
 			ResultSet result = statement.executeQuery();
-
 			while (result.next()){
 				String userName = result.getString("username");
 				int userID = result.getInt("id");
