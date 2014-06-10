@@ -1,3 +1,4 @@
+<%@page import="javaMeasure.User"%>
 <%@page import="java.util.ArrayList"%>
 <%@page
 	import="javaMeasure.control.interfaces.IDatabaseController.DataBaseException"%>
@@ -11,10 +12,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <%
-	String username = (String) session.getAttribute("username");
+	User user = (User) session.getAttribute("user");
 %>
 <title>Noliac : <%
-	out.println(username);
+	out.println(user.getUserName());
 %> | udtræk
 </title>
 <link rel="stylesheet" type="text/css" href="view.css" media="all" />
@@ -22,51 +23,21 @@
 <script type="text/javascript" src="calendar.js"></script>
 </head>
 <body id="main-body">
-	<%
-		//  Loads databasecontroller for session
-			DataBaseController database = (DataBaseController) session.getAttribute("database");
-			javaMeasure.Batch batch = null;
-		// Checks if request parameters are set
-		String batchname = request.getParameter("batchname");
-		String submit = request.getParameter("submit");
-		String logout = request.getParameter("logout");
-		
-		if (submit != null) {
-			if (batchname != null) {
-				try {
-					batch = database.getBatch(batchname);
-				} catch (DataBaseException dbe) {
-					response.sendRedirect("WEB-INF/form.jsp?fail=notfound");
-				}
-				if (batch != null) {
-					javaMeasure.BatchProfile profile = database
-							.getBatchProfile(batch.getProfileID());
-					session.setAttribute("batch", batch);
-					session.setAttribute("profile", profile);
-					//TODO Rewrite to servlet
-					response.sendRedirect("WEB-INF/report.jsp");
-				}
-			}
-		} else if (logout != null) {
-			session.setAttribute("user", null);
-			response.sendRedirect("LoginServlet");
-		}
-	%>
 	<div id="wrapper">
 		<!-- wrapper for whole page  -->
 		<div id="header">
-			<img src="/noliac_logo.png" alt="Logo">
+			<img src="noliac_logo.png" alt="Logo">
 		</div>
 		<!-- Form begins-->
 		<div id="form_container">
-			<form id="batch_form" class="appnitro" method="post">
+			<form id="batch_form" class="appnitro" method="post" action="MenuServlet">
 				<div class="form_description">
 					<h1>Noliac Batch-udtræk</h1>
-					<p>Indtast selv Batch ID eller vælg Batch ID fra rullemenu</p>
+					<p>Indtast Batch ID eller vælg Batch ID fra rullemenu</p>
 				</div>
 
 				<!-- Input Fields contained in table-->
-				<table width="100%" border="0" cellpadding="2" cellspacing="0">
+				<table width="100%" border="0">
 					<tr>
 						<td>
 							<ul>
@@ -79,8 +50,8 @@
 										<input id="batchname" name="batchname"
 											class="element text medium" type="text" maxlength="255"
 											list="batches" autocomplete="on" value="" />
-										<datalist id="batches"> <%
- 	ArrayList<String> batchNames = database.getBatchNames();
+										<datalist id="batches"> <% //TODO replace with AJAX call
+ 	ArrayList<String> batchNames = ((DataBaseController) request.getSession().getAttribute("database")).getBatchNames();
 
  						for (String batchName : batchNames){
  %>
@@ -90,9 +61,7 @@
 											}
 										%> </datalist>
 									</div>
-									<p class="guidelines" id="guide_3">
-										<small>Batch # du ønsker</small>
-									</p></li>
+									</li>
 								<li id="li_1"><label class="description" for="element_1">Start
 										dato </label> <span> <input id="element_1_2" name="element_1_2"
 										class="element text" size="2" maxlength="2" value=""
@@ -143,7 +112,8 @@
 						<td width="50%"><label class="description" for="selectedbatch">
 								Fundne batches </label> <select name="selectedbatch" id="selectedbatch"
 							size="10">
-								<%    for (String batchName : batchNames){ %>
+								<% //TODO replace with AJAX
+								for (String batchName : batchNames){ %>
 								<option>
 									<%=batchName%></option>
 								<%
@@ -153,10 +123,10 @@
 				</table>
 
 
-				<li class="buttons"><input type="hidden" name="form_id"
-					value="812583" /> <input id="saveForm" class="button_text"
-					type="submit" name="submit" value="Indsend" /> <input
-					id="saveForm" class="button_text" type="submit" name="logout"
+			  <li class="buttons"><input type="hidden" name="form_id"
+					value="812583" /> <input id="submitForm" class="button_text"
+					type="submit" name="submitForm" value="FormSubmit" /> <input
+					id="logout" class="button_text" type="submit" name="logout"
 					value="logout" /></li>
 
 			</form>

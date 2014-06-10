@@ -20,12 +20,12 @@
 	String excel = request.getParameter("saveAsExcel");
 	
 	// batch and profile for table input
-	javaMeasure.Batch batch = (javaMeasure.Batch) session.getAttribute("batch");
-	javaMeasure.BatchProfile profile = (javaMeasure.BatchProfile) session.getAttribute("profile");
+	javaMeasure.Batch batch = (javaMeasure.Batch) request.getAttribute("batch");
+	javaMeasure.BatchProfile profile = (javaMeasure.BatchProfile) request.getAttribute("profile");
 
-	if(session.getAttribute("username") == null)
+	if(session.getAttribute("user") == null)
 	{	
-		response.sendRedirect("userlogin.jsp");
+		response.sendRedirect("NoliacServlet");
 	}
 	else if(newReport != null)
 	{

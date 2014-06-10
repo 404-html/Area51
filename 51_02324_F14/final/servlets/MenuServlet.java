@@ -1,7 +1,6 @@
-
+package servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javaMeasure.control.DataBaseController;
 
 import javax.servlet.ServletException;
@@ -11,23 +10,25 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class NoliacServlet
+ * Servlet implementation class MenuServlet
  */
-@WebServlet("/NoliacServlet")
-public class NoliacServlet extends HttpServlet {
+@WebServlet("/MenuServlet")
+public class MenuServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+       
     /**
-     * Default constructor. 
+     * @see HttpServlet#HttpServlet()
      */
-    public NoliacServlet() {
+    public MenuServlet() {
+        super();
+        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-			processReq(request, response);
+		processReq(request, response);
 	}
 
 	/**
@@ -39,11 +40,12 @@ public class NoliacServlet extends HttpServlet {
 
 	private void processReq(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		if (request.getSession().getAttribute("user") != null){
-			request.getRequestDispatcher("MenuServlet").forward(request, response);
+		DataBaseController dbctrl = (DataBaseController) request.getSession().getAttribute("database");
+		if(request.getParameter("selectedbatch") ==null){
+		request.getRequestDispatcher("WEB-INF/form.jsp").forward(request, response);
 		} else {
-			request.getRequestDispatcher("LoginServlet").forward(request, response);;
+			request.getRequestDispatcher("ReportServlet").forward(request, response);
 		}
 	}
-	
+
 }
