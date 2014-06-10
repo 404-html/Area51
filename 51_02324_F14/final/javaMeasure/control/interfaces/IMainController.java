@@ -1,5 +1,6 @@
 package javaMeasure.control.interfaces;
 
+import javaMeasure.Batch;
 import javaMeasure.User;
 
 public interface IMainController {
@@ -10,6 +11,7 @@ public interface IMainController {
 	public IDatabaseController getDatabaseController();
 	public ICConnector getcConnector();
 	void startNewBatchController();
+	void startNewBatchController(Batch activeBatch);
 //	void startBatchMeasure(); not neccessary after mainMenuController is removed
 	void logOut();
 	IDasyFileReader getDasyController();

@@ -4,9 +4,11 @@ import java.sql.*;
 import java.util.ArrayList;
 
 import javaMeasure.*;
+import javaMeasure.Measurement.MeasurementType;
 import javaMeasure.interfaces.*;
 import javaMeasure.control.interfaces.IDatabaseController;
 import javaMeasure.control.interfaces.ISQLConnector;
+import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 
 
 public class DataBaseController implements IDatabaseController {
@@ -53,6 +55,7 @@ public class DataBaseController implements IDatabaseController {
 	public User getUserFromString(String userString) throws DataBaseException, UserNotFoundException {
 		return this.userDAO.getUserFromString(userString);
 	}
+
 	//Measurements
 
 	@Override
@@ -133,6 +136,19 @@ public class DataBaseController implements IDatabaseController {
 	public void saveEditedBatchProfile(BatchProfile oldProfile, String newName)
 			throws DataBaseException {
 		
+		
+	}
+
+	@Override
+	public void updateUser(User change) throws DataBaseException {
+		this.userDAO.updateUser(change);
+		
+	}
+
+	@Override
+	public void deleteMeasurement(int batchID, int elementNumber,
+			MeasurementType type) {
+		// TODO Auto-generated method stub
 		
 	}
 	

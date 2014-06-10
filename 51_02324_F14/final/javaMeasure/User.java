@@ -4,12 +4,16 @@ public class User {
 	private String userName;
 	private int userID;
 	private String passWord; 
+	private boolean active;
+	private boolean admin;
 	
 	public User(String userName, int userID) {
 		super();
 		this.userName = userName;
 		this.userID = userID;
 		this.passWord = null;
+		this.active=true;
+		this.admin=false;
 	}
 	
 	public User(String userName, int userID, String passWord) {
@@ -46,6 +50,22 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [userName=" + userName + ", userID=" + userID + "]";
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	public boolean isAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
 	}
 
 }

@@ -21,7 +21,7 @@
 
 		<div id="form_container">
 
-			<form id="login_form" class="appnitro" method="post" action="LoginServlet">
+			<form id="login_form" class="appnitro" method="post" action="NoliacServlet">
 				<div class="form_description">
 					<h1>Noliac User login</h1>
 
@@ -51,8 +51,8 @@
 							<small>Indtast kode</small>
 						</p></li>
 					<li class="buttons">
-					<input type="hidden" name="form_id"
-						value="812583" /> 
+					<input type="hidden" name="cmd"
+						value="tryLogin" /> 
 						<input id="saveForm" class="button_text"
 						type="submit" name="login" value="Login" /></li>
 				</ul>

@@ -43,6 +43,10 @@ public class ReportServlet extends HttpServlet {
 
 	private void processReq(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		//Login check
+		if (request.getSession().getAttribute("user")==null)
+			request.getRequestDispatcher("NoliacServlet").forward(request, response);
+		//Load batch from database
 		String batchName = request.getParameter("selectedbatch");
 		DataBaseController dbctrl = (DataBaseController) request.getSession().getAttribute("database");
 		Batch batch = null;
@@ -55,6 +59,7 @@ public class ReportServlet extends HttpServlet {
 		}
 		request.setAttribute("batch", batch);
 		request.setAttribute("profile", profile);
+		//TODO generate attributes for report....
 		request.getRequestDispatcher("WEB-INF/report.jsp").forward(request, response);
 
 	}

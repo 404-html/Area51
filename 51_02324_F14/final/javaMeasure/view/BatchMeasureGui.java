@@ -128,6 +128,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		// adding action listeners for all buttons
 		btnNewBatch.addActionListener(this);
 		btnGetBatch.addActionListener(this);
+		btnEditBatchSettings.addActionListener(this);
 		btnLeakCurrentMeasurement.addActionListener(this);
 		btnStrokeMeasurement.addActionListener(this);
 		btnLogout.addActionListener(this);
