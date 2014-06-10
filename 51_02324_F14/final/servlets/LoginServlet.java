@@ -54,7 +54,7 @@ public class LoginServlet extends HttpServlet {
 			}
 			System.out.println(loginSuccess);
 			if (loginSuccess) {
-				System.out.println("forwarding");
+				System.out.println("Login succes forwarding");
 				request.getSession().setAttribute("user", loginUser);
 				request.getSession().setAttribute("database", dbctrl);
 				request.getRequestDispatcher("NoliacServlet").forward(request, response);

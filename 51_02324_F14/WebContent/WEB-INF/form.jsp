@@ -123,12 +123,14 @@
 				</table>
 
 
-			  <li class="buttons"><input type="hidden" name="cmd"
+			  <input type="hidden" name="cmd"
 					value="report" /> <input id="submitForm" class="button_text"
-					type="submit" name="submitForm" value="FormSubmit" /> <input
+					type="submit" name="submitForm" value="FormSubmit" /> </form>
+          <form> <input type="hidden" name="cmd" value="logout"/>
+                    <input
 					id="logout" class="button_text" type="submit" name="logout"
-					value="logout" /></li>
-
+					value="logout" />
+					</form>
 			</form>
             <a href="NoliacServlet?cmd=admin">Administrer brugere</a>
 			<div id="footer">By Area51</div>

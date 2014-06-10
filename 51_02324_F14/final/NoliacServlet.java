@@ -7,11 +7,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javaMeasure.User;
 
 /**
  * Servlet implementation class NoliacServlet
  */
 @WebServlet("/NoliacServlet")
+//Front controller - Handles all requests.
 public class NoliacServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -46,8 +48,18 @@ public class NoliacServlet extends HttpServlet {
 			case "admin":
 				request.getRequestDispatcher("UserEditServlet").forward(request, response);
 				break;
+			case "logout":
+				request.setAttribute("user", null);
+				request.getRequestDispatcher("LoginServlet").forward(request, response);
+				break;
+			case "tryLogin":
+				request.getRequestDispatcher("MenuServlet").forward(request, response);
+				break;
+			case "":
+				request.getRequestDispatcher("MenuServlet").forward(request, response);
+				break;
 			default:
-				request.getRequestDispatcher("MenuServlet").forward(request, response);;
+				request.getRequestDispatcher(request.getParameter("cmd")).forward(request, response);
 				break;
 			}
 		} else { //user not logged in
