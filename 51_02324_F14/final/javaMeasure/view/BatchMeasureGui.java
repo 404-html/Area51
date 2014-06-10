@@ -89,7 +89,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		getContentPane().add(btnStrokeMeasurement);
 
 		JButton btnLogout = new JButton("Log out");
-		btnLogout.setBounds(360, 440, 215, 25);
+		btnLogout.setBounds(360, 583, 215, 25);
 		btnLogout.setActionCommand("logout");
 		getContentPane().add(btnLogout);
 
@@ -97,7 +97,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		separator.setOrientation(SwingConstants.VERTICAL);
 		separator.setBackground(Color.WHITE);
 		separator.setForeground(Color.GRAY);
-		separator.setBounds(580, 10, 10, 450);
+		separator.setBounds(580, 10, 10, 601);
 		getContentPane().add(separator);
 
 		//setup for the log
@@ -108,7 +108,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		log.ensureIndexIsVisible(log.getMaxSelectionIndex());
 		logScroll.setViewportView(log);
 		log.setEnabled(false);
-		logScroll.setBounds(10, 300, 340, 165);
+		logScroll.setBounds(10, 443, 340, 165);
 		getContentPane().add(logScroll);
 
 		// table setup for measurements
@@ -140,7 +140,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		}
 
 		JLabel lbllog = new JLabel("<html><b>Event log: </b></html>");
-		lbllog.setBounds(10, 275, 90, 15);
+		lbllog.setBounds(10, 420, 90, 15);
 		getContentPane().add(lbllog);
 		
 		JLabel lblCustomer = new JLabel("Customer:");
@@ -328,7 +328,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		};
 
 		table.setEditingColumn(0);
-		table.setBounds(10, 10, 340, 240);
+		table.setBounds(10, 10, 340, 380);
 		table.getModel().addTableModelListener(new TableModelListener() {
 
 			@Override
@@ -346,7 +346,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 
 		scrollPane = new JScrollPane();
 		scrollPane.setViewportView(table);
-		scrollPane.setBounds(10, 10, 340, 245);
+		scrollPane.setBounds(10, 10, 340, 380);
 		table.setFillsViewportHeight(true);
 		getContentPane().add(scrollPane);
 		
