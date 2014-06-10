@@ -12,6 +12,7 @@ public interface IDatabaseController {
 	boolean validateUser(User user) throws DataBaseException;
 	User getUserFromString(String userString) throws DataBaseException, UserNotFoundException;
 	void addToDB(User user) throws DataBaseException;
+	public void updateUser(User change)throws DataBaseException;
 	
 	// MeasureMents
 	void addToDB(Measurement measurement) throws DataBaseException;
