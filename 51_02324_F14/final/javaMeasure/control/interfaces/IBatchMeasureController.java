@@ -28,6 +28,10 @@ public interface IBatchMeasureController {
 	
 	void verifyElement(boolean verified, int elementNumber);
 	
+	void deleteStrokeMeasurement();
+	
+	void deleteLeakMeasurement();
+	
 	
 	
 }
