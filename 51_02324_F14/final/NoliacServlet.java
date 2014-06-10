@@ -39,9 +39,10 @@ public class NoliacServlet extends HttpServlet {
 
 	private void processReq(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		if (request.getSession().getAttribute("user") != null){
+		if (request.getSession().getAttribute("user") != null){ 
+			// user is logged in
 			request.getRequestDispatcher("MenuServlet").forward(request, response);
-		} else {
+		} else { //user not logged in
 			request.getRequestDispatcher("LoginServlet").forward(request, response);;
 		}
 	}

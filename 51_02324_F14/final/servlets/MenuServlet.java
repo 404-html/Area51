@@ -45,11 +45,23 @@ public class MenuServlet extends HttpServlet {
 		if (request.getSession().getAttribute("user") == null) 
 			request.getRequestDispatcher("NoliacServlet").forward(request, response);
 		//check if a batch was selected
-		if(request.getParameter("selectedbatch") ==null){
-		request.getRequestDispatcher("WEB-INF/form.jsp").forward(request, response);
-		} else {
-			request.getRequestDispatcher("ReportServlet").forward(request, response);
+		switch (request.getParameter("cmd")) {
+		case "report":
+			if(request.getParameter("selectedbatch") ==null){
+				request.getRequestDispatcher("WEB-INF/form.jsp").forward(request, response);
+				} else {
+					request.getRequestDispatcher("ReportServlet").forward(request, response);
+				}
+			break;
+		case "admin":
+			request.getRequestDispatcher("UserEditServlet").forward(request, response);
+			break;
+		default:
+			request.getRequestDispatcher("WEB-INF/form.jsp").forward(request, response);;
+			break;
 		}
+		
+		
 	}
 
 }

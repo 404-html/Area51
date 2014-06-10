@@ -30,7 +30,7 @@
 		</div>
 		<!-- Form begins-->
 		<div id="form_container">
-			<form id="batch_form" class="appnitro" method="post" action="MenuServlet">
+			<form id="batch_form" class="appnitro" method="post" action="NoliacServlet">
 				<div class="form_description">
 					<h1>Noliac Batch-udtræk</h1>
 					<p>Indtast Batch ID eller vælg Batch ID fra rullemenu</p>
@@ -123,14 +123,14 @@
 				</table>
 
 
-			  <li class="buttons"><input type="hidden" name="form_id"
-					value="812583" /> <input id="submitForm" class="button_text"
+			  <li class="buttons"><input type="hidden" name="cmd"
+					value="report" /> <input id="submitForm" class="button_text"
 					type="submit" name="submitForm" value="FormSubmit" /> <input
 					id="logout" class="button_text" type="submit" name="logout"
 					value="logout" /></li>
 
 			</form>
-            <a href="UserEditServlet">Administrer brugere</a>
+            <a href="NoliacServlet?cmd=admin">Administrer brugere</a>
 			<div id="footer">By Area51</div>
 
 		</div>

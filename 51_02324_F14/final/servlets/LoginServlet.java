@@ -33,7 +33,7 @@ public class LoginServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//User gets loginpage
 		request.getRequestDispatcher("WEB-INF/userlogin.jsp").forward(request, response);
-		
+
 	}
 
 	/**
@@ -43,28 +43,29 @@ public class LoginServlet extends HttpServlet {
 		//User posts login data
 		System.out.println("UserLogin - Post");
 		String username = request.getParameter("username");
-		String password = request.getParameter("password");
-
-		boolean loginSuccess = false;
-		User loginUser = new User(username, 0, password);
-		System.out.println(loginUser);
-		//Validating user
-		try {loginSuccess = dbctrl.validateUser(loginUser);
-		} catch (DataBaseException e) {		e.printStackTrace();	}
-		
-		System.out.println(loginSuccess);
-		if (loginSuccess) {
-			System.out.println("forwarding");
-			request.getSession().setAttribute("user", loginUser);
-			request.getSession().setAttribute("database", dbctrl);
-			request.getRequestDispatcher("NoliacServlet").forward(request, response);
-			System.out.println("forward finished");
+		if (username != null){
+			String password = request.getParameter("password");
+			boolean loginSuccess = false;
+			User loginUser = new User(username, 0, password);
+			System.out.println(loginUser);
+			//Validating user
+			try {loginSuccess = dbctrl.validateUser(loginUser);
+			} catch (DataBaseException e) {		e.printStackTrace();	
+			}
+			System.out.println(loginSuccess);
+			if (loginSuccess) {
+				System.out.println("forwarding");
+				request.getSession().setAttribute("user", loginUser);
+				request.getSession().setAttribute("database", dbctrl);
+				request.getRequestDispatcher("NoliacServlet").forward(request, response);
+				System.out.println("forward finished");
+			} 
 		} else {
 			if (request.getParameter("username")  != null) 
 				request.setAttribute("loginFail", true);
 			request.getRequestDispatcher("WEB-INF/userlogin.jsp").forward(request, response);
 		}
 	}
-	
+
 
 }
