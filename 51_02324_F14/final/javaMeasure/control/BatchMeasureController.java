@@ -221,6 +221,12 @@ public class BatchMeasureController implements IBatchMeasureController {
 		
 	}
 
+	@Override
+	public void verifyElement(boolean verified, int elementNumber) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 
 }
