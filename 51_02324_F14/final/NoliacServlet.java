@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.io.PrintWriter;
+
 import javaMeasure.control.DataBaseController;
 
 import javax.servlet.ServletException;
@@ -7,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import javaMeasure.User;
 
 /**
@@ -41,7 +43,10 @@ public class NoliacServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		if (request.getSession().getAttribute("user") != null){ 
 			// user is logged in
-			switch (request.getParameter("cmd")) {
+			String cmd = request.getParameter("cmd");
+			if (cmd == null)
+				cmd = "";
+			switch (cmd) {
 			case "report":
 				request.getRequestDispatcher("ReportServlet").forward(request, response);
 				break;
