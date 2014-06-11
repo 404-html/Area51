@@ -95,6 +95,16 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		btnStrokeMeasurement.setActionCommand("stroke");
 		btnStrokeMeasurement.setBounds(360, 130, 215, 25);
 		getContentPane().add(btnStrokeMeasurement);
+		
+		JButton btnDeleteLeak = new JButton("Delete last leak");
+		btnDeleteLeak.setBounds(360, 367, 210, 23);
+		getContentPane().add(btnDeleteLeak);
+		btnDeleteLeak.setActionCommand("deleteLeak");		
+		
+		JButton btnDeleteStroke = new JButton("Delete last stroke");
+		btnDeleteStroke.setBounds(360, 330, 210, 23);
+		getContentPane().add(btnDeleteStroke);
+		btnDeleteStroke.setActionCommand("deleteStroke");
 
 		JButton btnLogout = new JButton("Log out");
 		btnLogout.setBounds(360, 583, 215, 25);
@@ -131,6 +141,8 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		btnEditBatchSettings.addActionListener(this);
 		btnLeakCurrentMeasurement.addActionListener(this);
 		btnStrokeMeasurement.addActionListener(this);
+		btnDeleteLeak.addActionListener(this);
+		btnDeleteStroke.addActionListener(this);
 		btnLogout.addActionListener(this);
 
 	}
@@ -517,6 +529,12 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 			break;
 		case "leakCurrent":
 			batchMeasureController.btnLeakCurrent();
+			break;
+		case "deleteLeak":
+			batchMeasureController.btnDeleteLeak();
+			break;
+		case "deleteStroke":
+			batchMeasureController.btnDeleteStroke();
 			break;
 		case "logout":
 			System.out.println("logging out");

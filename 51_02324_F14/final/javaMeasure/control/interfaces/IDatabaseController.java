@@ -39,6 +39,10 @@ public interface IDatabaseController {
 	void deleteBatchProfile(BatchProfile bp) throws DataBaseException;
 	void editBatchProfile(BatchProfile bp) throws DataBaseException; 
 	void saveEditedBatchProfile(BatchProfile oldProfile, String newName) throws DataBaseException;
+	
+	void saveBatchSetting(BatchSetting b, int profileID) throws DataBaseException;
+	void deleteMeasurement(int batchID, int elementNumber, MeasurementType type) throws DataBaseException;
+	void updateMeasurement(Measurement measurement) throws DataBaseException;
 	//Exceptions
 	@SuppressWarnings("serial")
 	public class DataBaseException extends Exception {
@@ -47,9 +51,7 @@ public interface IDatabaseController {
 	public class UserNotFoundException extends Exception {
 
 	}
-	void saveBatchSetting(BatchSetting b, int profileID)
-			throws DataBaseException;
-	void deleteMeasurement(int batchID, int elementNumber, MeasurementType type);
+
 	
 //	ArrayList<BatchProfile> getBatchProfiles();
 	

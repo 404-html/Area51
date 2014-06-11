@@ -119,7 +119,7 @@ public class UserDAO implements IUserDAO {
 	}
 	
 	public void updateUser(User change)throws DataBaseException{
-		String query = "UPDATE users set password = ?, admin = ?, active = ? where id=?";
+		String query = "UPDATE users SET password = ?, admin = ?, active = ? WHERE id=?";
 		PreparedStatement statement = sqlConnector.getPreparedStatement(query);
 		try {
 			int ac=0;
