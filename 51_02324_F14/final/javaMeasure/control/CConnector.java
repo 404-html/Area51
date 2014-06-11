@@ -45,14 +45,14 @@ public class CConnector implements ICConnector
 
 
 	@Override
-	public Measurement[] readMeasurements(MeasurementType measurmentType, int number, int period) throws ConnectionException
+	public Measurement[] readMeasurements(MeasurementType measurementType, int number, int period) throws ConnectionException
 	{
 		connect();
 
 		//Gets returns an array of measurment with lenght number with updated data, port and timestamp
 		Measurement[] measurementArray = new Measurement[number];
 		int hardwarePort = 0;
-		switch(measurmentType)
+		switch(measurementType)
 		{
 		case LEAK:
 			//ports=1234;
@@ -73,7 +73,7 @@ public class CConnector implements ICConnector
 			int j = 0;
 			for (int i = 0; i < returnArray.length/2; i++)
 			{
-				measurementArray[i] = new Measurement(Float.parseFloat(returnArray[j]),measurmentType,Long.parseLong(returnArray[j+1]));
+				measurementArray[i] = new Measurement(Float.parseFloat(returnArray[j]),measurementType,Long.parseLong(returnArray[j+1]));
 
 				j++;
 				j++;

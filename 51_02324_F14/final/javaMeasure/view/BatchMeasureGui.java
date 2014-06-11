@@ -14,17 +14,12 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
-import java.awt.event.ContainerEvent;
-import java.awt.event.ContainerListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.JTable;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
@@ -40,8 +35,6 @@ import javaMeasure.view.interfaces.IBatchMeasureGui;
 
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
-
-import java.awt.event.ActionListener;
 
 @SuppressWarnings("serial")
 public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
