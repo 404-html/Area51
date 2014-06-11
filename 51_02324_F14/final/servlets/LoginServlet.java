@@ -5,6 +5,7 @@ import java.io.IOException;
 import javaMeasure.User;
 import javaMeasure.control.DataBaseController;
 import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
+import javaMeasure.control.interfaces.IDatabaseController.UserNotFoundException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -54,15 +55,22 @@ public class LoginServlet extends HttpServlet {
 			//Validating user
 			try {loginSuccess = dbctrl.validateUser(loginUser);
 			} catch (DataBaseException e) {		e.printStackTrace();	
+			
 			}
 			System.out.println(loginSuccess);
 			if (loginSuccess) {
-				System.out.println("Login succes forwarding");
-				request.getSession().setAttribute("user", loginUser);
+				System.out.println("Login success forwarding");
+				try {
+					request.getSession().setAttribute("user", dbctrl.getUserFromString(username));
+				} catch (DataBaseException e) {
+					e.printStackTrace();
+				} catch (UserNotFoundException e) {
+					e.printStackTrace();
+				}
 				request.getSession().setAttribute("database", dbctrl);
 				response.sendRedirect("MenuServlet");
 				System.out.println("forward finished");
-			} 
+			}
 		} else {
 			if (request.getParameter("username")  != null) 
 				request.setAttribute("loginFail", true);

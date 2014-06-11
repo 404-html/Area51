@@ -71,4 +71,36 @@ public class MeasurementDAO implements IMeasurementDAO{
 
 		return measurements;
 	}
+
+	@Override
+	public void updateMeasurement(Measurement measurement)	throws DataBaseException {
+		String query = "UPDATE measurements SET verified=? WHERE batchid=? AND elementnumber=? ";
+		PreparedStatement statement = sqlConnector.getPreparedStatement(query);
+		try{
+			statement.setBoolean(1, measurement.getVerified());
+			statement.setInt(2, measurement.getBatchID());
+			statement.setInt(3, measurement.getElementNo());
+			statement.executeUpdate();
+		} catch(SQLException e) {
+			e.printStackTrace();
+			throw new DataBaseException();
+		}
+		
+	}
+
+	@Override
+	public void deleteMeasurement(int batchID, int elementNumber, MeasurementType type) throws DataBaseException{
+		String query = "DELETE FROM measurements WHERE batchid=? AND elementnumber=? AND measurementtype=?";
+		PreparedStatement statement = sqlConnector.getPreparedStatement(query);
+		try{
+			statement.setInt(1, batchID);
+			statement.setInt(2, elementNumber);
+			statement.setString(3, type.name());
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataBaseException();
+		}
+		
+	}
 }

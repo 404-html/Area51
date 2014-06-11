@@ -124,9 +124,6 @@ public class BatchMeasureController implements IBatchMeasureController {
 	}
 
 	public void btnLeakCurrent() {
-
-		
-
 		if(activeBatch == null){
 			batchGUI.showInformationMessage("You have to create batch before reading measurements", "No batch settings loaded");
 		} else{
@@ -140,6 +137,40 @@ public class BatchMeasureController implements IBatchMeasureController {
 					dl.start();
 				}
 			}
+		}
+	}
+	
+	@Override
+	public void btnDeleteStroke() {
+		if(activeBatch.deleteLastStrokeMeasurement()){
+			try {
+				mainController.getDatabaseController().deleteMeasurement(activeBatch.getBatchID(), activeBatch.getCurrentStrokeElement()-1, MeasurementType.STROKE);
+				batchGUI.updateTable(activeBatch);
+				batchGUI.updateLog("last stroke measurement deleted");
+			} catch (DataBaseException e) {
+				e.printStackTrace();
+				batchGUI.updateLog("unable to delete measurement");
+			}		
+		}
+		else{
+			batchGUI.showInformationMessage("Not able to delete selected measurement!", "Error");
+		}
+	}
+
+	@Override
+	public void btnDeleteLeak() {
+		if(activeBatch.deleteLastLeakMeasurement()){
+			try {
+				mainController.getDatabaseController().deleteMeasurement(activeBatch.getBatchID(), activeBatch.getCurrentLeakElement()-1, MeasurementType.LEAK);
+				batchGUI.updateTable(activeBatch);
+				batchGUI.updateLog("last leak measurement deleted");
+			} catch (DataBaseException e) {
+				e.printStackTrace();
+				batchGUI.updateLog("unable to delete measurement");
+			}
+		}
+		else{
+			batchGUI.showInformationMessage("Not able to delete selected measurement!", "Error");
 		}
 	}
 
@@ -179,24 +210,6 @@ public class BatchMeasureController implements IBatchMeasureController {
 		} catch (DataBaseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-	}
-	
-	public void deleteStrokeMeasurement(){
-		if(activeBatch.deleteLastStrokeMeasurement()){
-			mainController.getDatabaseController().deleteMeasurement(activeBatch.getBatchID(), activeBatch.getCurrentStrokeElement()-1, MeasurementType.STROKE);
-		}
-		else{
-			batchGUI.showInformationMessage("Not able to delete selected measurement!", "Error");
-		}
-	}
-	
-	public void deleteLeakMeasurement(){
-		if(activeBatch.deleteLastLeakMeasurement()){
-			mainController.getDatabaseController().deleteMeasurement(activeBatch.getBatchID(), activeBatch.getCurrentLeakElement()-1, MeasurementType.LEAK);
-		}
-		else{
-			batchGUI.showInformationMessage("Not able to delete selected measurement!", "Error");
 		}
 	}
 
@@ -244,8 +257,16 @@ public class BatchMeasureController implements IBatchMeasureController {
 	public void updateMeasurements(int elementNumber, boolean verified) {
 		System.out.println("updateMeasurements, verified: " + verified);
 		activeBatch.updateMeasurements(elementNumber, verified);
+		try{
+		mainController.getDatabaseController().updateMeasurement(activeBatch.getMeasurement(elementNumber, MeasurementType.LEAK));
+		mainController.getDatabaseController().updateMeasurement(activeBatch.getMeasurement(elementNumber, MeasurementType.STROKE));
+		} catch(DataBaseException e){
+			batchGUI.updateLog("failed to update measurement");
+		}
 		
 	}
+
+
 
 
 
