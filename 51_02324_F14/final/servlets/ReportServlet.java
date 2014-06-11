@@ -64,5 +64,8 @@ public class ReportServlet extends HttpServlet {
 			request.getRequestDispatcher("WEB-INF/report.jsp").forward(request, response);
 		}
 	}
+	private String[] getReport(Batch batch, BatchProfile profile){
+		return null;
+	}
 
 }
