@@ -120,7 +120,7 @@
 							<tr>
 								<td colspan="5"><h3>Final Inspection and Test Report</h3></td>
 								<td>&nbsp;</td>
-								<td>&nbsp;</td>
+								<td>"batchnavn"</td>
 								<td>&nbsp;</td>
 								<td>&nbsp;</td>
 							</tr>
@@ -140,7 +140,7 @@
 								<td>Average</td>
 								<td>Min</td>
 								<td>Max</td>
-								<td>&nbsp;</td>
+								<td>Approved</td>
 							</tr>
 							<tr>
 								<td>Length (mm):</td>
@@ -231,18 +231,7 @@
 								<td>&nbsp;</td>
 							</tr>
 							<tr>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-							</tr>
-							<tr>
-								<td>&nbsp;</td>
+								<td>approved date</td>
 								<td>&nbsp;</td>
 								<td>&nbsp;</td>
 								<td>&nbsp;</td>
@@ -253,7 +242,7 @@
 								<td>&nbsp;</td>
 							</tr>
 							<tr>
-								<td>&nbsp;</td>
+								<td>number approved</td>
 								<td>&nbsp;</td>
 								<td>&nbsp;</td>
 								<td>&nbsp;</td>
@@ -264,7 +253,18 @@
 								<td>&nbsp;</td>
 							</tr>
 							<tr>
+								<td>Comments:</td>
 								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+							</tr>
+							<tr>
+								<td>approved by</td>
 								<td>&nbsp;</td>
 								<td>&nbsp;</td>
 								<td>&nbsp;</td>
