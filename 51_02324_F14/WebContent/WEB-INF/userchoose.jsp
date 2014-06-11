@@ -22,14 +22,7 @@
 	out.println(username);
 %> | udtræk
 </title>
-					<%
-						if (request.getAttribute("editfail") != null) {
-							out.println(" <p>Fandt ikke brugernavn i database.</p>");
-						}
-						if (request.getAttribute("edited") !=null){
-							out.println("<p>Opdateret bruger.</p>");
-						}
-					%>
+					
 <link rel="stylesheet" type="text/css" href="view.css" media="all" />
 <script type="text/javascript" src="view.js"></script>
 <script type="text/javascript" src="calendar.js"></script>
@@ -48,7 +41,7 @@
 
 			<form id="user_edit" class="appnitro" method="post" action=UserEditServlet>
 				<div class="form_description">
-					<h1>Noliac User Edit</h1>
+					<h1>Choose user</h1>
 					
 				
 				
@@ -57,7 +50,11 @@
 		<tr>
 			<td>
 				<ul>
-				
+				<%
+						if (request.getAttribute("usernotfound") != null) {
+							out.println(" <p>Finder ikke valgte bruger.</p>");
+						}
+					%>
 					<li id="li_3"><label class="description" for="username" >
 					 <% //Checks if User was found
 											if (request.getParameter("fail") != null) out.print("Bruger ikke genkendt! -");
@@ -80,48 +77,30 @@
 						</div>
 
 						
-					<li id="li_"><label class="description" for="element_4">Password</label>
-						<div>
-							<input id="element_4" name="password" class="element text medium"
-								type="text" maxlength="255" value="123456" />
-						  <input type="hidden" name="form_id"
-						value="812583" />
-				  </div>                    
-				</ul>
-          </td>
-		  <td width="50%">
-	
-         <input type="checkbox" name="active" value="active"> active<BR>
-		  <input type="checkbox" name="admin" value="admin"> admin<BR></tr>
+		  </ul></td>
+		  <td width="50%"><p>&nbsp;</p>
+		    <p><BR>
+	        </p>		    </tr>
 		 
 				
        <table width="100%" border="0" cellpadding="2" cellspacing="0">
 		<tr>
-			<td>
-				  <span class="buttons">
-				  
-				  <input id="saveForm" class="button_text"
-						type="submit" name="Save" value="save" />
-						</span>
-                         </td>
+			<td>&nbsp;</td>
 				
 
-                  <td width="95%">
+                  <td width="68%">
                   
                   
                   <span class="buttons">
-                
-				  <input id="Done" class="button_text"
-						type="submit" name="Done" value="done" />
-				  </span>
+                  <input id="Choose" class="button_text"
+						type="submit" name="Choose" value="Choose" />
+                  <input id="Done" class="button_text"
+						type="submit" name="Done" value="Done" />
+                  </span>
                   </td>
-                  </tr>
+         </tr>
                   </table>
-
-
-				
-				</div>
-				</form>
+			</form>
 			
 			<div id="footer">
 				By Area51

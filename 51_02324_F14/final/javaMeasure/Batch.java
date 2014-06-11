@@ -74,20 +74,30 @@ public class Batch {
 	}
 
 	public boolean deleteLastStrokeMeasurement(){
+		Object[] row = getMeasurementsList().get(currentStrokeElement-1);
+		ArrayList<Object[]> list = getMeasurementsList();
 		if(currentStrokeElement < currentLeakElement || currentLeakElement == 0)
 			return false;
 		else{
-			getMeasurementsList().get(currentStrokeElement-1)[1] = null;
+			row[2] = null;
+			if(row[3] == null){
+				list.remove(currentStrokeElement-1);
+			}
 			currentStrokeElement--;
 			return true;
 		}
 	}
 	
 	public boolean deleteLastLeakMeasurement(){
+		Object[] row = getMeasurementsList().get(currentLeakElement-1);
+		ArrayList<Object[]> list = getMeasurementsList();
 		if(currentLeakElement < currentStrokeElement || currentLeakElement == 0)
 			return false;
 		else{
-			getMeasurementsList().get(currentLeakElement-1)[2] = null;
+			row[3] = null;
+			if(row[2] == null){
+				list.remove(currentLeakElement-1);
+			}
 			currentLeakElement--;
 			return true;
 		}
@@ -173,6 +183,15 @@ public class Batch {
 			}
 		}
 		return total/length;
+	}
+	
+	public Measurement getMeasurement(int elementnumber, MeasurementType type){
+		if(type == MeasurementType.STROKE){
+			return (Measurement) getMeasurementsList().get(elementnumber)[2];
+		}
+		else{
+			return (Measurement) getMeasurementsList().get(elementnumber)[3];
+		}
 	}
 
 	public int getCurrentLeakElement(){

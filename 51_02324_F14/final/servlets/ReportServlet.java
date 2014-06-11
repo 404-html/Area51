@@ -20,12 +20,12 @@ import javax.servlet.http.HttpServletResponse;
 public class ReportServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    /**
-     * Default constructor. 
-     */
-    public ReportServlet() {
-        // TODO Auto-generated constructor stub
-    }
+	/**
+	 * Default constructor. 
+	 */
+	public ReportServlet() {
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -44,24 +44,25 @@ public class ReportServlet extends HttpServlet {
 	private void processReq(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		//Login check
-		if (request.getSession().getAttribute("user")==null)
-			request.getRequestDispatcher("NoliacServlet").forward(request, response);
-		//Load batch from database
-		String batchName = request.getParameter("selectedbatch");
-		DataBaseController dbctrl = (DataBaseController) request.getSession().getAttribute("database");
-		Batch batch = null;
-		BatchProfile profile = null;
-		try {
-			batch = dbctrl.getBatch(batchName);
-			profile = dbctrl.getBatchProfile(batch.getProfileID());
-		} catch (DataBaseException e) {
-			e.printStackTrace();
+		if (request.getSession().getAttribute("user")==null){
+			response.sendRedirect("LoginServlet");
+		} else {
+			//Load batch from database
+			String batchName = request.getParameter("selectedbatch");
+			DataBaseController dbctrl = (DataBaseController) request.getSession().getAttribute("database");
+			Batch batch = null;
+			BatchProfile profile = null;
+			try {
+				batch = dbctrl.getBatch(batchName);
+				profile = dbctrl.getBatchProfile(batch.getProfileID());
+			} catch (DataBaseException e) {
+				e.printStackTrace();
+			}
+			request.setAttribute("batch", batch);
+			request.setAttribute("profile", profile);
+			//TODO generate attributes for report....
+			request.getRequestDispatcher("WEB-INF/report.jsp").forward(request, response);
 		}
-		request.setAttribute("batch", batch);
-		request.setAttribute("profile", profile);
-		//TODO generate attributes for report....
-		request.getRequestDispatcher("WEB-INF/report.jsp").forward(request, response);
-
 	}
-	
+
 }

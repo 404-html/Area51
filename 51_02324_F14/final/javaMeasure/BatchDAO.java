@@ -127,10 +127,10 @@ public class BatchDAO implements IBatchDAO {
 
 				while(result.next()){
 					if(result.getString("measurementtype").equals("LEAK")){
-						leak.add(new Measurement(result.getInt("batchid"), result.getInt("elementnumber"), result.getFloat("measurementvalue"), Measurement.MeasurementType.LEAK, result.getLong("timestamp")));						
+						leak.add(new Measurement(result.getInt("batchid"), result.getInt("elementnumber"), result.getFloat("measurementvalue"), result.getBoolean("verified"), Measurement.MeasurementType.LEAK, result.getLong("timestamp")));						
 					}
 					else if (result.getString("measurementtype").equals("STROKE")){
-						stroke.add(new Measurement(result.getInt("batchid"), result.getInt("elementnumber"), result.getFloat("measurementvalue"), Measurement.MeasurementType.STROKE, result.getLong("timestamp")));
+						stroke.add(new Measurement(result.getInt("batchid"), result.getInt("elementnumber"), result.getFloat("measurementvalue"), result.getBoolean("verified"), Measurement.MeasurementType.STROKE, result.getLong("timestamp")));
 					}
 				}
 			}
@@ -200,7 +200,7 @@ public class BatchDAO implements IBatchDAO {
 					else{
 						type = Measurement.MeasurementType.STROKE;
 					}
-					returBatch.addMeasurement(new Measurement(result.getInt("id"), result.getInt("elementnumber"), result.getFloat("measurementvalue"), type, result.getLong("timestamp")));
+					returBatch.addMeasurement(new Measurement(result.getInt("id"), result.getInt("elementnumber"), result.getFloat("measurementvalue"), result.getBoolean("verified"), type, result.getLong("timestamp")));
 					//						measure = new Measurement(result.getFloat("measurmentvalue"), translate, result.getInt("timestamp"));
 					//						measure.setElementNo(result.getInt("elementnumber"));
 					//						measure.setBatchID(result.getInt("id"));

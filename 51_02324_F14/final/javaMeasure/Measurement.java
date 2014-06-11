@@ -10,16 +10,16 @@ public class Measurement {
 	private boolean verified;
 	
 	public Measurement(float measureValue,MeasurementType readType, long timeStamp){
-		this(-1, -1, measureValue, readType, timeStamp);
+		this(-1, -1, measureValue, true, readType, timeStamp);
 	}
 	
-	public Measurement(int batchID, int elementNo, float measureValue,MeasurementType readType, long timeStamp){
+	public Measurement(int batchID, int elementNo, float measureValue, boolean verified, MeasurementType readType, long timeStamp){
 		this.timeStamp = timeStamp;
 		this.measurementType=readType;
 		this.measureValue = measureValue;
 		this.batchID = batchID;
 		this.elementNo = elementNo;
-		this.verified = true;
+		this.verified = verified;
 	}
 
 	public int getBatchID() {

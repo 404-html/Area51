@@ -12,11 +12,14 @@ public interface IDatabaseController {
 	boolean validateUser(User user) throws DataBaseException;
 	User getUserFromString(String userString) throws DataBaseException, UserNotFoundException;
 	void addToDB(User user) throws DataBaseException;
+	void deleteUser(User user) throws DataBaseException;
 	public void updateUser(User change)throws DataBaseException;
 	
-	// MeasureMents
+	// Measurements
 	void addToDB(Measurement measurement) throws DataBaseException;
 	ArrayList<Measurement> getMeasurementsByBatch(Batch batch) throws DataBaseException;
+	void deleteMeasurement(int batchID, int elementNumber, MeasurementType type) throws DataBaseException;
+	void updateMeasurement(Measurement measurement) throws DataBaseException;
 		
 	//Batches
 	void addToDB(Batch batch) throws DataBaseException;
@@ -34,11 +37,12 @@ public interface IDatabaseController {
 	BatchProfile getBatchProfile(int profileId) throws DataBaseException;
 		// use index as id 
 	int saveBatchProfile(BatchProfile profile) throws DataBaseException; // returns id of saved batchprofile
-	
-	
 	void deleteBatchProfile(BatchProfile bp) throws DataBaseException;
 	void editBatchProfile(BatchProfile bp) throws DataBaseException; 
 	void saveEditedBatchProfile(BatchProfile oldProfile, String newName) throws DataBaseException;
+	
+	void saveBatchSetting(BatchSetting b, int profileID) throws DataBaseException;
+
 	//Exceptions
 	@SuppressWarnings("serial")
 	public class DataBaseException extends Exception {
@@ -47,9 +51,7 @@ public interface IDatabaseController {
 	public class UserNotFoundException extends Exception {
 
 	}
-	void saveBatchSetting(BatchSetting b, int profileID)
-			throws DataBaseException;
-	void deleteMeasurement(int batchID, int elementNumber, MeasurementType type);
+
 	
 //	ArrayList<BatchProfile> getBatchProfiles();
 	

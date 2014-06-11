@@ -63,10 +63,8 @@ public class LoginServlet extends HttpServlet {
 				try {
 					request.getSession().setAttribute("user", dbctrl.getUserFromString(username));
 				} catch (DataBaseException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (UserNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				request.getSession().setAttribute("database", dbctrl);

@@ -132,7 +132,7 @@
                     
 					</form>
 			</form>
-            <a href="UserEditServlet">Administrer brugere</a>
+            <a href="UserChooseServlet">Administrer brugere</a>
 			<div id="footer">By Area51</div>
 
 		</div>
