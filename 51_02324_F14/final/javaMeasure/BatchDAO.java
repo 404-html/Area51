@@ -5,26 +5,54 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javaMeasure.control.MainController;
 import javaMeasure.control.SQLConnector;
+import javaMeasure.control.interfaces.IMainController;
 import javaMeasure.control.interfaces.ISQLConnector;
 import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 import javaMeasure.interfaces.IBatchDAO;
 
 public class BatchDAO implements IBatchDAO {
-	private  ISQLConnector sqlConnector;
+//	public static void main(String[] args) {
+////		BatchDAO b = new BatchDAO(new SQLConnector());
+////		for(Batch b2 : b.getBatches("test")){
+////			System.out.println(b2.getBatchString());
+////		}
+//	}
 	
+	
+	private  ISQLConnector sqlConnector;
+
 	public BatchDAO(ISQLConnector sqlConnector) {
 		this.sqlConnector = sqlConnector;
 	}
+
+
 	/* (non-Javadoc)
 	 * @see javaMeasure.IBatchDAO#getBatches()
 	 */
 	public ArrayList<Batch> getBatches() throws DataBaseException {
+		return getBatches(null);
+	}
+
+	/**
+	 * Overloaded for getting batches with partial names
+	 * @param partialBatchName String matching partial batch name 
+	 * @return Collection of batches
+	 * @throws DataBaseException
+	 */
+	public ArrayList<Batch> getBatches(String partialBatchName) throws DataBaseException {
 		//TODO needs testing 
 		String query = "SELECT * FROM batches";
+		if(partialBatchName != null){
+			query = query + " WHERE name LIKE ?";
+		} 
 		PreparedStatement statement = sqlConnector.getPreparedStatement(query);
 		ResultSet result = null;
 		try {
+			if(partialBatchName != null){
+				statement.setString(1, "%" + partialBatchName + "%");
+			}
 			result = statement.executeQuery();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -33,7 +61,9 @@ public class BatchDAO implements IBatchDAO {
 		ArrayList<Batch> batches = new ArrayList<Batch>();
 		try {
 			while (result.next()){
-				Batch b = new Batch(result.getInt("id"), result.getString("name"), result.getInt("profile"));
+				Batch b = new Batch(result.getInt("id"), result.getString("name"), result.getInt("profile"), 
+						result.getString("created_by"), result.getDate("created_date"), result.getString("approved_by"), result.getDate("approved_date")
+						);
 				batches.add(b);
 			}
 		} catch (SQLException e) {
@@ -42,7 +72,7 @@ public class BatchDAO implements IBatchDAO {
 		}
 		return batches;
 	}
-	
+
 	@Override
 	public ArrayList<String> getBatchNames() throws DataBaseException {
 		ArrayList<Batch> batches = getBatches();
@@ -52,8 +82,8 @@ public class BatchDAO implements IBatchDAO {
 		}
 		return batchNames;
 	}
-	
-	
+
+
 	/* (non-Javadoc)
 	 * @see javaMeasure.IBatchDAO#addToDB(javaMeasure.Batch)
 	 */
@@ -85,7 +115,9 @@ public class BatchDAO implements IBatchDAO {
 			statement.setString(1, batchname);
 			ResultSet result = statement.executeQuery();
 			if (result.next()){
-				returBatch = new Batch(result.getInt("id"), result.getString("name"), result.getInt("profile"));
+				returBatch = new Batch(result.getInt("id"), result.getString("name"), result.getInt("profile"),
+						result.getString("created_by"), result.getDate("created_date"), result.getString("approved_by"), result.getDate("approved_date")
+						);
 
 				String query2 = "SELECT * FROM measurements WHERE batchid=?";
 				PreparedStatement p = sqlConnector.getPreparedStatement(query2);
@@ -140,7 +172,9 @@ public class BatchDAO implements IBatchDAO {
 			p.setInt(1, batchId);
 			ResultSet result = p.executeQuery();
 			if(result.next()){
-				returBatch = new Batch(result.getInt("id"), result.getString("name"), result.getInt("profile"));
+				returBatch = new Batch(result.getInt("id"), result.getString("name"), result.getInt("profile"),
+						result.getString("created_by"), result.getDate("created_date"), result.getString("approved_by"), result.getDate("approved_date")
+						);
 
 
 				query = "SELECT * FROM measurements WHERE batchid=?";
