@@ -140,4 +140,16 @@ public class UserDAO implements IUserDAO {
 			throw new DataBaseException();
 		}
 	}
+	@Override
+	public void deleteUser(User user) throws DataBaseException {
+		String query = "DELETE FROM users WHERE id=?";
+		PreparedStatement statement = sqlConnector.getPreparedStatement(query);
+		try{
+			statement.setInt(1, user.getUserID());
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataBaseException();
+		}
+	}
 }

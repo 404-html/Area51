@@ -153,5 +153,10 @@ public class DataBaseController implements IDatabaseController {
 		this.userDAO.updateUser(change);
 		
 	}
+
+	@Override
+	public void deleteUser(User user) throws DataBaseException {
+		this.userDAO.deleteUser(user);
+	}
 	
 }
