@@ -122,7 +122,7 @@ public class ReportServlet extends HttpServlet {
 		
 		
 		
-		reportData[30] = ;
+//		reportData[30] = ;
 		
 		
 		for(int i=0; i< 3; i++){

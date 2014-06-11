@@ -118,11 +118,33 @@
 					<li id="li_2" name="li_2">
 						<table width="100%" border="1">
 							<tr>
-								<td colspan="5"><h3>Final Inspection and Test Report</h3></td>
-								<td>&nbsp;</td>
-								<td>"batchnavn"</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
+								<td colspan="5"><h3>Final Inspection and Test Report<br>Certificate of Conformance</h3></td>
+
+								<td>Batch id:</td>
+								<td colspan="3">&nbsp;</td>
+
+							</tr>
+							<tr>
+								<td colspan="9">Customer</td>
+							
+							</tr>
+							<tr>
+								<td>Item description:</td>
+								<td colspan="4"></td>
+								<td>Drawing number:</td>
+								<td colspan="3"></td>
+							</tr>
+							<tr>
+								<td>Item code:</td>
+								<td colspan="4"></td>
+								<td>Specification:</td>
+								<td colspan="3"></td>
+							</tr>
+							<tr>
+								<td>Internal order number:</td>
+								<td colspan="4"></td>
+								<td>Visual Inspection:</td>
+								<td colspan="3"></td>
 							</tr>
 							<tr>
 								<td>Parameter</td>
@@ -143,65 +165,138 @@
 							</tr>
 							<tr>
 								<td>Length (mm):</td>
-								<td><% out.println(lengthNorm); %></td>
-								<td><% out.println(lengthMin); %></td>
-								<td><% out.println(lengthMax); %></td>
-								<td><% out.println(lengthInsp); %></td>
-								<td><% out.println(leakNorm); // not finished %></td>
-								<td><% out.println(leakNorm); // not finished %></td>
-								<td><% out.println(leakNorm); // not finished %></td>
+								<td>
+									<% out.println(lengthNorm); %>
+								</td>
+								<td>
+									<% out.println(lengthMin); %>
+								</td>
+								<td>
+									<% out.println(lengthMax); %>
+								</td>
+								<td>
+									<% out.println(lengthInsp); %>
+								</td>
+								<td>
+									<% out.println(leakNorm); // not finished %>
+								</td>
+								<td>
+									<% out.println(leakNorm); // not finished %>
+								</td>
+								<td>
+									<% out.println(leakNorm); // not finished %>
+								</td>
 								<td>&nbsp;</td>
 							</tr>
 							<tr>
 								<td>Width (mm):</td>
-								<td><% out.println(widthNorm); %></td>
-								<td><% out.println(widthMin); %></td>
-								<td><% out.println(widthMax); %></td>
-								<td><% out.println(widthInsp); %></td>
-								<td><% out.println(lengthNorm); %></td>
-								<td><% out.println(lengthNorm); %></td>
-								<td><% out.println(lengthNorm); %></td>
+								<td>
+									<% out.println(widthNorm); %>
+								</td>
+								<td>
+									<% out.println(widthMin); %>
+								</td>
+								<td>
+									<% out.println(widthMax); %>
+								</td>
+								<td>
+									<% out.println(widthInsp); %>
+								</td>
+								<td>
+									<% out.println(lengthNorm); %>
+								</td>
+								<td>
+									<% out.println(lengthNorm); %>
+								</td>
+								<td>
+									<% out.println(lengthNorm); %>
+								</td>
 								<td>&nbsp;</td>
 							</tr>
 							<tr>
 								<td>Thickness (mm):</td>
-								<td><% out.println(thickNorm); %></td>
-								<td><% out.println(thickMin); %></td>
-								<td><% out.println(thickMax); %></td>
-								<td><% out.println(thickInsp); %></td>
-								<td><% out.println(lengthNorm); %></td>
-								<td><% out.println(lengthNorm); %></td>
-								<td><% out.println(lengthNorm); %></td>
+								<td>
+									<% out.println(thickNorm); %>
+								</td>
+								<td>
+									<% out.println(thickMin); %>
+								</td>
+								<td>
+									<% out.println(thickMax); %>
+								</td>
+								<td>
+									<% out.println(thickInsp); %>
+								</td>
+								<td>
+									<% out.println(lengthNorm); %>
+								</td>
+								<td>
+									<% out.println(lengthNorm); %>
+								</td>
+								<td>
+									<% out.println(lengthNorm); %>
+								</td>
 								<td>&nbsp;</td>
 							</tr>
 							<tr>
 								<td>Capacitance (nF):</td>
-								<td><% out.println(capNorm); %></td>
-								<td><% out.println(capMin); %></td>
-								<td><% out.println(capMax); %></td>
-								<td><% out.println(capInsp); %></td>
-								<td><% out.println(lengthNorm); %></td>
-								<td><% out.println(lengthNorm); %></td>
-								<td><% out.println(lengthNorm); %></td>
+								<td>
+									<% out.println(capNorm); %>
+								</td>
+								<td>
+									<% out.println(capMin); %>
+								</td>
+								<td>
+									<% out.println(capMax); %>
+								</td>
+								<td>
+									<% out.println(capInsp); %>
+								</td>
+								<td>
+									<% out.println(lengthNorm); %>
+								</td>
+								<td>
+									<% out.println(lengthNorm); %>
+								</td>
+								<td>
+									<% out.println(lengthNorm); %>
+								</td>
 								<td>&nbsp;</td>
 							</tr>
 							<tr>
 								<td>Stroke (&mu;m):</td>
-								<td><% out.println(strokeNorm); %></td>
-								<td><% out.println(strokeMin); %></td>
-								<td><% out.println(strokeMax); %></td>
-								<td><% out.println(strokeInsp); %></td>
-								<td><% out.println(lengthNorm); %></td>
-								<td><% out.println(lengthNorm); %></td>
-								<td><% out.println(lengthNorm); %></td>
+								<td>
+									<% out.println(strokeNorm); %>
+								</td>
+								<td>
+									<% out.println(strokeMin); %>
+								</td>
+								<td>
+									<% out.println(strokeMax); %>
+								</td>
+								<td>
+									<% out.println(strokeInsp); %>
+								</td>
+								<td>
+									<% out.println(lengthNorm); %>
+								</td>
+								<td>
+									<% out.println(lengthNorm); %>
+								</td>
+								<td>
+									<% out.println(lengthNorm); %>
+								</td>
 								<td>&nbsp;</td>
 							</tr>
 							<tr>
 								<td>Leakage current:</td>
-								<td><% out.println(leakNorm); %></td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td><% out.println(leakInsp); %></td>
+								<td>
+									<% out.println(leakNorm); %>
+								</td>
+								<td colspan="2">&nbsp;</td>
+								<td>
+									<% out.println(leakInsp); %>
+								</td>
 								<td>&nbsp;</td>
 								<td>&nbsp;</td>
 								<td>&nbsp;</td>
@@ -209,91 +304,34 @@
 							</tr>
 							<tr>
 								<td>Visual inspection:</td>
-								<td><% out.println(visualNorm); %></td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td><% out.println(visualInsp); %></td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-							</tr>
-							<tr>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
+								<td>
+									<% out.println(visualNorm); %>
+								</td>
+								<td colspan="2">&nbsp;</td>
+								<td>
+									<% out.println(visualInsp); %>
+								</td>
 								<td>&nbsp;</td>
 								<td>&nbsp;</td>
 								<td>&nbsp;</td>
 								<td>&nbsp;</td>
 							</tr>
 							<tr>
-								<td>approved date</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
+								<td colspan="9">&nbsp;</td>
 							</tr>
 							<tr>
-								<td>number approved</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
+								<td colspan="5">Comments:</td>
+								<td>&nbsp;approved date</td>
+								<td colspan="3">&nbsp;</td>
 							</tr>
 							<tr>
-								<td>Comments:</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
+								<td colspan="5" rowspan="2"></td>
+								<td>&nbsp;number approved</td>
+								<td colspan="3">&nbsp;</td>
 							</tr>
 							<tr>
-								<td>approved by</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-							</tr>
-							<tr>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-							</tr>
-							<tr>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
+								<td>&nbsp;approved by</td>
+								<td colspan="3">&nbsp;</td>
 							</tr>
 						</table>
 					</li>
