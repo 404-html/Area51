@@ -128,8 +128,7 @@
 								<td>Parameter</td>
 								<td colspan="3">Specification</td>
 								<td>Inspection level</td>
-								<td colspan="3">Measured</td>
-								<td>&nbsp;</td>
+								<td colspan="4">Measured</td>
 							</tr>
 							<tr>
 								<td>&nbsp;</td>
