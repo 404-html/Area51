@@ -1,6 +1,5 @@
 package javaMeasure.control;
 
-import javaMeasure.Measurement;
 import javaMeasure.Measurement.MeasurementType;
 import javaMeasure.control.interfaces.ICConnector;
 import javaMeasure.control.interfaces.ICalibrationController;
@@ -34,13 +33,21 @@ public class CalibrationController implements ICalibrationController{
 
 	@Override
 	public void calibrateBtnPressed() {
-		// TODO Auto-generated method stub
+		try {
+			calibrateVal = conn.readMeasurements(MeasurementType.STROKE, 1, 0)[0].getMeasureValue();
+			gui.setCalibrationVolt(calibrateVal);
+			calculateconstant();
+		} catch (ConnectionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 	private void calculateconstant() {
 		if (calibrateVal != 0 && zeroVal != 0){
 			calibrationConstant = (calibrateVal - zeroVal)/gui.getCalibrationLength();
 			System.out.println(calibrationConstant);
+			gui.setCalibrationConstant(calibrationConstant);
 			gui.enableOk(true);
 		}
 		
@@ -54,7 +61,7 @@ public class CalibrationController implements ICalibrationController{
 
 	@Override
 	public void cancelBtnPressed() {
-		// TODO Auto-generated method stub
+		gui.showGui(false);
 		
 	}
 

@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 
 import java.awt.event.ActionEvent;
 import java.awt.Font;
+import java.text.DecimalFormat;
 
 import javaMeasure.control.interfaces.ICalibrationController;
 import javaMeasure.view.interfaces.ICalibrationGui;
@@ -26,6 +27,7 @@ public class CalibrationGui extends JFrame implements ICalibrationGui {
 	private JTextField calibrationConstant;
 	private ICalibrationController calibCtrl;
 	private JButton btnOk;
+	private DecimalFormat dec = new DecimalFormat("#0.000000");
 
 
 	/**
@@ -119,6 +121,10 @@ public class CalibrationGui extends JFrame implements ICalibrationGui {
 		btnZero.setActionCommand("Zero");
 		contentPane.add(btnZero);
 		
+		JLabel lblCalibrationConstant = new JLabel("Calibration constant");
+		lblCalibrationConstant.setBounds(10, 111, 123, 14);
+		contentPane.add(lblCalibrationConstant);
+		
 		btnOk.addActionListener(this);
 		btnCancel.addActionListener(this);
 		btnCalibrate.addActionListener(this);
@@ -155,19 +161,19 @@ public class CalibrationGui extends JFrame implements ICalibrationGui {
 
 	@Override
 	public void setZeroVolt(double zeroVolt) {
-		this.zeroVolt.setText(Double.toString(zeroVolt));
+		this.zeroVolt.setText(dec.format(zeroVolt));
 		
 	}
 
 	@Override
 	public void setCalibrationVolt(double calibrationVolt) {
-		this.calibrateVolt.setText(Double.toString(calibrationVolt));
+		this.calibrateVolt.setText(dec.format(calibrationVolt));
 		
 	}
 
 	@Override
 	public void setCalibrationConstant(double calibrationConstant) {
-		this.calibrationConstant.setText(Double.toString(calibrationConstant));
+		this.calibrationConstant.setText(dec.format(calibrationConstant));
 		
 	}
 
