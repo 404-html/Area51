@@ -13,13 +13,13 @@ import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 import javaMeasure.interfaces.IBatchDAO;
 
 public class BatchDAO implements IBatchDAO {
-//	public static void main(String[] args) throws DataBaseException {
-//		BatchDAO b = new BatchDAO(new SQLConnector());
-//		System.out.println("test");
-//		for(Batch b2 : b.getBatches("martin")){
-//			System.out.println(b2.getBatchString());
-//		}
-//	}
+	public static void main(String[] args) throws DataBaseException {
+		BatchDAO b = new BatchDAO(new SQLConnector());
+		System.out.println("test");
+		for(Batch b2 : b.getBatches("martin")){
+			System.out.println(b2.getBatchString());
+		}
+	}
 	
 	
 	private  ISQLConnector sqlConnector;
