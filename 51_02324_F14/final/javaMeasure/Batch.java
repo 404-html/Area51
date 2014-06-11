@@ -1,5 +1,7 @@
 package javaMeasure;
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -17,7 +19,7 @@ public class Batch {
 	private Date created_date;
 	private String approved_by;
 	private Date approved_date;
-	
+
 	public Batch(int batchID, String batchString, int profileID) {
 		super();
 		setBatchID(batchID);
@@ -25,7 +27,7 @@ public class Batch {
 		this.profileID = profileID;
 		this.measurementsList = new ArrayList<>();
 	}
-	
+
 	/**
 	 * Overloaded constructor, adds fields for created_by/date and approved_by/date
 	 * @param batchID
@@ -42,7 +44,7 @@ public class Batch {
 		setBatchString(batchString);
 		this.profileID = profileID;
 		this.measurementsList = new ArrayList<>();
-		
+
 		this.created_by = created_by;
 		this.created_date = created_date;
 		this.approved_by = approved_by;
@@ -87,7 +89,7 @@ public class Batch {
 			return true;
 		}
 	}
-	
+
 	public boolean deleteLastLeakMeasurement(){
 		Object[] row = getMeasurementsList().get(currentLeakElement-1);
 		ArrayList<Object[]> list = getMeasurementsList();
@@ -184,7 +186,7 @@ public class Batch {
 		}
 		return total/length;
 	}
-	
+
 	public Measurement getMeasurement(int elementnumber, MeasurementType type){
 		if(type == MeasurementType.STROKE){
 			return (Measurement) getMeasurementsList().get(elementnumber)[2];
@@ -192,6 +194,12 @@ public class Batch {
 		else{
 			return (Measurement) getMeasurementsList().get(elementnumber)[3];
 		}
+	}
+	
+	//used in jsp
+	public String getDateAsString(Date date){
+		Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		return formatter.format(date);
 	}
 
 	public int getCurrentLeakElement(){
@@ -214,7 +222,7 @@ public class Batch {
 		stroke.setVerified(verified);
 		leak.setVerified(verified);
 	}
-	
+
 	public String getCreated_by() {
 		return created_by;
 	}
@@ -246,7 +254,7 @@ public class Batch {
 	public void setApproved_date(Date approved_date) {
 		this.approved_date = approved_date;
 	}
-	
+
 }
 
 
