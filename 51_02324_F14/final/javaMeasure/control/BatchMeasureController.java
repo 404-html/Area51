@@ -144,7 +144,7 @@ public class BatchMeasureController implements IBatchMeasureController {
 	public void btnDeleteStroke() {
 		if(activeBatch.deleteLastStrokeMeasurement()){
 			try {
-				mainController.getDatabaseController().deleteMeasurement(activeBatch.getBatchID(), activeBatch.getCurrentStrokeElement()-1, MeasurementType.STROKE);
+				mainController.getDatabaseController().deleteMeasurement(activeBatch.getBatchID(), activeBatch.getCurrentStrokeElement(), MeasurementType.STROKE);
 				batchGUI.updateTable(activeBatch);
 				batchGUI.updateLog("last stroke measurement deleted");
 			} catch (DataBaseException e) {
@@ -161,7 +161,7 @@ public class BatchMeasureController implements IBatchMeasureController {
 	public void btnDeleteLeak() {
 		if(activeBatch.deleteLastLeakMeasurement()){
 			try {
-				mainController.getDatabaseController().deleteMeasurement(activeBatch.getBatchID(), activeBatch.getCurrentLeakElement()-1, MeasurementType.LEAK);
+				mainController.getDatabaseController().deleteMeasurement(activeBatch.getBatchID(), activeBatch.getCurrentLeakElement(), MeasurementType.LEAK);
 				batchGUI.updateTable(activeBatch);
 				batchGUI.updateLog("last leak measurement deleted");
 			} catch (DataBaseException e) {

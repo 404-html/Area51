@@ -65,6 +65,15 @@ public class ReportServlet extends HttpServlet {
 		}
 	}
 	private String[] getReport(Batch batch, BatchProfile profile){
+		String[] reportData = new String[100];
+		reportData[0] = batch.getBatchString();
+		reportData[1] = profile.getProfileSettings().get(7).getValue();
+		reportData[2] = String.valueOf(Double.parseDouble(profile.getProfileSettings().get(7).getValue()) - Double.parseDouble(profile.getProfileSettings().get(8).getValue()));
+		reportData[3] = String.valueOf(Double.parseDouble(profile.getProfileSettings().get(7).getValue()) + Double.parseDouble(profile.getProfileSettings().get(8).getValue()));
+		reportData[4] = batch.geta
+		for(int i=0; i< 3; i++){
+			
+		}
 		return null;
 	}
 
