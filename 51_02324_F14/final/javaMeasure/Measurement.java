@@ -7,6 +7,7 @@ public class Measurement {
 	private int elementNo;
 	private float measureValue;
 	private long timeStamp;
+	private boolean verified;
 	
 	public Measurement(float measureValue,MeasurementType readType, long timeStamp){
 		this(-1, -1, measureValue, readType, timeStamp);
@@ -18,6 +19,7 @@ public class Measurement {
 		this.measureValue = measureValue;
 		this.batchID = batchID;
 		this.elementNo = elementNo;
+		this.verified = true;
 	}
 
 	public int getBatchID() {
@@ -59,8 +61,11 @@ public class Measurement {
 	public void setTimeStamp(long timeStamp) {
 		this.timeStamp = timeStamp;
 	}
-	
-	
-	
 
+	public void setVerified(boolean verified) {
+		this.verified = verified;
+	}
+	public boolean getVerified(){
+		return this.verified;
+	}
 }

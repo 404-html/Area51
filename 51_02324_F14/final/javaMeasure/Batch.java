@@ -48,6 +48,7 @@ public class Batch {
 			return false;
 		else{
 			getMeasurementsList().get(currentStrokeElement-1)[1] = null;
+			currentStrokeElement--;
 			return true;
 		}
 	}
@@ -57,6 +58,7 @@ public class Batch {
 			return false;
 		else{
 			getMeasurementsList().get(currentLeakElement-1)[2] = null;
+			currentLeakElement--;
 			return true;
 		}
 	}
@@ -65,7 +67,6 @@ public class Batch {
 	// as of now, the measurements kan be taken in any chronological order, which means as of now, you have to make all measurements on all elements
 	public boolean addMeasurement(Measurement measurement){
 		MeasurementType type = measurement.getMeasurementType();
-		float value = measurement.getMeasureValue();
 		int dif = currentLeakElement - currentStrokeElement;
 		if(type.equals(MeasurementType.LEAK))
 			dif++;
@@ -77,18 +78,18 @@ public class Batch {
 		if(type.equals(MeasurementType.LEAK)){
 			// the try catch is to make sure that the measurement never is put out bounds
 			// if the currentLeakElement points out of bounds, a new object is created in the catch clause
-			try{ measurementsList.get(currentLeakElement)[2] = measurement.getMeasureValue();
+			try{ measurementsList.get(currentLeakElement)[3] = measurement;
 			} catch (IndexOutOfBoundsException e){
-				measurementsList.add(new Object[]{currentLeakElement, null, value});
+				measurementsList.add(new Object[]{measurement.getVerified(), currentLeakElement, null, measurement});
 			}
 			currentLeakElement++;
 		}
 		if(type.equals(MeasurementType.STROKE)){
 			// the try catch is to make sure that the measurement never is put out bounds
 			// if the currentStrokeElement points out of bounds, a new object is created in the catch clause
-			try{ measurementsList.get(currentStrokeElement)[1] = measurement.getMeasureValue();
+			try{ measurementsList.get(currentStrokeElement)[2] = measurement;
 			} catch(IndexOutOfBoundsException e){
-				measurementsList.add(new Object[]{currentStrokeElement, value, null});
+				measurementsList.add(new Object[]{measurement.getVerified(), currentStrokeElement, measurement, null});
 			}
 			currentStrokeElement++;
 		}
@@ -120,7 +121,8 @@ public class Batch {
 		for(int i = 0; i < measurementsList.size(); i++)
 		{
 			if(measurementsList.get(i)[1] != null){
-				float value = (float) measurementsList.get(i)[1];
+				Measurement measurement = (Measurement) measurementsList.get(i)[2];
+				float value = (float) measurement.getMeasureValue();
 				total = total + value;
 				length++;
 			}
@@ -134,7 +136,8 @@ public class Batch {
 		for(int i = 0; i < measurementsList.size(); i++)
 		{
 			if(measurementsList.get(i)[1] != null){
-				float value = (float)  measurementsList.get(i)[2];
+				Measurement measurement = (Measurement) measurementsList.get(i)[3];
+				float value = (float)  measurement.getMeasureValue();
 				total = total + value;
 				length++;
 			}
@@ -152,6 +155,15 @@ public class Batch {
 
 	public ArrayList<Object[]> getMeasurementsList(){
 		return measurementsList;	
+	}
+
+	public void updateMeasurements(int elementNumber, boolean verified) {
+		Object[] element = getMeasurementsList().get(elementNumber);
+		measurementsList.get(elementNumber)[0] = verified;
+		Measurement stroke = (Measurement) element[2];
+		Measurement leak = (Measurement) element[3];
+		stroke.setVerified(verified);
+		leak.setVerified(verified);
 	}
 }
 

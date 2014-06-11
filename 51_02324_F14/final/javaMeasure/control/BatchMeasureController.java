@@ -95,6 +95,7 @@ public class BatchMeasureController implements IBatchMeasureController {
 				measurement[0].setBatchID(activeBatch.getBatchID());
 				measurement[0].setMeasurementType(MeasurementType.STROKE);
 				measurement[0].setElementNo(activeBatch.getCurrentStrokeElement());
+				measurement[0].setVerified(true);
 				if(measurement != null)
 					try {
 						boolean measurementAdded = activeBatch.addMeasurement(measurement[0]);
@@ -236,6 +237,13 @@ public class BatchMeasureController implements IBatchMeasureController {
 	@Override
 	public void verifyElement(boolean verified, int elementNumber) {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateMeasurements(int elementNumber, boolean verified) {
+		System.out.println("updateMeasurements, verified: " + verified);
+		activeBatch.updateMeasurements(elementNumber, verified);
 		
 	}
 

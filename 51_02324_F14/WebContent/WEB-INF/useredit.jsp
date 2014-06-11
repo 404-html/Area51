@@ -100,7 +100,7 @@
 				  <span class="buttons">
 				  
 				  <input id="saveForm" class="button_text"
-						type="submit" name="save" value="save" />
+						type="submit" name="Save" value="save" />
 						</span>
                          </td>
 				
@@ -111,7 +111,7 @@
                   <span class="buttons">
                 
 				  <input id="Done" class="button_text"
-						type="submit" name="Done" value="Done" />
+						type="submit" name="Done" value="done" />
 				  </span>
                   </td>
                   </tr>

@@ -31,6 +31,8 @@ public interface IBatchMeasureController {
 	void deleteStrokeMeasurement();
 	
 	void deleteLeakMeasurement();
+
+	void updateMeasurements(int rowAtPoint, boolean tableData);
 	
 	
 	

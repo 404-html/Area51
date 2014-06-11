@@ -24,15 +24,16 @@ public class MeasurementDAO implements IMeasurementDAO{
 	 * @see javaMeasure.IMeasurementDAO#addToDB(javaMeasure.Measurement)
 	 */
 	public void addToDB(Measurement measurement) throws DataBaseException, javaMeasure.control.interfaces.IDatabaseController.DataBaseException {
-	  String query = "INSERT INTO measurements (batchid, elementnumber, measurementtype, measurementvalue, timestamp) VALUES (?,?,?,?,?)";
+	  String query = "INSERT INTO measurements (batchid, elementnumber, measurementtype, verified, measurementvalue, timestamp) VALUES (?,?,?,?,?,?)";
 	  PreparedStatement statement = sqlConnector.getPreparedStatement(query);
 
 	  try {
 	   statement.setInt(1, measurement.getBatchID());
 	   statement.setInt(2, measurement.getElementNo());
 	   statement.setString(3, measurement.getMeasurementType().name());
-	   statement.setFloat(4, measurement.getMeasureValue());
-	   statement.setLong(5, measurement.getTimeStamp());
+	   statement.setBoolean(4, measurement.getVerified());
+	   statement.setFloat(5, measurement.getMeasureValue());
+	   statement.setLong(6, measurement.getTimeStamp());
 	   statement.executeUpdate();
 	  } catch (SQLException e) {
 	   e.printStackTrace();
