@@ -50,6 +50,8 @@ public class LoginServlet extends HttpServlet {
 		if (username != null){
 			boolean loginSuccess = false;
 			String password = request.getParameter("password");
+			System.out.println("username: " + username);
+			System.out.println("password: " + password);
 			User loginUser = new User(username, 0, password);
 			System.out.println(loginUser);
 			//Validating user
