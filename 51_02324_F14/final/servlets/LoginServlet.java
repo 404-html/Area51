@@ -31,9 +31,12 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//User gets loginpage
-		request.getRequestDispatcher("WEB-INF/userlogin.jsp").forward(request, response);
-
+		//Check for login
+		if (request.getSession().getAttribute("user")!= null){
+			response.sendRedirect("MenuServlet");
+		} else {
+			request.getRequestDispatcher("WEB-INF/userlogin.jsp").forward(request, response);
+		}
 	}
 
 	/**
@@ -44,8 +47,8 @@ public class LoginServlet extends HttpServlet {
 		System.out.println("UserLogin - Post");
 		String username = request.getParameter("username");
 		if (username != null){
-			String password = request.getParameter("password");
 			boolean loginSuccess = false;
+			String password = request.getParameter("password");
 			User loginUser = new User(username, 0, password);
 			System.out.println(loginUser);
 			//Validating user
@@ -57,7 +60,7 @@ public class LoginServlet extends HttpServlet {
 				System.out.println("Login succes forwarding");
 				request.getSession().setAttribute("user", loginUser);
 				request.getSession().setAttribute("database", dbctrl);
-				request.getRequestDispatcher("NoliacServlet").forward(request, response);
+				response.sendRedirect("MenuServlet");
 				System.out.println("forward finished");
 			} 
 		} else {

@@ -15,14 +15,14 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/MenuServlet")
 public class MenuServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public MenuServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public MenuServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -44,9 +44,18 @@ public class MenuServlet extends HttpServlet {
 		//Login Check
 		if (request.getSession().getAttribute("user") == null) 
 			request.getRequestDispatcher("NoliacServlet").forward(request, response);
-		//check if a batch was selected
-		request.getRequestDispatcher("WEB-INF/form.jsp").forward(request, response);
-		
+		//Button logout pressed
+		if (request.getParameter("logout")!= null){
+			request.getSession().setAttribute("user", null);
+			response.sendRedirect("LoginServlet");
+		} else {
+			//submitform pressed
+			if (request.getParameter("submitForm")!= null) {
+				request.getRequestDispatcher("ReportServlet").forward(request, response);
+			} else {
+				request.getRequestDispatcher("WEB-INF/form.jsp").forward(request, response);
+			}
+		}
 	}
 
 }

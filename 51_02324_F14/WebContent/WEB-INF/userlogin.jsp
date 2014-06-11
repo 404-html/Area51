@@ -21,7 +21,7 @@
 
 		<div id="form_container">
 
-			<form id="login_form" class="appnitro" method="post" action="NoliacServlet">
+			<form id="login_form" class="appnitro" method="post" action="LoginServlet">
 				<div class="form_description">
 					<h1>Noliac User login</h1>
 
