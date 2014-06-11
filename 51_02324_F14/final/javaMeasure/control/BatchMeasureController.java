@@ -95,6 +95,7 @@ public class BatchMeasureController implements IBatchMeasureController {
 				measurement[0].setBatchID(activeBatch.getBatchID());
 				measurement[0].setMeasurementType(MeasurementType.STROKE);
 				measurement[0].setElementNo(activeBatch.getCurrentStrokeElement());
+				measurement[0].setVerified(true);
 				if(measurement != null)
 					try {
 						boolean measurementAdded = activeBatch.addMeasurement(measurement[0]);
