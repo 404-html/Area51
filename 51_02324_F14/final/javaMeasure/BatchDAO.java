@@ -24,6 +24,13 @@ public class BatchDAO implements IBatchDAO {
 			e.printStackTrace();
 		}
 	}
+//	public static void main(String[] args) throws DataBaseException {
+//		BatchDAO b = new BatchDAO(new SQLConnector());
+//		System.out.println("test");
+//		for(Batch b2 : b.getBatches("martin")){
+//			System.out.println(b2.getBatchString());
+//		}
+//	}
 	
 	
 	private  ISQLConnector sqlConnector;
@@ -50,7 +57,7 @@ public class BatchDAO implements IBatchDAO {
 		//TODO needs testing 
 		String query = "SELECT * FROM batches";
 		if(partialBatchName != null){
-			query = query + " WHERE name LIKE ?";
+			query = query + " WHERE UPPER(name) LIKE UPPER(?)";
 		} 
 		PreparedStatement statement = sqlConnector.getPreparedStatement(query);
 		ResultSet result = null;

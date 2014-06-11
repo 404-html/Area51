@@ -1,6 +1,7 @@
 package javaMeasure.control;
 
 import javaMeasure.Measurement.MeasurementType;
+import javaMeasure.PropertyHelper;
 import javaMeasure.control.interfaces.ICConnector;
 import javaMeasure.control.interfaces.ICalibrationController;
 import javaMeasure.view.CalibrationGui;
@@ -48,6 +49,7 @@ public class CalibrationController implements ICalibrationController{
 			calibrationConstant = (calibrateVal - zeroVal)/gui.getCalibrationLength();
 			System.out.println(calibrationConstant);
 			gui.setCalibrationConstant(calibrationConstant);
+			PropertyHelper.writeToProperty("calibrationConstant", Double.toString(calibrationConstant));
 			gui.enableOk(true);
 		}
 		
