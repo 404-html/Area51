@@ -24,7 +24,7 @@ public class NewBatchController implements INewBatchController {
 			this.newBatchGui.setSettings(getDefaultBatchProfile());
 		} catch (DataBaseException e) {
 			System.err.println("Database error when trying to retrieve default batch profile");
-			System.err.println(e);
+			System.err.println(e.getMessage());
 		}
 		this.newBatchGui.setVisibility(true);
 	}
@@ -39,8 +39,10 @@ public class NewBatchController implements INewBatchController {
 			System.err.println("Database error when trying to retrieve active batch profile");
 			System.err.println(e);
 		}
-		this.newBatchGui.setVisibility(true);
 		this.activeBatch = activeBatch;
+		this.newBatchGui.setbatchName(this.activeBatch.getBatchString());
+		this.newBatchGui.setVisibility(true);
+		
 		
 		
 	}
