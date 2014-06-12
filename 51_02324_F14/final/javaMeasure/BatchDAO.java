@@ -103,20 +103,35 @@ public class BatchDAO implements IBatchDAO {
 	}
 
 	@Override
-	public void updateBatchSettings(BatchSetting b, int profileID) throws DataBaseException {
+	public void updateBatchSettings(ArrayList<BatchSetting> settings, int profileID) throws DataBaseException {
 
-		String query2 = "UPDATE batchsettings SET value =? WHERE (id=?)";
-		PreparedStatement statement = sqlConnector.getPreparedStatement(query2);
-		try {
-			statement.setString(1, b.getValue());
-//			statement.setInt(2, profileID);
-			statement.setInt(2, b.getId());
-			System.out.println("updating test.. ProfileID: " + profileID + " Value: " + b.getValue() + " Id: " + b.getId());
-			statement.executeUpdate();
-		}	catch (SQLException e){
-			e.printStackTrace();
-			throw new DataBaseException();
+		for(int i = 0; i < settings.size(); i++){
+			String query2 = "UPDATE batchsettings SET value =? WHERE (id=?)";
+			PreparedStatement statement = sqlConnector.getPreparedStatement(query2);
+			try {
+				statement.setString(1, settings.get(i).getValue());
+//				statement.setInt(2, profileID);
+				statement.setInt(2, settings.get(i).getId());
+				System.out.println("updating test.. " + " Value: " + settings.get(i).getValue() + " Id: " + settings.get(i).getId());
+				statement.executeUpdate();
+			}	catch (SQLException e){
+				e.printStackTrace();
+				throw new DataBaseException();
+			}
 		}
+		
+//		String query2 = "UPDATE batchsettings SET value =? WHERE (id=?)";
+//		PreparedStatement statement = sqlConnector.getPreparedStatement(query2);
+//		try {
+//			statement.setString(1, b.getValue());
+////			statement.setInt(2, profileID);
+//			statement.setInt(2, b.getId());
+//			System.out.println("updating test.. ProfileID: " + profileID + " Value: " + b.getValue() + " Id: " + b.getId());
+//			statement.executeUpdate();
+//		}	catch (SQLException e){
+//			e.printStackTrace();
+//			throw new DataBaseException();
+//		}
 
 	}
 //	@Override

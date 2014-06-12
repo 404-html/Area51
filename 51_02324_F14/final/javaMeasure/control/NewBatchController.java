@@ -128,9 +128,8 @@ public class NewBatchController implements INewBatchController {
 						//Saves batch and sets the active batch in batchMeasureController;
 						
 //						mainController.getDatabaseController().addToDB(b);
-						for(int i = 0; i < settings.size(); i++){
-							mainController.getDatabaseController().updateBatchSettings(settings.get(i), mainController.getBatchMeasureController().getActiveBatch().getProfileID());
-						}
+							mainController.getDatabaseController().updateBatchSettings(settings, mainController.getBatchMeasureController().getActiveBatch().getProfileID());
+						
 						mainController.getBatchMeasureController().setActiveBatch(activeBatch);
 					} catch (DataBaseException e) {
 						e.printStackTrace();
