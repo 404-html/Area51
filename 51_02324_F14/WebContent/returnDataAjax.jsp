@@ -45,21 +45,23 @@ String username = (String) session.getAttribute("username");
 	{
 		String returnString = "";
 
+		String created_by = (batch.getCreated_by()=="null" ? batch.getCreated_by() : "&nbsp");
+		String approved_by = (batch.getApproved_by()=="null" ? batch.getApproved_by() : "&nbsp");
 		//table row
-		returnString = returnString + ("<tr class=\"returnRow\" id=\"" + batch.getBatchString() + "\">\n");
+		returnString = returnString + ("<tr class=\"returnRow\">\n");
 		
 		//batch navn
-		returnString = returnString + "\t<td>" + batch.getBatchString() + "</td>\n"; 
+		returnString = returnString + "\t<td id=\"" + batch.getBatchString() + "\">" + batch.getBatchString() + "</td>\n"; 
 		//created by
-		returnString = returnString + "\t<td>" + batch.getCreated_by() + "</td>\n"; 
+		returnString = returnString + "\t<td id=\"" + batch.getBatchString() + "\">" + created_by	+ "</td>\n"; 
 		//created date
-		returnString = returnString + "\t<td>&nbsp</td>\n"; 
+		returnString = returnString + "\t<td id=\"" + batch.getBatchString() + "\">&nbsp</td>\n"; 
 		//returnString = returnString + "\t<td>" + batch.getDateAsString(batch.getCreated_date()) + "</td>\n"; 
 		//approved by
 		
-		returnString = returnString + "\t<td>" + batch.getApproved_by() + "</td>\n";  	
+		returnString = returnString + "\t<td id=\"" + batch.getBatchString() + "\">" + approved_by + "</td>\n";  	
 		//approved date
-		returnString = returnString + "\t<td>&nbsp</td>\n"; 
+		returnString = returnString + "\t<td id=\"" + batch.getBatchString() + "\">&nbsp</td>\n"; 
 		//returnString = returnString + "\t<td>" + batch.getDateAsString(batch.getApproved_date()) + "</td>\n";
 		
 		//end table row
@@ -78,12 +80,12 @@ BatchDAO b = new BatchDAO(new SQLConnector());
 
 
 //out.println("test");
-	out.println("<table class=\"returnTable\">");
-	out.println("	<th class=\"None\">Batch navn</th>");
-	out.println("	<th class=\"None\">Oprettet af</th>");
-	out.println("	<th class=\"None\">Oprettet dato</th>");
-	out.println("	<th class=\"None\">Godkendt af</th>");
-	out.println("	<th class=\"None\">Godkendt dato</th>");
+	out.println("<table class=\"returnTable\" style=\"border-collapse:collapse\">");
+	out.println("	<th class=\"None\">&nbsp&nbspBatch navn&nbsp&nbsp</th>");
+	out.println("	<th class=\"None\">&nbsp&nbspOprettet af&nbsp&nbsp</th>");
+	out.println("	<th class=\"None\">&nbsp&nbspOprettet dato&nbsp&nbsp</th>");
+	out.println("	<th class=\"None\">&nbsp&nbspGodkendt af&nbsp&nbsp</th>");
+	out.println("	<th class=\"None\">&nbsp&nbspGodkendt dato&nbsp&nbsp</th>");
 
 	for(Batch b2 : b.getBatches(input)){
 		System.out.println("for loop");
