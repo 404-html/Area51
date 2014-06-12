@@ -37,7 +37,6 @@ public class BatchMeasureController implements IBatchMeasureController {
 		batchGUI.updateLog("New Batch window opened...");
 	}
 
-	// TODO Finish this - Martin
 	public void btnEditBatchSettingsPressed(){
 		if(getActiveBatch() != null){
 		mainController.startNewBatchController(getActiveBatch());

@@ -28,7 +28,11 @@
 <script type="text/javascript" src="calendar.js"></script>
 </head>
 <body id="main-body">
-
+				<%
+						if (request.getAttribute("usernotfound") != null) {
+							out.println(" <p>Finder ikke valgte bruger.</p>");
+						}
+					%>
 	<jsp:useBean id="database" class="javaMeasure.control.DataBaseController" scope="session" />
 
 	<div id="wrapper">
@@ -39,7 +43,7 @@
 
 		<div id="form_container">
 
-			<form id="user_edit" class="appnitro" method="post" action=UserEditServlet>
+			<form id="user_edit" class="appnitro" method="post" action=UserChooseServlet>
 				<div class="form_description">
 					<h1>Choose user</h1>
 					
@@ -60,7 +64,7 @@
 											if (request.getParameter("fail") != null) out.print("Bruger ikke genkendt! -");
 											%>User name</label>
 						<div>
-							<input id="username" name="username" class="element text medium"
+							<input id="chosen" name="chosen" class="element text medium"
 								type="text" maxlength="255" 
 								list="batches" autocomplete="on" value="" />
 										<datalist id="batches"> <%
@@ -94,7 +98,7 @@
                   <span class="buttons">
                   <input id="Choose" class="button_text"
 						type="submit" name="Choose" value="Choose" />
-                  <input id="Done" class="button_text"
+                  <input id="Choose" class="button_text"
 						type="submit" name="Done" value="Done" />
                   </span>
                   </td>

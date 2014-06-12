@@ -14,6 +14,7 @@
 <meta http-equiv="Content-Type" content="text/html;  charset=UTF-8">
 <%
 	String username = (String) session.getAttribute("username");
+	User u = (User) session.getAttribute("editing");
 %>
 <title>User Edit</title>
 </head>
@@ -65,25 +66,15 @@
 						<div>
 							<input id="username" name="username" class="element text medium"
 								type="text" maxlength="255" 
-								list="batches" autocomplete="on" value="" />
-										<datalist id="batches"> <%
- 						ArrayList<User> userNames = database.getUserList();
- 						for (User u : userNames){
- 							String name=u.getUserName();
- 							%>
- 
-										<option>
-											<%=name%></option>
-										<%
-											}
-										%> </datalist>
+								list="batches" autocomplete="on" value=<%u.getUserName();%> />
+										
 						</div>
 
 						
 					<li id="li_"><label class="description" for="element_4">Password</label>
 						<div>
 							<input id="element_4" name="password" class="element text medium"
-								type="text" maxlength="255" value="123456" />
+								type="text" maxlength="255" value=<%u.getPassWord();%> />
 						  <input type="hidden" name="form_id"
 						value="812583" />
 				  </div>                    
@@ -91,8 +82,8 @@
           </td>
 		  <td width="50%">
 	
-         <input type="checkbox" name="active" value="active"> active<BR>
-		  <input type="checkbox" name="admin" value="admin"> admin<BR></tr>
+         <input type="checkbox" name="active" value="active"checked> active<BR>
+		  <input type="checkbox" name="admin" value="admin"<%if(u.isAdmin()){%>checked<%} %>> admin<BR></tr>
 		 
 				
        <table width="100%" border="0" cellpadding="2" cellspacing="0">
@@ -100,7 +91,7 @@
 			<td>
 				  <span class="buttons">
 				  
-				  <input id="saveForm" class="button_text"
+				  <input id="submit" class="button_text"
 						type="submit" name="Save" value="save" />
 						</span>
                          </td>
@@ -112,7 +103,7 @@
                   <span class="buttons">
                 
 				  <input id="Done" class="button_text"
-						type="submit" name="Done" value="done" />
+						type="submit" name="Done" value="Done" />
 				  </span>
                   </td>
                   </tr>

@@ -49,7 +49,8 @@ public interface IDatabaseController {
 	void saveEditedBatchProfile(BatchProfile oldProfile, String newName) throws DataBaseException;
 	void deleteBatchSettings(Batch batch) throws DataBaseException;
 	void saveBatchSetting(BatchSetting b, int profileID) throws DataBaseException;
-	void updateBatchSettings(BatchSetting b) throws DataBaseException;
+	void updateBatchSettings(BatchSetting b, int profileID) throws DataBaseException;
+//	void updateBatchSettings(BatchSetting b) throws DataBaseException;
 
 	//Exceptions
 	@SuppressWarnings("serial")

@@ -40,14 +40,14 @@ public class UserEditServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@SuppressWarnings("unused")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//User posts edit
 		System.out.println("UserLogin - Post");
-		String username = request.getParameter("username");
+		String name = request.getParameter("username");
 		String password = request.getParameter("password");
 		String active = request.getParameter("active");
 		String admin = request.getParameter("admin");
-		String btn = request.getParameter("submit");
 		boolean ad = true;
 		if(admin==null){
 			ad=false;
@@ -56,11 +56,11 @@ public class UserEditServlet extends HttpServlet {
 		if(admin==null){
 			ac=false;
 		}
-		if(btn=="save"){
+		if(!(request.getParameter("Done")!=null)){
 		try {
 			
-			if (dbctrl.isUserNameInDB(username)) {
-				User u = dbctrl.getUserFromString(username);
+				User u = (User)request.getSession().getAttribute("editing");
+				u.setUserName(name);
 				u.setPassWord(password);
 				u.setActive(ac);
 				u.setAdmin(ad);
@@ -68,21 +68,15 @@ public class UserEditServlet extends HttpServlet {
 				request.setAttribute("editfail", null);
 				request.setAttribute("edited", true);
 				System.out.println("forwarding");
-				request.getRequestDispatcher("WEB-INF/useredit.jsp").forward(request, response);
-				System.out.println("WEB-INF/useredit.jsp");
-			} else {
-				if (request.getParameter("username")  != null) 
-					request.setAttribute("editfail", true);
-					request.setAttribute("edited", null);
-				request.getRequestDispatcher("WEB-INF/useredit.jsp").forward(request, response);
-			}
-		} catch (DataBaseException | UserNotFoundException e) {
+				request.getRequestDispatcher("WEB-INF/userchoose.jsp").forward(request, response);
+			
+		} catch (DataBaseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		}
+		
+		}}
 		else {
-			request.getRequestDispatcher("WEB-INF/useredit.jsp").forward(request, response);
+			request.getRequestDispatcher("WEB-INF/form.jsp").forward(request, response);
 		}
 	}
 
