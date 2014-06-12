@@ -28,14 +28,14 @@ public class PropertyHelper {
 		OutputStream output = null;
 		
 		try{
-		input = new FileInputStream("/" + filename + ".properties");
+		input = new FileInputStream(filename + ".properties");
 		prop.load(input);
 		input.close();
 		} catch(Exception npe){
 			System.err.println("File not found. File will be created.");
 		}
 		try {
-			output = new FileOutputStream("/" + filename + ".properties", false);	
+			output = new FileOutputStream(filename + ".properties", false);	
 		} catch (FileNotFoundException f){
 			
 		} catch (IOException e) {
@@ -66,7 +66,7 @@ public class PropertyHelper {
 		try {
 			System.out.println(fileName + ".properties");
 			
-			in = new FileInputStream("/" + fileName + ".properties");
+			in = new FileInputStream(fileName + ".properties");
 			prop.load(in);
 			value = prop.getProperty(key);
 			
