@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 
+import javaMeasure.User;
 import javaMeasure.control.DataBaseController;
 import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 import javaMeasure.control.interfaces.IDatabaseController.UserNotFoundException;
@@ -40,12 +41,17 @@ public class UserChooseServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("UserChoose - Post");
-		String username = request.getParameter("username");
-		
+		String chosen = request.getParameter("chosen");
+		System.out.println(chosen);
+		if(request.getParameter("Done")!=null){
+			request.getRequestDispatcher("WEB-INF/form.jsp").forward(request, response);
+		}
+		else{
 		try {
-			if(dbctrl.isUserNameInDB(username)){
+			if(dbctrl.isUserNameInDB(chosen)){
+				System.out.println("editing "+chosen);
 				request.getSession().setAttribute("usernotfound", null);
-				request.getSession().setAttribute("editing", dbctrl.getUserFromString(username));
+				request.getSession().setAttribute("editing", dbctrl.getUserFromString(chosen));
 				request.getRequestDispatcher("WEB-INF/useredit.jsp").forward(request, response);
 			}
 			else{
@@ -59,7 +65,7 @@ public class UserChooseServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		}
 		
 	}
 

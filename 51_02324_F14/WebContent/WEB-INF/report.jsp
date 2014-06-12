@@ -76,27 +76,7 @@
 	
 // 	String visualNorm = profile.getProfileSettings().get(40).getValue();
 // 	String visualInsp = profile.getProfileSettings().get(35).getValue();
-	/*
-	File file = new File("newfile.csv");
-	file.createNewFile();
-	
-	PrintWriter pw = new PrintWriter(new FileOutputStream("newfile.csv"));
-	pw.println(lengthNorm + "," + lengthMin +","+lengthMax+","+lengthInsp+","+mLengthNorm);
-	pw.close();
-*/
-// 	Writer writer = null;
-// 	ServletContext context = session.getServletContext();
-// 	String realContextPath = context.getRealPath(request.getContextPath()); 
-// 	try {
-//     writer = new BufferedWriter(new OutputStreamWriter(
-//           new FileOutputStream(realContextPath+"\\"+"newfile.csv"), "utf-8"));
-// //     writer.write(lengthNorm + "," + lengthMin +","+lengthMax+","+lengthInsp+","+mLengthNorm);
-//     System.err.println(realContextPath);
-// 	} catch (IOException ex) {
-//   // report
-// 	} finally {
-//    try {writer.close();} catch (Exception ex) {}
-// 	}
+
 
 	String[] reportData = (String[]) request.getAttribute("reportData");  %>
 

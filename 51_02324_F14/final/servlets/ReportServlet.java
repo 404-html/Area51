@@ -1,13 +1,16 @@
 package servlets;
 
-import java.io.IOException;
+import java.io.*;
 
 import javaMeasure.Batch;
 import javaMeasure.BatchProfile;
 import javaMeasure.control.DataBaseController;
 import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 
+import javax.servlet.GenericServlet;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +34,8 @@ public class ReportServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		processReq(request, response);
+		download(request, response);
+		//processReq(request, response);
 	}
 
 	/**
@@ -41,8 +45,7 @@ public class ReportServlet extends HttpServlet {
 		processReq(request, response);
 	}
 
-	private void processReq(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	private void processReq(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
 		//Login check
 		if (request.getSession().getAttribute("user")==null){
 			response.sendRedirect("LoginServlet");
@@ -60,9 +63,65 @@ public class ReportServlet extends HttpServlet {
 			} catch (DataBaseException e) {
 				e.printStackTrace();
 			}
+		}
 
 		}
+	
+	private void download(HttpServletRequest request,HttpServletResponse response) throws ServletException {
+	 		response.setContentType("application/octet-stream");
+	 		response.setHeader("Content-Disposition",
+	 		"attachment;filename=downloadfilename.csv");
+		Writer writer = null;
+		ServletContext context = request.getSession().getServletContext();
+	 	String realContextPath = context.getRealPath(request.getContextPath());
+	 	try{
+	 		ServletOutputStream out = response.getOutputStream();
+	 		StringBuffer sb = generateCsvFileBuffer();
+	 		InputStream in = new ByteArrayInputStream(sb.toString().getBytes("UTF-8"));
+	 		
+	 		byte[] outputByte = new byte[4096];
+	 		
+			while(in.read(outputByte, 0, 4096) != -1)
+			{
+				out.write(outputByte, 0, 4096);
+			}
+			
+			in.close();
+			out.flush();
+			out.close();
+	 	} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+
+	 	}
+//	 	File dir = new File(realContextPath);
+//	 	dir = dir.getParentFile();
+//	 	try {
+
+//	 	FileOutputStream esc =  new FileOutputStream(new File(dir,"newfile.csv"));
+//	 	OutputStreamWriter pen = new OutputStreamWriter(esc, "utf-8");
+//	     writer = new BufferedWriter(pen);
+//	     request.getRequestDispatcher("newfile.csv").forward(request, response);
+//	 	} catch (IOException ex) {
+//	 		ex.printStackTrace();
+//	 		System.out.println("I can't let you do that, "+request.getSession().getAttribute("username")+".");
+//	   // report
+//	 	} finally {
+//	 		 
+//	    try {writer.close();
+//	    } catch (Exception ex) {}
+//	 	}
+		
 	}
+	
+	private StringBuffer generateCsvFileBuffer() {
+		StringBuffer writer = new StringBuffer();
+		
+		writer.append("Aced it.");
+		return writer;
+	}
+
 	public String[] getReport(Batch batch, BatchProfile profile){
 		String[] reportData = new String[56];
 
