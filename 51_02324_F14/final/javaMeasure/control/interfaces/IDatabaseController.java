@@ -1,11 +1,8 @@
 package javaMeasure.control.interfaces;
 import java.util.ArrayList;
 
-import javax.xml.bind.DataBindingException;
-
 import javaMeasure.*;
 import javaMeasure.Measurement.MeasurementType;
-import javaMeasure.control.DataBaseController;
 
 public interface IDatabaseController {
 	
@@ -54,6 +51,9 @@ public interface IDatabaseController {
 	//Exceptions
 	@SuppressWarnings("serial")
 	public class DataBaseException extends Exception {
+		public DataBaseException(String e){
+			super(e);
+		}
 	}
 	@SuppressWarnings("serial")
 	public class UserNotFoundException extends Exception {
