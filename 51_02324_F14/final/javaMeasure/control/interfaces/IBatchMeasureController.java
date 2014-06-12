@@ -27,12 +27,12 @@ public interface IBatchMeasureController {
 	void addLeakMeasurement(String path, String filename);
 	
 	void verifyElement(boolean verified, int elementNumber);
-	
-	void deleteStrokeMeasurement();
-	
-	void deleteLeakMeasurement();
 
 	void updateMeasurements(int rowAtPoint, boolean tableData);
+
+	void btnDeleteStroke();
+
+	void btnDeleteLeak();
 	
 	
 	

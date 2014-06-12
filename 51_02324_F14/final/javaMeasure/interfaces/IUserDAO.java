@@ -12,4 +12,5 @@ public interface IUserDAO {
 	User getUserFromString(String userString) throws DataBaseException, UserNotFoundException;
 	void addToDB(User user) throws DataBaseException;
 	void updateUser(User change) throws DataBaseException;
+	void deleteUser(User user) throws DataBaseException;
 }

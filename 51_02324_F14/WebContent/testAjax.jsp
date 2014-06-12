@@ -13,8 +13,7 @@
 		$("#test").html($("#input_text").val());
 		
 		//henter siden returnDataAjax 
-		$.get("returnDataAjax.jsp",function(data,status){
-		    //alert("Data: " + data + "\nStatus: " + status);
+		$.get("returnDataAjax.jsp?input="+$("#input_text").val(),function(data,status){
 		    if(status = "success")
 		    {
 		    	//indsæt de hentede data i div element

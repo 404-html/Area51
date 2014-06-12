@@ -119,7 +119,7 @@ public class UserDAO implements IUserDAO {
 	}
 	
 	public void updateUser(User change)throws DataBaseException{
-		String query = "UPDATE users set password = ?, admin = ?, active = ? where id=?";
+		String query = "UPDATE users SET password = ?, admin = ?, active = ? WHERE id=?";
 		PreparedStatement statement = sqlConnector.getPreparedStatement(query);
 		try {
 			int ac=0;
@@ -134,6 +134,18 @@ public class UserDAO implements IUserDAO {
 			statement.setInt(2,ad );
 			statement.setInt(3,ac );
 			statement.setInt(4,change.getUserID());
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataBaseException();
+		}
+	}
+	@Override
+	public void deleteUser(User user) throws DataBaseException {
+		String query = "DELETE FROM users WHERE id=?";
+		PreparedStatement statement = sqlConnector.getPreparedStatement(query);
+		try{
+			statement.setInt(1, user.getUserID());
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();

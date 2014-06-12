@@ -2,19 +2,30 @@ package javaMeasure.control;
 
 import java.sql.*;
 
+import javaMeasure.PropertyHelper;
 import javaMeasure.control.interfaces.ISQLConnector;
 import javaMeasure.control.interfaces.ISQLConnector.DBConnectFailedException;
 import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 
 public class SQLConnector implements ISQLConnector {
 	private Connection connection;
-	private String server = "sql-lab1.cc.dtu.dk";
-	private String port = "3306";
-	private String database = "s134000";
-	private String username = "s134000";
-	private String password = "hastings";
+	private String server;
+	private String port;
+	private String database;
+	private String username;
+	private String password;
 
 	public SQLConnector(){
+//		PropertyHelper.writeToProperty("port", "3306");
+//		PropertyHelper.writeToProperty("password", "hastings");
+//		PropertyHelper.writeToProperty("database", "s134000");
+//		PropertyHelper.writeToProperty("server", "sql-lab1.cc.dtu.dk");
+//		PropertyHelper.writeToProperty("username", "s134000");
+		server = PropertyHelper.readFromProperty("server");
+		port = PropertyHelper.readFromProperty("port");
+		database = PropertyHelper.readFromProperty("database");
+		username = PropertyHelper.readFromProperty("username");
+		password = PropertyHelper.readFromProperty("password");
 		loadDriver();
 	}
 

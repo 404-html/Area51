@@ -1,6 +1,10 @@
 package javaMeasure;
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
 import javaMeasure.Measurement.MeasurementType;
 
 public class Batch {
@@ -11,12 +15,40 @@ public class Batch {
 	private int currentStrokeElement = 0; // counter for where to put the next stroke measurement, this is also an easy way to give measurements an elementnumber
 	private int currentLeakElement = 0; // counter for where to put the next leak measurement.
 
+	private String created_by;
+	private Date created_date;
+	private String approved_by;
+	private Date approved_date;
+
 	public Batch(int batchID, String batchString, int profileID) {
 		super();
 		setBatchID(batchID);
 		setBatchString(batchString);
 		this.profileID = profileID;
 		this.measurementsList = new ArrayList<>();
+	}
+
+	/**
+	 * Overloaded constructor, adds fields for created_by/date and approved_by/date
+	 * @param batchID
+	 * @param batchString
+	 * @param profileID
+	 * @param created_by
+	 * @param created_date
+	 * @param approved_by
+	 * @param approved_date
+	 */
+	public Batch(int batchID, String batchString, int profileID, String created_by, Date created_date, String approved_by, Date approved_date) {
+		super();
+		setBatchID(batchID);
+		setBatchString(batchString);
+		this.profileID = profileID;
+		this.measurementsList = new ArrayList<>();
+
+		this.created_by = created_by;
+		this.created_date = created_date;
+		this.approved_by = approved_by;
+		this.approved_date = approved_date;
 	}
 
 	public int getProfileID() {
@@ -44,20 +76,30 @@ public class Batch {
 	}
 
 	public boolean deleteLastStrokeMeasurement(){
+		Object[] row = getMeasurementsList().get(currentStrokeElement-1);
+		ArrayList<Object[]> list = getMeasurementsList();
 		if(currentStrokeElement < currentLeakElement || currentLeakElement == 0)
 			return false;
 		else{
-			getMeasurementsList().get(currentStrokeElement-1)[1] = null;
+			row[2] = null;
+			if(row[3] == null){
+				list.remove(currentStrokeElement-1);
+			}
 			currentStrokeElement--;
 			return true;
 		}
 	}
-	
+
 	public boolean deleteLastLeakMeasurement(){
+		Object[] row = getMeasurementsList().get(currentLeakElement-1);
+		ArrayList<Object[]> list = getMeasurementsList();
 		if(currentLeakElement < currentStrokeElement || currentLeakElement == 0)
 			return false;
 		else{
-			getMeasurementsList().get(currentLeakElement-1)[2] = null;
+			row[3] = null;
+			if(row[2] == null){
+				list.remove(currentLeakElement-1);
+			}
 			currentLeakElement--;
 			return true;
 		}
@@ -145,6 +187,21 @@ public class Batch {
 		return total/length;
 	}
 
+	public Measurement getMeasurement(int elementnumber, MeasurementType type){
+		if(type == MeasurementType.STROKE){
+			return (Measurement) getMeasurementsList().get(elementnumber)[2];
+		}
+		else{
+			return (Measurement) getMeasurementsList().get(elementnumber)[3];
+		}
+	}
+	
+	//used in jsp
+	public String getDateAsString(Date date){
+		Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		return formatter.format(date);
+	}
+
 	public int getCurrentLeakElement(){
 		return currentLeakElement;
 	}
@@ -165,6 +222,39 @@ public class Batch {
 		stroke.setVerified(verified);
 		leak.setVerified(verified);
 	}
+
+	public String getCreated_by() {
+		return created_by;
+	}
+
+	public void setCreated_by(String created_by) {
+		this.created_by = created_by;
+	}
+
+	public Date getCreated_date() {
+		return created_date;
+	}
+
+	public void setCreated_date(Date created_date) {
+		this.created_date = created_date;
+	}
+
+	public String getApproved_by() {
+		return approved_by;
+	}
+
+	public void setApproved_by(String approved_by) {
+		this.approved_by = approved_by;
+	}
+
+	public Date getApproved_date() {
+		return approved_date;
+	}
+
+	public void setApproved_date(Date approved_date) {
+		this.approved_date = approved_date;
+	}
+
 }
 
 
