@@ -69,10 +69,6 @@ public class PropertyHelper {
 			in = new FileInputStream(fileName + ".properties");
 			prop.load(in);
 			value = prop.getProperty(key);
-			if(fileName.equalsIgnoreCase("dasypath") && value != null){
-			value =	value.replace("NEXTFOLDER", "\\");
-			System.out.println("value output: " + value.replace("NEXTFOLDER", "\\"));
-			}
 			
 		} catch (UnsupportedEncodingException e) {
 			System.err.println("Unsupported encoding in property");

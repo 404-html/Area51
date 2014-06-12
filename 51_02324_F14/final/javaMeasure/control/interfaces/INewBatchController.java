@@ -34,8 +34,6 @@ public interface INewBatchController {
 
 	void annullerPressed();
 
-	void saveEditedBatchSettingsPressed() throws DataBaseException;
-	
-	String getActiveBatchName(Batch activeBatch);
+	void saveEditedBatchSettingsPressed(ArrayList<String> profileSettings) throws DataBaseException;
 
 }

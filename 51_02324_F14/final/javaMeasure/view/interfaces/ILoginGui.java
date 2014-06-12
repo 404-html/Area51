@@ -9,4 +9,5 @@ public interface ILoginGui extends Runnable,ActionListener, WindowListener {
 	String getSelectedUser();
 	void showNoSuchUser();
 	void showUserAlreadyExists();
+	void enableButtons(boolean b);
 }

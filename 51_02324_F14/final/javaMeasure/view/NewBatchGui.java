@@ -281,8 +281,8 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 		textBatch.setColumns(10);
 //		Finish this - Martin
 		if(editMode){
-//			textBatch.setText(newBatchController.getActiveBatchName());
-			textBatch.enableInputMethods(false);
+			textBatch.setText("");
+			textBatch.setEnabled(false);
 		}
 		separator = new JSeparator();
 		separator.setBounds(10, 100, 509, 2);
@@ -433,7 +433,8 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 			break;
 		case "saveBatchSettingsEditMode":
 			try {
-				newBatchController.saveEditedBatchSettingsPressed();
+				ArrayList<String> savingSettings2 = getSettings();
+				newBatchController.saveEditedBatchSettingsPressed(savingSettings2);
 			} catch (DataBaseException e2) {
 				// TODO Auto-generated catch block
 				e2.printStackTrace();

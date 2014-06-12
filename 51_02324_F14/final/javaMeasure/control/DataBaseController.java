@@ -68,6 +68,12 @@ public class DataBaseController implements IDatabaseController {
 	}
 
 	@Override
+	public void addToDB(BatchSetting batchSetting) throws DataBaseException {
+		batchDAO.addtoDB(batchSetting);
+		
+	}
+	
+	@Override
 	public ArrayList<Measurement> getMeasurementsByBatch(Batch batch) throws DataBaseException {
 		return measurementDAO.getMeasurementsByBatch(batch);
 	}
@@ -158,5 +164,21 @@ public class DataBaseController implements IDatabaseController {
 	public void deleteUser(User user) throws DataBaseException {
 		this.userDAO.deleteUser(user);
 	}
+
+	@Override
+	public void deleteBatchSettings(Batch batch) throws DataBaseException {
+		 batchDAO.deleteBatchSettings(batch);
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateBatchSettings(BatchSetting b)
+			throws DataBaseException {
+		batchDAO.updateBatchSettings(b);
+		
+	}
+
+
 	
 }

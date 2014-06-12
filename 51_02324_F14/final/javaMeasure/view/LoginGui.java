@@ -64,11 +64,13 @@ public class LoginGui extends JFrame implements ILoginGui {
 		contentPane.add(headLine);
 		
 		btnLogin = new JButton("Login");
+		btnLogin.setEnabled(false);
 		btnLogin.setBounds(10, 79, 193, 23);
 		btnLogin.setActionCommand("login");
 		contentPane.add(btnLogin);
 		
 		btnNewUser = new JButton("New User");
+		btnNewUser.setEnabled(false);
 		btnNewUser.setBounds(10, 113, 193, 23);
 		btnNewUser.setActionCommand("newuser");
 		contentPane.add(btnNewUser);
@@ -169,6 +171,11 @@ public class LoginGui extends JFrame implements ILoginGui {
 	public void windowOpened(WindowEvent arg0) {
 		// TODO Auto-generated method stub
 		
+	}
+	@Override
+	public void enableButtons(boolean b) {
+		btnLogin.setEnabled(b);
+		btnNewUser.setEnabled(b);
 	}
 	//TODO move main to separate class
 		public static void main(String[] args) {
