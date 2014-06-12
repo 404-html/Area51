@@ -105,12 +105,13 @@ public class BatchDAO implements IBatchDAO {
 	@Override
 	public void updateBatchSettings(BatchSetting b, int profileID) throws DataBaseException {
 
-		String query2 = "UPDATE batchsettings SET value =? WHERE profileid =?, id=?";
+		String query2 = "UPDATE batchsettings SET value =? WHERE (id=?)";
 		PreparedStatement statement = sqlConnector.getPreparedStatement(query2);
 		try {
 			statement.setString(1, b.getValue());
-			statement.setInt(2, profileID);
-			statement.setInt(3, b.getId());
+//			statement.setInt(2, profileID);
+			statement.setInt(2, b.getId());
+			System.out.println("updating test.. ProfileID: " + profileID + " Value: " + b.getValue() + " Id: " + b.getId());
 			statement.executeUpdate();
 		}	catch (SQLException e){
 			e.printStackTrace();
