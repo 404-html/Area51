@@ -19,6 +19,8 @@ public interface IBatchMeasureController {
 	IMainController getMainController();
 
 	void setActiveBatch(Batch b);
+	
+	Batch getActiveBatch();
 
 	void btnGetBatchPressed();
 

@@ -407,7 +407,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 			public void mouseEntered(MouseEvent e) {}
 			@Override
 			public void mouseClicked(MouseEvent e) {}
-		});;;
+		});
 	}
 
 	// updates batch settings. used when batch is created or loaded 

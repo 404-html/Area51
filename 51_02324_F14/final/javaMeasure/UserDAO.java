@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import javaMeasure.control.SQLConnector;
 import javaMeasure.control.interfaces.ISQLConnector;
 import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 import javaMeasure.interfaces.IUserDAO;
@@ -21,7 +20,7 @@ public class UserDAO implements IUserDAO {
 	public ArrayList<User> getUserList() throws DataBaseException {
 		String query = "SELECT * FROM users ORDER BY username";
 		PreparedStatement statement = sqlConnector.getPreparedStatement(query);
-
+//		if (statement == null) throw new DataBaseException();
 		ArrayList<User> users = new ArrayList<>();		
 		try {
 			ResultSet result = statement.executeQuery();

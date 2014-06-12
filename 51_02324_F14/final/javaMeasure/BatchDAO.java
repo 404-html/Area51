@@ -51,7 +51,7 @@ public class BatchDAO implements IBatchDAO {
 		} catch (SQLException e) {
 			throw new DataBaseException("SQLException BatchDAO - getBatches(String partialBatchName): " + e.getMessage());
 		}
-		
+
 		return batches;
 	}
 
@@ -96,17 +96,21 @@ public class BatchDAO implements IBatchDAO {
 	}
 
 	@Override
-	public void updateBatchSettings(BatchSetting b) throws DataBaseException {
-		String query = "UPDATE batchsettings SET value =? WHERE profileid =?";
-		PreparedStatement statement = sqlConnector.getPreparedStatement(query);
-		try {
-			statement.setString(1, b.getValue());
-			statement.setInt(2, b.getId());
-			statement.executeUpdate();
-		}	catch (SQLException e){
-			throw new DataBaseException("SQLException BatchDAO - updateBatchSettings(BatchSetting b): " + e.getMessage());
-		}
+	public void updateBatchSettings(ArrayList<BatchSetting> settings, int profileID) throws DataBaseException {
+		String query = null;
+		for(int i = 0; i < settings.size(); i++){
+			query = "UPDATE batchsettings SET value =? WHERE (id=?)";
 
+			try {
+				PreparedStatement statement = sqlConnector.getPreparedStatement(query);
+				statement.setString(1, settings.get(i).getValue());
+				statement.setInt(2, settings.get(i).getId());
+				System.out.println("updating test.. " + " Value: " + settings.get(i).getValue() + " Id: " + settings.get(i).getId());
+				statement.executeUpdate();
+			}	catch (SQLException e){
+				throw new DataBaseException("SQLException BatchDAO - updateBatchSettings(BatchSetting b): " + e.getMessage());
+			}
+		}
 	}
 
 	@Override
@@ -117,7 +121,9 @@ public class BatchDAO implements IBatchDAO {
 			statement.setInt(1, batch.getProfileID());
 			statement.executeUpdate();
 		} catch (SQLException e) {
+
 			throw new DataBaseException("SQLException BatchDAO - deleteBatchSettings(Batch batch)" + e.getMessage());
+
 		}
 	}
 
@@ -131,6 +137,8 @@ public class BatchDAO implements IBatchDAO {
 		ArrayList<Measurement> stroke = new ArrayList<>(); // list needed for new way of adding measurements to batch
 		ArrayList<Measurement> leak = new ArrayList<>();	// list needed for new way of adding measurements to batch
 		Batch returBatch;
+
+		//Measurement.MeasurementType type; 
 		String query1 = "SELECT * FROM batches WHERE name=?";
 		PreparedStatement statement = sqlConnector.getPreparedStatement(query1);
 		try {
@@ -201,6 +209,17 @@ public class BatchDAO implements IBatchDAO {
 				p.setInt(1, batchId);
 				result = p.executeQuery();
 
+				//				if(result.next()){
+				//					if(result.getString("measurementtype").equals("LEAK")){
+				//						translate = Measurement.MeasurementType.LEAK;						
+				//					}
+				//					else{
+				//						translate = Measurement.MeasurementType.STROKE;
+				//					}
+				//					Measurement measure = new Measurement(result.getFloat("measurmentvalue"), translate, result.getInt("timestamp"));
+				//					measure.setElementNo(result.getInt("elementnumber"));
+				//					measure.setBatchID(result.getInt("id"));
+				//					returBatch.addMeasurement(measure);
 				while(result.next()){
 					if(result.getString("measurementtype").equals("LEAK")){
 						type = Measurement.MeasurementType.LEAK;						
@@ -209,8 +228,15 @@ public class BatchDAO implements IBatchDAO {
 						type = Measurement.MeasurementType.STROKE;
 					}
 					returBatch.addMeasurement(new Measurement(result.getInt("id"), result.getInt("elementnumber"), result.getFloat("measurementvalue"), result.getBoolean("verified"), type, result.getLong("timestamp")));
+					//						measure = new Measurement(result.getFloat("measurmentvalue"), translate, result.getInt("timestamp"));
+					//						measure.setElementNo(result.getInt("elementnumber"));
+					//						measure.setBatchID(result.getInt("id"));
+					//						returBatch.addMeasurement(measure);
 				}
-	
+				//				} else{
+				//					throw new DataBaseException();
+				//				}
+
 			} else{
 				return null; // if returned table is empty
 			}

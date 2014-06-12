@@ -70,16 +70,18 @@ form.appnitro
 
 /**** Tables *****/
 
-.returnTable table, th, tr, td
+
+
+.returnTable table th, td
 {
-	/* [disabled]border:1px solid black; */
+	border:1px solid black;
 	border-collapse: collapse;
-	padding: 0;
-	cellspacing: 0;
+	padding: 5px;
+	cellspacing: 5px;
 }
 
 .returnTable tr:not(:first-child):hover {
-	background-color:red;
+	background-color:blue;
 }
 
 /**** Logo Section  *****/
