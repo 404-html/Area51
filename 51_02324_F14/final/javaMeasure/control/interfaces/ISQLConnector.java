@@ -12,7 +12,7 @@ public interface ISQLConnector {
 
 	}
 
-	Statement getStatement() throws DataBaseException;
+//	Statement getStatement() throws DataBaseException;
 	
 	PreparedStatement getPreparedStatement(String sqlStatement) throws DataBaseException;
 	

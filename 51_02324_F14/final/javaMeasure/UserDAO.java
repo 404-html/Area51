@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import javaMeasure.control.SQLConnector;
 import javaMeasure.control.interfaces.ISQLConnector;
 import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 import javaMeasure.interfaces.IUserDAO;
@@ -21,7 +20,7 @@ public class UserDAO implements IUserDAO {
 	public ArrayList<User> getUserList() throws DataBaseException {
 		String query = "SELECT * FROM users ORDER BY username";
 		PreparedStatement statement = sqlConnector.getPreparedStatement(query);
-
+//		if (statement == null) throw new DataBaseException();
 		ArrayList<User> users = new ArrayList<>();		
 		try {
 			ResultSet result = statement.executeQuery();
@@ -31,8 +30,7 @@ public class UserDAO implements IUserDAO {
 				users.add(new User(userName, userID));	
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DataBaseException();
+			throw new DataBaseException("SQLException UserDAO - getUserList(): " + e.getMessage());
 		}			
 		return  users; 
 	}
@@ -43,20 +41,16 @@ public class UserDAO implements IUserDAO {
 		try {
 			statement.setString(1, userName);
 			result = statement.executeQuery();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DataBaseException();
-		}
-		try {
 			if (result.next()){
 				return true;
 			}
 		} catch (SQLException e) {
-			throw new DataBaseException();
+			throw new DataBaseException("SQLException UserDAO - isUserNameInDB(String userName): " + e.getMessage());
 		}
+		
 		return false;
 	}
-	
+
 	@Override
 	public boolean validateUser(User user) throws DataBaseException {
 		String query = "SELECT * FROM users WHERE username=? AND password=?";
@@ -66,20 +60,16 @@ public class UserDAO implements IUserDAO {
 			pstat.setString(1, user.getUserName());
 			pstat.setString(2, user.getPassWord());
 			result = pstat.executeQuery();
-		} catch (SQLException e) {
-			throw new DataBaseException();
-		}
-		try {
 			if (result.next()){
 				return true;
 			}
 		} catch (SQLException e) {
-			throw new DataBaseException();
+			throw new DataBaseException("SQLException UserDAO - validateUser(User user)" + e.getMessage());
 		}
 		return false;
 	}
-	
-	
+
+
 	public void addToDB(User user) throws DataBaseException{
 		String query = "INSERT INTO users (username) VALUES (?)";
 		PreparedStatement statement = sqlConnector.getPreparedStatement(query);
@@ -87,13 +77,11 @@ public class UserDAO implements IUserDAO {
 			statement.setString(1, user.getUserName());
 			statement.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DataBaseException();
+			throw new DataBaseException("SQLException UserDAO - addToDB(User user): " + e.getMessage());
 		}
-
 	}
 
-	
+
 	public User getUserFromString(String userString) throws DataBaseException, UserNotFoundException {
 		String query = "SELECT * FROM users WHERE username=?";
 		PreparedStatement statement = sqlConnector.getPreparedStatement(query);
@@ -102,22 +90,17 @@ public class UserDAO implements IUserDAO {
 		try {
 			statement.setString(1, userString);
 			result = statement.executeQuery();
-		} catch (SQLException e) {
-			throw new DataBaseException(); 
-		}
-		//Parse results
-		try {
 			if (result.next()){
 				User user = new User(result.getString("username"), result.getInt("id"));
 				return user;
 			} 
 		} catch (SQLException e) {
-			throw new DataBaseException();
+			throw new DataBaseException("SQLException UserDAO - getUserFromString(String userString): " + e.getMessage()); 
 		}
 
-		throw new UserNotFoundException();
+		throw new UserNotFoundException(); // TODO is this neccessary?? could we not just return null?
 	}
-	
+
 	public void updateUser(User change)throws DataBaseException{
 		String query = "UPDATE users SET password = ?, admin = ?, active = ? WHERE id=?";
 		PreparedStatement statement = sqlConnector.getPreparedStatement(query);
@@ -136,8 +119,7 @@ public class UserDAO implements IUserDAO {
 			statement.setInt(4,change.getUserID());
 			statement.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DataBaseException();
+			throw new DataBaseException("SQLException UserDAO - updateUser(User change): " + e.getMessage());
 		}
 	}
 	@Override
@@ -148,8 +130,7 @@ public class UserDAO implements IUserDAO {
 			statement.setInt(1, user.getUserID());
 			statement.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DataBaseException();
+			throw new DataBaseException("SQLException UserDAO - deleteUser(User user): " + e.getMessage());
 		}
 	}
 }

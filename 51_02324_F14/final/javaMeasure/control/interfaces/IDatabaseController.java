@@ -1,11 +1,8 @@
 package javaMeasure.control.interfaces;
 import java.util.ArrayList;
 
-import javax.xml.bind.DataBindingException;
-
 import javaMeasure.*;
 import javaMeasure.Measurement.MeasurementType;
-import javaMeasure.control.DataBaseController;
 
 public interface IDatabaseController {
 	
@@ -49,11 +46,15 @@ public interface IDatabaseController {
 	void saveEditedBatchProfile(BatchProfile oldProfile, String newName) throws DataBaseException;
 	void deleteBatchSettings(Batch batch) throws DataBaseException;
 	void saveBatchSetting(BatchSetting b, int profileID) throws DataBaseException;
-	void updateBatchSettings(BatchSetting b) throws DataBaseException;
+	void updateBatchSettings(ArrayList<BatchSetting> settings, int profileID) throws DataBaseException;
+//	void updateBatchSettings(BatchSetting b) throws DataBaseException;
 
 	//Exceptions
 	@SuppressWarnings("serial")
 	public class DataBaseException extends Exception {
+		public DataBaseException(String e){
+			super(e);
+		}
 	}
 	@SuppressWarnings("serial")
 	public class UserNotFoundException extends Exception {

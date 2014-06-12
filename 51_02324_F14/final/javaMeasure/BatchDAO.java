@@ -5,9 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import javaMeasure.control.MainController;
-import javaMeasure.control.SQLConnector;
-import javaMeasure.control.interfaces.IMainController;
 import javaMeasure.control.interfaces.ISQLConnector;
 import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 import javaMeasure.interfaces.IBatchDAO;
@@ -32,7 +29,8 @@ public class BatchDAO implements IBatchDAO {
 	 * @throws DataBaseException
 	 */
 	public ArrayList<Batch> getBatches(String partialBatchName) throws DataBaseException {
-		//TODO needs testing 
+		//TODO needs testing
+		ArrayList<Batch> batches = new ArrayList<Batch>();
 		String query = "SELECT * FROM batches";
 		if(partialBatchName != null){
 			query = query + " WHERE UPPER(name) LIKE UPPER(?)";
@@ -44,12 +42,6 @@ public class BatchDAO implements IBatchDAO {
 				statement.setString(1, "%" + partialBatchName + "%");
 			}
 			result = statement.executeQuery();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DataBaseException();
-		}
-		ArrayList<Batch> batches = new ArrayList<Batch>();
-		try {
 			while (result.next()){
 				Batch b = new Batch(result.getInt("id"), result.getString("name"), result.getInt("profile"), 
 						result.getString("created_by"), result.getDate("created_date"), result.getString("approved_by"), result.getDate("approved_date")
@@ -57,9 +49,9 @@ public class BatchDAO implements IBatchDAO {
 				batches.add(b);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DataBaseException();
+			throw new DataBaseException("SQLException BatchDAO - getBatches(String partialBatchName): " + e.getMessage());
 		}
+
 		return batches;
 	}
 
@@ -85,8 +77,7 @@ public class BatchDAO implements IBatchDAO {
 			statement.setInt(2, batch.getProfileID());
 			statement.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DataBaseException();
+			throw new DataBaseException("SQLException BatchDAO - addToDB(Batch batch): " + e.getMessage());
 		}
 	}
 
@@ -99,25 +90,27 @@ public class BatchDAO implements IBatchDAO {
 			statement.setString(2, batchSetting.getValue());
 			statement.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DataBaseException();
+			throw new DataBaseException("SQLException BatchDAO - addToDB(BatchSetting batchSettings): " + e.getMessage());
 		}
 
 	}
 
 	@Override
-	public void updateBatchSettings(BatchSetting b) throws DataBaseException {
-		String query = "UPDATE batchsettings SET value =? WHERE profileid =?";
-		PreparedStatement statement = sqlConnector.getPreparedStatement(query);
-		try {
-			statement.setString(1, b.getValue());
-			statement.setInt(2, b.getId());
-			statement.executeUpdate();
-		}	catch (SQLException e){
-			e.printStackTrace();
-			throw new DataBaseException();
-		}
+	public void updateBatchSettings(ArrayList<BatchSetting> settings, int profileID) throws DataBaseException {
+		String query = null;
+		for(int i = 0; i < settings.size(); i++){
+			query = "UPDATE batchsettings SET value =? WHERE (id=?)";
 
+			try {
+				PreparedStatement statement = sqlConnector.getPreparedStatement(query);
+				statement.setString(1, settings.get(i).getValue());
+				statement.setInt(2, settings.get(i).getId());
+				System.out.println("updating test.. " + " Value: " + settings.get(i).getValue() + " Id: " + settings.get(i).getId());
+				statement.executeUpdate();
+			}	catch (SQLException e){
+				throw new DataBaseException("SQLException BatchDAO - updateBatchSettings(BatchSetting b): " + e.getMessage());
+			}
+		}
 	}
 
 	@Override
@@ -128,8 +121,9 @@ public class BatchDAO implements IBatchDAO {
 			statement.setInt(1, batch.getProfileID());
 			statement.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DataBaseException();
+
+			throw new DataBaseException("SQLException BatchDAO - deleteBatchSettings(Batch batch)" + e.getMessage());
+
 		}
 	}
 
@@ -143,7 +137,8 @@ public class BatchDAO implements IBatchDAO {
 		ArrayList<Measurement> stroke = new ArrayList<>(); // list needed for new way of adding measurements to batch
 		ArrayList<Measurement> leak = new ArrayList<>();	// list needed for new way of adding measurements to batch
 		Batch returBatch;
-		Measurement.MeasurementType type; 
+
+		//Measurement.MeasurementType type; 
 		String query1 = "SELECT * FROM batches WHERE name=?";
 		PreparedStatement statement = sqlConnector.getPreparedStatement(query1);
 		try {
@@ -170,14 +165,13 @@ public class BatchDAO implements IBatchDAO {
 				}
 			}
 			else {
-				throw new DataBaseException();
+				return null; // if no Batch is found in database with selected batchname
 			}
 			returBatch.setMeasurementList(stroke, leak);
 			return returBatch;
 
 		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DataBaseException();
+			throw new DataBaseException("SQLException BatchDAO - getBatch(String batchname): " + e.getMessage());
 		}
 	}
 	/* (non-Javadoc)
@@ -191,8 +185,7 @@ public class BatchDAO implements IBatchDAO {
 			ResultSet result = statement.executeQuery();
 			if (result.next()) return true;
 		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DataBaseException();
+			throw new DataBaseException("SQLException BatchDAO - isBatchInDB(String batchName): " + e.getMessage());
 		}
 		return false;
 	}
@@ -210,7 +203,6 @@ public class BatchDAO implements IBatchDAO {
 				returBatch = new Batch(result.getInt("id"), result.getString("name"), result.getInt("profile"),
 						result.getString("created_by"), result.getDate("created_date"), result.getString("approved_by"), result.getDate("approved_date")
 						);
-
 
 				query = "SELECT * FROM measurements WHERE batchid=?";
 				p = sqlConnector.getPreparedStatement(query);
@@ -246,33 +238,14 @@ public class BatchDAO implements IBatchDAO {
 				//				}
 
 			} else{
-				throw new DataBaseException();
+				return null; // if returned table is empty
 			}
 
 			return returBatch;
 
-		} catch (SQLException e1) {
-			System.err.println("error in returning batch by batchId");
-			e1.printStackTrace();
-			throw new DataBaseException();
+		} catch (SQLException e) {
+			throw new DataBaseException("SQLException BatchDAO - getBatch(int batchId): " + e.getMessage());
 		}
-
-		//*****************************************************************
-		//		Statement statement = sqlConnector.getStatement();
-		//		String qString = "SELECT * FROM batches WHERE id = " 
-		//				+ batchId + ")";
-		//		try {
-		//			ResultSet result = statement.executeQuery(qString);
-		//			if (result.next()){
-		//				return new Batch(result.getInt("id"), result.getString("name"), result.getInt("profile"));
-		//			} else {
-		//				throw new DataBaseException();
-		//			}
-		//		} catch (SQLException e) {
-		//			e.printStackTrace();
-		//			throw new DataBaseException();
-		//		}
-		//*********************************************************************
 	}
 
 }

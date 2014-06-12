@@ -39,22 +39,6 @@ public class SQLConnector implements ISQLConnector {
 		loadDriver(); 
 	}
 
-	/* (non-Javadoc)
-	 * @see javaMeasure.control.IDBConnector#connect()
-	 */
-	public Statement getStatement() throws DataBaseException  {
-		Statement statement = null;
-		try {
-			statement = getConnection().createStatement();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DataBaseException();
-		} catch (DBConnectFailedException e) {
-			e.printStackTrace();
-			throw new DataBaseException();
-		}
-		return statement;
-	}
 	public PreparedStatement getPreparedStatement(String sqlStatement) throws DataBaseException{
 		return getPreparedStatement(sqlStatement, -1);
 	}
@@ -67,9 +51,9 @@ public class SQLConnector implements ISQLConnector {
 			else
 			prepStatement = getConnection().prepareStatement(sqlStatement);
 		} catch (SQLException e){
-			e.printStackTrace();
+			throw new DataBaseException("SQL exception - getPreparedStatement: " + e.getMessage());
 		} catch (DBConnectFailedException e) {
-			e.printStackTrace();
+			throw new DataBaseException("DatabaseConnectionException - SQLConnector.getPreparedStatement(): " + e.getMessage());
 		}
 		return prepStatement;
 	}
@@ -84,7 +68,7 @@ public class SQLConnector implements ISQLConnector {
 		try {
 			isAlive = this.connection.isValid(1);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DBConnectFailedException();
 		}
 		if (isAlive){
 		return this.connection;
@@ -104,8 +88,7 @@ public class SQLConnector implements ISQLConnector {
 			System.out.println("loaded mySQLdriver");
 			return true;
 		} catch (ClassNotFoundException e) {
-			System.err.println("No mySQL driver found!");
-			e.printStackTrace();
+			System.err.println("No mySQL driver found!" + e.getMessage());
 		}
 		return false;
 	}
@@ -118,7 +101,7 @@ public class SQLConnector implements ISQLConnector {
 			return true;
 		} catch (SQLException e) {
 			System.err.println("Connection to DB failed!");
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		return false;
 	}

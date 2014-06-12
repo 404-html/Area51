@@ -13,7 +13,7 @@ import javaMeasure.view.*;
 public class NewBatchController implements INewBatchController {
 	private IMainController mainController;
 	private INewBatchGui newBatchGui;
-	private ArrayList<BatchProfile> allBatchProfiles;
+	private BatchProfile batchProfile;
 	private Batch activeBatch;
 
 	public NewBatchController(IMainController mainController){
@@ -33,13 +33,15 @@ public class NewBatchController implements INewBatchController {
 		this.mainController = mainController;
 		this.newBatchGui = new NewBatchGui(this, true);
 		try {
-			this.newBatchGui.setSettings(mainController.getDatabaseController().getBatchProfile(activeBatch.getProfileID()));
+			this.batchProfile = mainController.getDatabaseController().getBatchProfile(activeBatch.getProfileID());
+			this.newBatchGui.setSettings(batchProfile);
 		} catch (DataBaseException e) {
 			System.err.println("Database error when trying to retrieve active batch profile");
 			System.err.println(e);
 		}
 		this.newBatchGui.setVisibility(true);
 		this.activeBatch = activeBatch;
+		
 		
 	}
 	
@@ -116,19 +118,18 @@ public class NewBatchController implements INewBatchController {
 	@Override
 	public void saveEditedBatchSettingsPressed(ArrayList<String> profileSettings) throws DataBaseException {
 		ArrayList<BatchSetting> settings = new ArrayList<>();
+		
 		//Reading settings from GUI textboxes
 				for(int i = 0; i < profileSettings.size(); i++){
-					settings.add(new BatchSetting(i, null, null, profileSettings.get(i)));
+					settings.add(new BatchSetting(batchProfile.getProfileSettings().get(i).getId(), null, null, profileSettings.get(i)));
 				}
 
 					try {
 						//Saves batch and sets the active batch in batchMeasureController;
 						
 //						mainController.getDatabaseController().addToDB(b);
-						mainController.getDatabaseController().deleteBatchSettings(activeBatch);
-						for(int i = 0; i < settings.size(); i++){
-							mainController.getDatabaseController().updateBatchSettings(settings.get(i));
-						}
+							mainController.getDatabaseController().updateBatchSettings(settings, mainController.getBatchMeasureController().getActiveBatch().getProfileID());
+						
 						mainController.getBatchMeasureController().setActiveBatch(activeBatch);
 					} catch (DataBaseException e) {
 						e.printStackTrace();

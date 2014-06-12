@@ -10,8 +10,6 @@ import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 import javaMeasure.control.interfaces.ISQLConnector;
 import javaMeasure.interfaces.IMeasurementDAO;
 
-
-
 public class MeasurementDAO implements IMeasurementDAO{
 	private ISQLConnector sqlConnector;
 	
@@ -23,7 +21,7 @@ public class MeasurementDAO implements IMeasurementDAO{
 	/* (non-Javadoc)
 	 * @see javaMeasure.IMeasurementDAO#addToDB(javaMeasure.Measurement)
 	 */
-	public void addToDB(Measurement measurement) throws DataBaseException, javaMeasure.control.interfaces.IDatabaseController.DataBaseException {
+	public void addToDB(Measurement measurement) throws DataBaseException, DataBaseException {
 	  String query = "INSERT INTO measurements (batchid, elementnumber, measurementtype, verified, measurementvalue, timestamp) VALUES (?,?,?,?,?,?)";
 	  PreparedStatement statement = sqlConnector.getPreparedStatement(query);
 
@@ -36,8 +34,7 @@ public class MeasurementDAO implements IMeasurementDAO{
 	   statement.setLong(6, measurement.getTimeStamp());
 	   statement.executeUpdate();
 	  } catch (SQLException e) {
-	   e.printStackTrace();
-	   throw new DataBaseException();
+	   throw new DataBaseException("SQLException MeasurementDAO - addToDB(Measurement measurement): " + e.getMessage());
 	  }
 	 }
 	 
@@ -46,18 +43,14 @@ public class MeasurementDAO implements IMeasurementDAO{
 	 */
 	public ArrayList<Measurement> getMeasurementsByBatch(Batch batch) throws DataBaseException {
 		//TODO needs testing 
+		ArrayList<Measurement> measurements = new ArrayList<Measurement>();
 		String query = "SELECT * FROM measurements WHERE batchid=?";
 		PreparedStatement statement = sqlConnector.getPreparedStatement(query);
 		ResultSet result = null;
 		try {
 			statement.setInt(1, batch.getBatchID());
 			result = statement.executeQuery();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DataBaseException();
-		}
-		ArrayList<Measurement> measurements = new ArrayList<Measurement>();
-		try {
+			
 			while (result.next()){
 				Measurement m = new Measurement(result.getFloat("measurementvalue"), 
 						MeasurementType.valueOf(result.getString("measurementtype")), 
@@ -65,10 +58,8 @@ public class MeasurementDAO implements IMeasurementDAO{
 				measurements.add(m);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DataBaseException();
+			throw new DataBaseException("SQLException MeasurementDAO - getMeasurementsByBatch(Batch batch): " + e.getMessage());
 		}
-
 		return measurements;
 	}
 
@@ -82,8 +73,7 @@ public class MeasurementDAO implements IMeasurementDAO{
 			statement.setInt(3, measurement.getElementNo());
 			statement.executeUpdate();
 		} catch(SQLException e) {
-			e.printStackTrace();
-			throw new DataBaseException();
+			throw new DataBaseException("SQLException MeasurementDAO - updateMeasurement(Measurement measurement): " + e.getMessage());
 		}
 		
 	}
@@ -98,8 +88,7 @@ public class MeasurementDAO implements IMeasurementDAO{
 			statement.setString(3, type.name());
 			statement.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DataBaseException();
+			throw new DataBaseException("SQLException MeasurementDAO - deleteMeasurement(int batchID, int elementNumber, MeasurementType type): " + e.getMessage());
 		}
 		
 	}

@@ -3,8 +3,6 @@
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.Visibility;
-
 import javaMeasure.PropertyHelper;
 
 import javax.swing.JFrame;
