@@ -44,7 +44,7 @@ public interface IDatabaseController {
 	void deleteBatchProfile(BatchProfile bp) throws DataBaseException;
 	void editBatchProfile(BatchProfile bp) throws DataBaseException; 
 	void saveEditedBatchProfile(BatchProfile oldProfile, String newName) throws DataBaseException;
-	
+	void deleteBatchSettings(Batch batch) throws DataBaseException;
 	void saveBatchSetting(BatchSetting b, int profileID) throws DataBaseException;
 
 	//Exceptions
@@ -56,7 +56,7 @@ public interface IDatabaseController {
 
 	}
 
-	void deleteBatchSettings(Batch batch) throws DataBaseException;
+
 	
 //	ArrayList<BatchProfile> getBatchProfiles();
 	
