@@ -5,9 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import javaMeasure.control.MainController;
-import javaMeasure.control.SQLConnector;
-import javaMeasure.control.interfaces.IMainController;
 import javaMeasure.control.interfaces.ISQLConnector;
 import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 import javaMeasure.interfaces.IBatchDAO;
@@ -159,7 +156,7 @@ public class BatchDAO implements IBatchDAO {
 		ArrayList<Measurement> stroke = new ArrayList<>(); // list needed for new way of adding measurements to batch
 		ArrayList<Measurement> leak = new ArrayList<>();	// list needed for new way of adding measurements to batch
 		Batch returBatch;
-		Measurement.MeasurementType type; 
+		//Measurement.MeasurementType type; 
 		String query1 = "SELECT * FROM batches WHERE name=?";
 		PreparedStatement statement = sqlConnector.getPreparedStatement(query1);
 		try {
