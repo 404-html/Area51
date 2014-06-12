@@ -24,5 +24,7 @@ public interface IBatchDAO {
 	
 	void deleteBatchSettings(Batch batch) throws DataBaseException;
 
+	void updateBatchSettings(BatchSetting b) throws DataBaseException;
+
 
 }

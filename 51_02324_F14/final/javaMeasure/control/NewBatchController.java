@@ -127,7 +127,7 @@ public class NewBatchController implements INewBatchController {
 //						mainController.getDatabaseController().addToDB(b);
 						mainController.getDatabaseController().deleteBatchSettings(activeBatch);
 						for(int i = 0; i < settings.size(); i++){
-							mainController.getDatabaseController().addToDB(settings.get(i));
+							mainController.getDatabaseController().updateBatchSettings(settings.get(i));
 						}
 						mainController.getBatchMeasureController().setActiveBatch(activeBatch);
 					} catch (DataBaseException e) {
