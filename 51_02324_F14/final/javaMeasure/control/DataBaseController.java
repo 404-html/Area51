@@ -173,12 +173,14 @@ public class DataBaseController implements IDatabaseController {
 	}
 
 	@Override
-	public void updateBatchSettings(BatchSetting b)
+	public void updateBatchSettings(BatchSetting b, int profileID)
 			throws DataBaseException {
-		batchDAO.updateBatchSettings(b);
+		batchDAO.updateBatchSettings(b, profileID);
 		
 	}
-
+//	public void updateBatchSettings(BatchSetting b) throws DataBaseException{
+//		batchDAO.updateBatchSettings(b);
+//	}
 
 	
 }

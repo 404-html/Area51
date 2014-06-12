@@ -106,9 +106,27 @@ public class BatchDAO implements IBatchDAO {
 	}
 
 	@Override
-	public void updateBatchSettings(BatchSetting b) throws DataBaseException {
-		String query = "UPDATE batchsettings SET value =? WHERE profileid =?";
+	public void updateBatchSettings(BatchSetting b, int profileID) throws DataBaseException {
+		int profileId = 0;
+		ResultSet result = null;
+		//Getting profileID from DB
+		String query = "SELECT id FROM batchsettings WHERE profileid=?;";
 		PreparedStatement statement = sqlConnector.getPreparedStatement(query);
+		try {
+			statement.setString(1, profileID);
+			result = statement.executeQuery();
+			if(result.next()){
+				profileId = result.getInt(1); 
+				batchSetting.setProfileID(profileId);
+			} else {
+				throw new DataBaseException();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataBaseException();
+		}
+		String query2 = "UPDATE batchsettings SET value =? WHERE profileid =?";
+		PreparedStatement statement2 = sqlConnector.getPreparedStatement(query2);
 		try {
 			statement.setString(1, b.getValue());
 			statement.setInt(2, b.getId());
@@ -119,6 +137,20 @@ public class BatchDAO implements IBatchDAO {
 		}
 
 	}
+//	@Override
+//	public void updateBatchSettings(BatchSetting b) throws DataBaseException {
+//	String query2 = "UPDATE batchsettings SET value =? WHERE profileid =?";
+//	PreparedStatement statement2 = sqlConnector.getPreparedStatement(query2);
+//	try {
+//		statement2.setString(1, b.getValue());
+//		statement2.setInt(2, b.getId());
+//		statement2.executeUpdate();
+//	}	catch (SQLException e){
+//		e.printStackTrace();
+//		throw new DataBaseException();
+//	}
+//
+//}
 
 	@Override
 	public void deleteBatchSettings(Batch batch) throws DataBaseException {
