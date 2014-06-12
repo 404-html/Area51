@@ -35,6 +35,8 @@ public interface IDatabaseController {
 		// use index as id 
 	int saveBatchProfile(BatchProfile profile) throws DataBaseException; // returns id of saved batchprofile
 	
+	//Batchsettings
+	void addToDB(BatchSetting batchSetting) throws DataBaseException;
 	
 	void deleteBatchProfile(BatchProfile bp) throws DataBaseException;
 	void editBatchProfile(BatchProfile bp) throws DataBaseException; 
@@ -50,6 +52,7 @@ public interface IDatabaseController {
 	void saveBatchSetting(BatchSetting b, int profileID)
 			throws DataBaseException;
 	void deleteMeasurement(int batchID, int elementNumber, MeasurementType type);
+	void deleteBatchSettings(Batch batch) throws DataBaseException;
 	
 //	ArrayList<BatchProfile> getBatchProfiles();
 	

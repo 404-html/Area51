@@ -14,6 +14,7 @@ public class NewBatchController implements INewBatchController {
 	private IMainController mainController;
 	private INewBatchGui newBatchGui;
 	private ArrayList<BatchProfile> allBatchProfiles;
+	private Batch activeBatch;
 
 	public NewBatchController(IMainController mainController){
 
@@ -38,20 +39,10 @@ public class NewBatchController implements INewBatchController {
 			System.err.println(e);
 		}
 		this.newBatchGui.setVisibility(true);
+		this.activeBatch = activeBatch;
 		
 	}
 	
-	public String getActiveBatchName(Batch activeBatch){
-		String activeBatchName = null;
-		try {
-			 activeBatchName = mainController.getDatabaseController().getBatchProfile(activeBatch.getBatchID()).getProfileName();
-		} catch (DataBaseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return activeBatchName;
-		
-	}
 	
 	public IMainController getMainController() {
 		return mainController;
@@ -120,38 +111,28 @@ public class NewBatchController implements INewBatchController {
 		}
 	}
 
+	//TODO Use update methods instead of delete and create
+	
 	@Override
-	public void saveEditedBatchSettingsPressed() throws DataBaseException {
+	public void saveEditedBatchSettingsPressed(ArrayList<String> profileSettings) throws DataBaseException {
 		ArrayList<BatchSetting> settings = new ArrayList<>();
-		boolean verification = false;
 		//Reading settings from GUI textboxes
-//				for(int i = 0; i < profileSettings.size(); i++){
-//					settings.add(new BatchSetting(i, null, null, profileSettings.get(i)));
-//				}
-//				try {
-//					verification = isBatchInDB(batchString);
-//				} catch (DataBaseException e1) {
-//					e1.printStackTrace();
-//				}
-//				if(batchString.equals("")){
-//					newBatchGui.showInformationMessage("Batch name has to be chosen", "No batch name");
-//				}
-//				else if(verification){
-//					newBatchGui.showInformationMessage("A batch with this ID already exists!", "Could not create batch");;
-//				} else{
-//					// Creating batchProfile with settings from above
-//					BatchProfile bp = new BatchProfile(null, settings);
-//					int profileID = -1;
-//					try {
-//						//Saves batchProfile in DB and creates a batch with the batchProfile ID
-//						profileID = mainController.getDatabaseController().saveBatchProfile(bp);
-//						Batch b = new Batch(-1, batchString, profileID);
-//						//Saves batch and sets the active batch in batchMeasureController
+				for(int i = 0; i < profileSettings.size(); i++){
+					settings.add(new BatchSetting(i, null, null, profileSettings.get(i)));
+				}
+
+					try {
+						//Saves batch and sets the active batch in batchMeasureController;
+						
 //						mainController.getDatabaseController().addToDB(b);
-//						mainController.getBatchMeasureController().setActiveBatch(b);
-//					} catch (DataBaseException e) {
-//						e.printStackTrace();
-//					}
+						mainController.getDatabaseController().deleteBatchSettings(activeBatch);
+						for(int i = 0; i < settings.size(); i++){
+							mainController.getDatabaseController().addToDB(settings.get(i));
+						}
+						mainController.getBatchMeasureController().setActiveBatch(activeBatch);
+					} catch (DataBaseException e) {
+						e.printStackTrace();
+					}
 					//Shift view to BatchMeasure view
 					newBatchGui.setVisibility(false);
 					mainController.getBatchMeasureController().showGui(true);
