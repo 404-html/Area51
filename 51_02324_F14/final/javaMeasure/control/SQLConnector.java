@@ -53,12 +53,7 @@ public class SQLConnector implements ISQLConnector {
 		} catch (SQLException e){
 			throw new DataBaseException("SQL exception - getPreparedStatement: " + e.getMessage());
 		} catch (DBConnectFailedException e) {
-<<<<<<< HEAD
 			throw new DataBaseException("DatabaseConnectionException - SQLConnector.getPreparedStatement(): " + e.getMessage());
-=======
-			throw new DataBaseException();
-			//e.printStackTrace();
->>>>>>> branch 'master' of https://github.com/Catpaw42/Area51.git
 		}
 		return prepStatement;
 	}
