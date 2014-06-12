@@ -21,7 +21,7 @@ public class UserDAO implements IUserDAO {
 	public ArrayList<User> getUserList() throws DataBaseException {
 		String query = "SELECT * FROM users ORDER BY username";
 		PreparedStatement statement = sqlConnector.getPreparedStatement(query);
-
+		if (statement == null) throw new DataBaseException();
 		ArrayList<User> users = new ArrayList<>();		
 		try {
 			ResultSet result = statement.executeQuery();

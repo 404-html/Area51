@@ -69,7 +69,8 @@ public class SQLConnector implements ISQLConnector {
 		} catch (SQLException e){
 			e.printStackTrace();
 		} catch (DBConnectFailedException e) {
-			e.printStackTrace();
+			throw new DataBaseException();
+			//e.printStackTrace();
 		}
 		return prepStatement;
 	}
@@ -118,7 +119,7 @@ public class SQLConnector implements ISQLConnector {
 			return true;
 		} catch (SQLException e) {
 			System.err.println("Connection to DB failed!");
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		return false;
 	}

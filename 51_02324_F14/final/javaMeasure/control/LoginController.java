@@ -10,6 +10,7 @@ import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 import javaMeasure.control.interfaces.IDatabaseController.UserNotFoundException;
 import javaMeasure.view.LoginGui;
 import javaMeasure.view.interfaces.ILoginGui;
+import javaMeasure.view.interfaces.ILoginGui.Status;
 
 import java.util.*;
 
@@ -27,6 +28,7 @@ public class LoginController implements ILoginController{
 //		User[] users = null;
 		try {
 			users = mainCtrl.getDatabaseController().getUserList();
+			Gui.changestatus(Status.Connected);
 			String[] UserStrings = new String[users.size()];
 			for (int i = 0; i<users.size();i++){
 				UserStrings[i] = users.get(i).getUserName();
@@ -34,9 +36,9 @@ public class LoginController implements ILoginController{
 			Gui.setUserList(UserStrings);
 			Gui.enableButtons(true);
 		} catch (DataBaseException e) {
-			System.err.println("could not load user list");
-			System.exit(-1);
-			e.printStackTrace();
+			Gui.changestatus(Status.Noconnection);
+			
+			//e.printStackTrace();
 		}
 		
 	}

@@ -9,12 +9,12 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import org.eclipse.wb.swing.FocusTraversalOnArray;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.awt.event.WindowEvent;
 
 import javaMeasure.control.LoginController;
 import javaMeasure.control.MainController;
@@ -24,12 +24,13 @@ import javaMeasure.view.interfaces.ILoginGui;
 import javax.swing.SwingConstants;
 
 @SuppressWarnings("serial")
-public class LoginGui extends JFrame implements ILoginGui {
+public class LoginGui extends JFrame implements ILoginGui { 
 	private JComboBox<String> userBox;
 	private JButton btnLogin;
 	private JButton btnNewUser;
 	private JPanel contentPane;
 	private JLabel headLine;
+	private JLabel labelStatus;
 	private ILoginController loginController;
 
 	@Override
@@ -51,7 +52,7 @@ public class LoginGui extends JFrame implements ILoginGui {
 		setResizable(false);
 		setTitle("MeasureMax");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 219, 176);
+		setBounds(100, 100, 220, 200);
 		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -80,6 +81,10 @@ public class LoginGui extends JFrame implements ILoginGui {
 		userBox.setEditable(true);
 		userBox.setBounds(10, 45, 193, 23);
 		contentPane.add(userBox);
+		
+		labelStatus = new JLabel("Connecting...");
+		labelStatus.setBounds(10, 147, 193, 14);
+		contentPane.add(labelStatus);
 		
 		//Setup listeners
 		btnLogin.addActionListener(this);
@@ -138,45 +143,34 @@ public class LoginGui extends JFrame implements ILoginGui {
 	}
 	
 	@Override
-	public void windowActivated(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void windowClosed(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void windowClosing(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void windowDeactivated(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void windowDeiconified(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void windowIconified(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void windowOpened(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
 	public void enableButtons(boolean b) {
 		btnLogin.setEnabled(b);
 		btnNewUser.setEnabled(b);
 	}
+	
+	@Override
+	public void changestatus(Status s){
+		switch (s){
+		case Connected:
+			labelStatus.setText("Connection to database established");
+			labelStatus.setForeground(Color.GREEN.darker());
+			break;
+		case Connecting:
+			labelStatus.setText("Connecting...");
+			labelStatus.setForeground(Color.BLACK);
+			break;
+		case Noconnection:
+			labelStatus.setText("No Connection");
+			labelStatus.setForeground(Color.RED);
+			JOptionPane.showMessageDialog(this, "No connection to database - check internet and databasesettings", "Error", JOptionPane.ERROR_MESSAGE);
+			System.exit(ERROR);
+			break;
+		default:
+			break;
+		
+		}
+	}
+
 	//TODO move main to separate class
 		public static void main(String[] args) {
 			EventQueue.invokeLater(new Runnable() {
@@ -190,6 +184,4 @@ public class LoginGui extends JFrame implements ILoginGui {
 				}
 			});
 		}
-
-		
 }
