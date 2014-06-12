@@ -14,7 +14,7 @@ import javaMeasure.interfaces.IBatchDAO;
 
 public class BatchDAO implements IBatchDAO {
 	private  ISQLConnector sqlConnector;
-	
+
 	public BatchDAO(ISQLConnector sqlConnector) {
 		this.sqlConnector = sqlConnector;
 	}
@@ -91,34 +91,49 @@ public class BatchDAO implements IBatchDAO {
 	}
 
 	@Override
-public void addtoDB(BatchSetting batchSetting) throws DataBaseException {
-	String query = "INSERT INTO batchesettings (profileid, value) VALUES (?,?)";
-	PreparedStatement statement = sqlConnector.getPreparedStatement(query);
-	try {
-		statement.setInt(1, batchSetting.getId());
-		statement.setString(2, batchSetting.getValue());
-		statement.executeUpdate();
-	} catch (SQLException e) {
-		e.printStackTrace();
-		throw new DataBaseException();
-	}
-	
-}
+	public void addtoDB(BatchSetting batchSetting) throws DataBaseException {
+		String query = "INSERT INTO batchesettings (profileid, value) VALUES (?,?)";
+		PreparedStatement statement = sqlConnector.getPreparedStatement(query);
+		try {
+			statement.setInt(1, batchSetting.getId());
+			statement.setString(2, batchSetting.getValue());
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataBaseException();
+		}
 
-@Override
-public void deleteBatchSettings(Batch batch) throws DataBaseException {
-	String query = "DELETE FROM batchsettings WHERE profileid =?";
-	PreparedStatement statement = sqlConnector.getPreparedStatement(query);
-	try {
-		statement.setInt(1, batch.getProfileID());
-		statement.executeUpdate();
-	} catch (SQLException e) {
-		e.printStackTrace();
-		throw new DataBaseException();
 	}
-}
 
-	
+	@Override
+	public void updateBatchSettings(BatchSetting b) throws DataBaseException {
+		String query = "UPDATE batchsettings SET value =? WHERE profileid =?";
+		PreparedStatement statement = sqlConnector.getPreparedStatement(query);
+		try {
+			statement.setString(1, b.getValue());
+			statement.setInt(2, b.getId());
+			statement.executeUpdate();
+		}	catch (SQLException e){
+			e.printStackTrace();
+			throw new DataBaseException();
+		}
+
+	}
+
+	@Override
+	public void deleteBatchSettings(Batch batch) throws DataBaseException {
+		String query = "DELETE FROM batchsettings WHERE profileid =?";
+		PreparedStatement statement = sqlConnector.getPreparedStatement(query);
+		try {
+			statement.setInt(1, batch.getProfileID());
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataBaseException();
+		}
+	}
+
+
 
 	/* (non-Javadoc)
 	 * @see javaMeasure.IBatchDAO#getBatch(java.lang.String)
@@ -259,6 +274,5 @@ public void deleteBatchSettings(Batch batch) throws DataBaseException {
 		//		}
 		//*********************************************************************
 	}
-
 
 }

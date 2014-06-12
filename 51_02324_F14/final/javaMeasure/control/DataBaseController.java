@@ -172,6 +172,13 @@ public class DataBaseController implements IDatabaseController {
 		
 	}
 
+	@Override
+	public void updateBatchSettings(BatchSetting b)
+			throws DataBaseException {
+		batchDAO.updateBatchSettings(b);
+		
+	}
+
 
 	
 }
