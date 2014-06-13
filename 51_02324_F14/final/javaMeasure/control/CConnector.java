@@ -54,12 +54,15 @@ public class CConnector implements ICConnector
 		int hardwarePort = 0;
 		switch(measurementType)
 		{
+		//port 0 = physical hardware
+		//port 99 = random data
+		//port 98 = always returns 1
 		case LEAK:
 			//ports=1234;
 			hardwarePort=99;
 			break;
 		case STROKE:
-			hardwarePort=99;
+			hardwarePort=0;
 			break;
 		}
 		String returnString = writeToSocket(hardwarePort + ";" + number + ";" + period + ";<EOF>", period, number);
