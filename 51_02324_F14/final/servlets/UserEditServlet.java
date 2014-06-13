@@ -53,10 +53,10 @@ public class UserEditServlet extends HttpServlet {
 			ad=false;
 		}
 		boolean ac = true;
-		if(admin==null){
+		if(active==null){
 			ac=false;
 		}
-		if(!(request.getParameter("Done")!=null)){
+		if((request.getParameter("Save")!=null)){
 		try {
 			
 				User u = (User)request.getSession().getAttribute("editing");
@@ -67,10 +67,12 @@ public class UserEditServlet extends HttpServlet {
 				dbctrl.updateUser(u);
 				request.setAttribute("editfail", null);
 				request.setAttribute("edited", true);
+				request.getSession().setAttribute("user", u);
 				System.out.println("forwarding");
 				request.getRequestDispatcher("WEB-INF/userchoose.jsp").forward(request, response);
 			
 		} catch (DataBaseException e) {
+			request.getRequestDispatcher("WEB-INF/useredit.jsp").forward(request, response);
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		
