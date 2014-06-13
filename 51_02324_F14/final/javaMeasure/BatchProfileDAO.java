@@ -6,8 +6,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import javaMeasure.control.NewBatchController;
-import javaMeasure.control.SQLConnector;
 import javaMeasure.control.interfaces.ISQLConnector;
 import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 import javaMeasure.interfaces.IBatchProfileDAO;
@@ -36,11 +34,10 @@ public class BatchProfileDAO implements IBatchProfileDAO {
 					profileId = result.getInt(1); 
 					batchProfile.setProfileID(profileId);
 				} else {
-					throw new DataBaseException();
+					return null;
 				}
 			} catch (SQLException e) {
-				e.printStackTrace();
-				throw new DataBaseException();
+				throw new DataBaseException("SQLException BatchProfileDAO - getBatchProfile(String profilename) - getting id from batchprofile: " + e.getMessage());
 			}
 			//Getting settings from DB
 			String query2 = "SELECT * FROM batchsettings WHERE profileid=?;";
@@ -56,8 +53,7 @@ public class BatchProfileDAO implements IBatchProfileDAO {
 					batchProfile.addSetting(b);
 				}
 			} catch (SQLException e) {
-				e.printStackTrace();
-				throw new DataBaseException();
+				throw new DataBaseException("SQLException BatchProfileDAO - getBatchProfile(String profilename) - getting profilesettings: " + e.getMessage());
 			}
 			return batchProfile;
 		}
@@ -78,7 +74,7 @@ public class BatchProfileDAO implements IBatchProfileDAO {
 					batchProfile.addSetting(bs);
 				}
 			} catch(SQLException e){
-				throw new DataBaseException();
+				throw new DataBaseException("SQLException BatchProfileDAO - getBatchProfile(int profileId): " + e.getMessage());
 			}
 
 			return batchProfile;
@@ -100,8 +96,7 @@ public class BatchProfileDAO implements IBatchProfileDAO {
 					nameList.add(result.getString("profilename"));
 				}
 			} catch (SQLException e) {
-				e.printStackTrace();
-				throw new DataBaseException();
+				throw new DataBaseException("SQLException BatchProfileDAO - getSavedBatchProfilesNames(): " + e.getMessage());
 			}
 			return nameList;
 		}
@@ -120,8 +115,7 @@ public class BatchProfileDAO implements IBatchProfileDAO {
 				profileId = r.getInt(1);
 
 			} catch (SQLException e) {
-				e.printStackTrace();
-				throw new DataBaseException();
+				throw new DataBaseException("SQLException BatchProfileDAO - saveBatchProfile(BatchProfile profile): " + e.getMessage());
 			}
 			//Saving Settings.  
 			for (BatchSetting b : profile.getProfileSettings()){
@@ -146,8 +140,7 @@ public class BatchProfileDAO implements IBatchProfileDAO {
 				s.setString(4, b.getValue());
 				s.executeUpdate();
 			} catch (SQLException e) {
-				e.printStackTrace();
-				throw new DataBaseException();
+				throw new DataBaseException("SQLException BatchProfileDAO - saveBatchSetting(BatchSetting b, int profileID): " + e.getMessage());
 			}
 		}
 
@@ -160,9 +153,7 @@ public class BatchProfileDAO implements IBatchProfileDAO {
 				s.setInt(1, bp.getProfileID());
 				s.executeUpdate();
 			} catch (SQLException e){
-				e.printStackTrace();
-				throw new DataBaseException();
-				
+				throw new DataBaseException("SQLException BatchProfileDAO - deleteBatchProfile(BatchProfile bp) - deleteBatchSettings: " + e.getMessage());
 			}
 			
 			query = "DELETE FROM batchprofile WHERE profilename=?";
@@ -171,17 +162,16 @@ public class BatchProfileDAO implements IBatchProfileDAO {
 				s.setString(1, bp.getProfileName());
 				s.executeUpdate();
 			} catch (SQLException e){
-				e.printStackTrace();
-				throw new DataBaseException();
+				throw new DataBaseException("SQLException BatchProfile DAO - deleteBatchProfile(BatchProfile bp) - deleteBatchProfile: " + e.getMessage());
 				
 			}
 	}
 
-		public void editBatchProfile(BatchProfile bp, String newId) throws DataBaseException{
-			NewBatchController nbc = null;
-			nbc.loadBatchSettingsPressed(bp.getProfileName());
-		}
-		public void saveEditedBatchSettings(BatchProfile oldProfile) throws DataBaseException {
-			
-		}
+//		public void editBatchProfile(BatchProfile bp, String newId) throws DataBaseException{
+//			NewBatchController nbc = null;
+//			nbc.loadBatchSettingsPressed(bp.getProfileName());
+//		}
+//		public void saveEditedBatchSettings(BatchProfile oldProfile) throws DataBaseException {
+//			
+//		}
 }

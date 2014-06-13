@@ -140,12 +140,26 @@ public class ReportServlet extends HttpServlet {
 			if(( i < 10 || i > 12) && i < 16){
 				reportData[reportIndex] = profile.getProfileSettings().get(i).getValue();
 				if(row < 3){
+					try{
 					reportData[reportIndex+1] = String.valueOf(Double.parseDouble(profile.getProfileSettings().get(i).getValue()) - Double.parseDouble(profile.getProfileSettings().get(i+12).getValue()));
 					reportData[reportIndex+2] = String.valueOf(Double.parseDouble(profile.getProfileSettings().get(i).getValue()) + Double.parseDouble(profile.getProfileSettings().get(i+12).getValue()));
+					} catch (NumberFormatException e){
+						if(reportData[reportIndex+1] == null){
+						reportData[reportIndex+1] = "";
+						}
+						reportData[reportIndex+2] = "";
+					}
 
 				} else{
+					try{
 					reportData[reportIndex+1] = String.valueOf(Double.parseDouble(profile.getProfileSettings().get(i).getValue()) - Double.parseDouble(profile.getProfileSettings().get(i+10).getValue()));
 					reportData[reportIndex+2] = String.valueOf(Double.parseDouble(profile.getProfileSettings().get(i).getValue()) + Double.parseDouble(profile.getProfileSettings().get(i+10).getValue()));
+					} catch (NumberFormatException e){
+						if(reportData[reportIndex+1] == null){
+							reportData[reportIndex+1] = "";
+							}
+							reportData[reportIndex+2] = "";
+					}
 
 				}
 				reportData[reportIndex+3] = profile.getProfileSettings().get(i+21).getValue();

@@ -281,7 +281,6 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 		textBatch.setColumns(10);
 //		Finish this - Martin
 		if(editMode){
-			textBatch.setText("");
 			textBatch.setEnabled(false);
 		}
 		separator = new JSeparator();
@@ -486,5 +485,12 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 	@Override
 	public void showInformationMessage(String message, String title){
 		JOptionPane.showMessageDialog(getContentPane(), message, title, JOptionPane.INFORMATION_MESSAGE);
+	}
+
+	@Override
+	public void setbatchName(String batchString) {
+		textBatch.setText(batchString);
+		// TODO Auto-generated method stub
+		
 	}
 }
