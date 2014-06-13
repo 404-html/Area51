@@ -23,12 +23,8 @@ public interface IBatchMeasureController {
 	Batch getActiveBatch();
 
 	void btnGetBatchPressed();
-
-	void updateLog(String string);
 	
 	void addLeakMeasurement(String path, String filename);
-	
-	void verifyElement(boolean verified, int elementNumber);
 
 	void updateMeasurements(int rowAtPoint, boolean tableData);
 
