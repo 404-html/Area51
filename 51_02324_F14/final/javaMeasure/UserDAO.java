@@ -125,18 +125,23 @@ public class UserDAO implements IUserDAO {
 	}
 	
 	public boolean canWeRemoveAnotherAdmin()throws DataBaseException{
-		String query = "Select Count(*) FROM users WHERE active=1 and admin=1";
+		String query = "Select * FROM users WHERE active=1 and admin=1";
 		PreparedStatement statement = sqlConnector.getPreparedStatement(query);
-		int result;
+		ResultSet result;
 		try{
-			result=statement.executeUpdate();
+			result=statement.executeQuery();
+			int i = 0;
+			while(result.next()){
+				i++;
+				if(i>1){
+					return true;
+				}
+			}
+			return false;
 		} catch (SQLException e) {
 			throw new DataBaseException("SQLException UserDAO - canWeRemoveAnotherAdmin(): " + e.getMessage());
 		}
-		if(result>1){
-			return true;
-		}
-		return false;
+
 	}
 	@Override
 	public void deleteUser(User user) throws DataBaseException {

@@ -57,26 +57,47 @@ public class UserEditServlet extends HttpServlet {
 			ac=false;
 		}
 		if((request.getParameter("Save")!=null)){
-		try {
+			try {
+	
+					User u = (User)request.getSession().getAttribute("editing");
+					if(!(u.isActive()&&u.isAdmin())||(u.isActive()&&u.isAdmin()&&(dbctrl.canWeRemoveAnotherAdmin()||(ac&&ad)))){
+						u.setUserName(name);
+						u.setPassWord(password);
+						u.setActive(ac);
+						u.setAdmin(ad);
+						dbctrl.updateUser(u);
+						request.setAttribute("editfail", null);
+						request.setAttribute("edited", true);
+						if(((User)request.getSession().getAttribute("user")).getUserID()==u.getUserID()){
+							
+							if(ac){
+							
+								request.getSession().setAttribute("user", u);
+								request.getRequestDispatcher("WEB-INF/userchoose.jsp").forward(request, response);
+							}
+							else{
+								request.getSession().setAttribute("user", null);
+								request.getRequestDispatcher("WEB-INF/userlogin.jsp").forward(request, response);
+							}
+							
+						}
+						else{
+						System.out.println("forwarding");
+						request.getRequestDispatcher("WEB-INF/userchoose.jsp").forward(request, response);
+						}
+					}
+					else{
+						System.out.println("I can't let you remove the last admin, " +request.getSession().getAttribute("username")+".");
+						request.getRequestDispatcher("WEB-INF/useredit.jsp").forward(request, response);
+					}
+					
+			} catch (DataBaseException e) {
+				request.getRequestDispatcher("WEB-INF/useredit.jsp").forward(request, response);
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			
-				User u = (User)request.getSession().getAttribute("editing");
-				u.setUserName(name);
-				u.setPassWord(password);
-				u.setActive(ac);
-				u.setAdmin(ad);
-				dbctrl.updateUser(u);
-				request.setAttribute("editfail", null);
-				request.setAttribute("edited", true);
-				request.getSession().setAttribute("user", u);
-				System.out.println("forwarding");
-				request.getRequestDispatcher("WEB-INF/userchoose.jsp").forward(request, response);
-			
-		} catch (DataBaseException e) {
-			request.getRequestDispatcher("WEB-INF/useredit.jsp").forward(request, response);
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		
-		}}
+			}
+		}
 		else {
 			request.getRequestDispatcher("WEB-INF/form.jsp").forward(request, response);
 		}
