@@ -1,7 +1,6 @@
 package javaMeasure.control.interfaces;
 
 import java.sql.PreparedStatement;
-import java.sql.Statement;
 
 import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 
@@ -12,7 +11,7 @@ public interface ISQLConnector {
 
 	}
 
-	Statement getStatement() throws DataBaseException;
+//	Statement getStatement() throws DataBaseException;
 	
 	PreparedStatement getPreparedStatement(String sqlStatement) throws DataBaseException;
 	

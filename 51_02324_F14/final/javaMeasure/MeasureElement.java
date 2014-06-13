@@ -41,5 +41,8 @@ public class MeasureElement {
 	public int getElementNumber(){
 		return elementNumber;
 	}
+	public String getBatchId(){
+		return this.BatchID;
+	}
 
 }

@@ -11,5 +11,6 @@ public interface INewBatchGui extends ActionListener, EventListener, Runnable{
 	void setSettings(BatchProfile settingList);
 	ArrayList<String> getSettings();
 	void showInformationMessage(String message, String title);
+	void setbatchName(String batchString);
 
 }

@@ -10,19 +10,19 @@ public class TestMySQLConnection {
 
 	public static void main(String[] args) {
 		sqlConnector = new SQLConnector();
-		Statement statement = null;
+		String query = "select * from users";
+		PreparedStatement statement = null;
 		try {
-			statement = sqlConnector.getStatement();
+			statement = sqlConnector.getPreparedStatement(query);
 		} catch (DataBaseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		ResultSet resultset = null;
 		try {
-			resultset = statement.executeQuery("select * from users");
+			resultset = statement.executeQuery();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("failed to executeQuery()");
 		}
 		String username = null;
 		System.out.println(resultset);

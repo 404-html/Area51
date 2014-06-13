@@ -24,7 +24,7 @@ public class NewBatchController implements INewBatchController {
 			this.newBatchGui.setSettings(getDefaultBatchProfile());
 		} catch (DataBaseException e) {
 			System.err.println("Database error when trying to retrieve default batch profile");
-			System.err.println(e);
+			System.err.println(e.getMessage());
 		}
 		this.newBatchGui.setVisibility(true);
 	}
@@ -39,8 +39,10 @@ public class NewBatchController implements INewBatchController {
 			System.err.println("Database error when trying to retrieve active batch profile");
 			System.err.println(e);
 		}
-		this.newBatchGui.setVisibility(true);
 		this.activeBatch = activeBatch;
+		this.newBatchGui.setbatchName(this.activeBatch.getBatchString());
+		this.newBatchGui.setVisibility(true);
+		
 		
 		
 	}
@@ -128,9 +130,8 @@ public class NewBatchController implements INewBatchController {
 						//Saves batch and sets the active batch in batchMeasureController;
 						
 //						mainController.getDatabaseController().addToDB(b);
-						for(int i = 0; i < settings.size(); i++){
-							mainController.getDatabaseController().updateBatchSettings(settings.get(i), mainController.getBatchMeasureController().getActiveBatch().getProfileID());
-						}
+							mainController.getDatabaseController().updateBatchSettings(settings, mainController.getBatchMeasureController().getActiveBatch().getProfileID());
+						
 						mainController.getBatchMeasureController().setActiveBatch(activeBatch);
 					} catch (DataBaseException e) {
 						e.printStackTrace();

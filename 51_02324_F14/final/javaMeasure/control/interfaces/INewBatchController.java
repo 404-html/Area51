@@ -2,9 +2,7 @@ package javaMeasure.control.interfaces;
 
 import java.util.ArrayList;
 
-import javaMeasure.Batch;
 import javaMeasure.BatchProfile;
-import javaMeasure.BatchSetting;
 import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 
 public interface INewBatchController {

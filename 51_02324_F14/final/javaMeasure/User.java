@@ -8,19 +8,21 @@ public class User {
 	private boolean admin;
 	
 	public User(String userName, int userID) {
-		super();
-		this.userName = userName;
-		this.userID = userID;
-		this.passWord = null;
-		this.active=true;
-		this.admin=false;
+		this(userName,userID, null);
 	}
 	
 	public User(String userName, int userID, String passWord) {
+		this(userName, userID, passWord, true, false);
+	}
+	
+	public User(String userName, int userID, String passWord, boolean active, boolean admin) {
+		
 		super();
 		this.userName = userName;
 		this.userID = userID;
 		this.passWord = passWord;
+		this.active=active;
+		this.admin=admin;
 	}
 	
 	public String getUserName() {

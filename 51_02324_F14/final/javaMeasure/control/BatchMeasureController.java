@@ -1,7 +1,6 @@
 package javaMeasure.control;
 
 import java.awt.EventQueue;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import javaMeasure.*;
@@ -173,6 +172,7 @@ public class BatchMeasureController implements IBatchMeasureController {
 		}
 	}
 
+	@SuppressWarnings("static-access")
 	public void btnLogOutPressed() {
 		if(this.dl != null){
 		this.dl.interrupt();

@@ -4,7 +4,6 @@ import java.sql.*;
 
 import javaMeasure.PropertyHelper;
 import javaMeasure.control.interfaces.ISQLConnector;
-import javaMeasure.control.interfaces.ISQLConnector.DBConnectFailedException;
 import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 
 public class SQLConnector implements ISQLConnector {
@@ -16,11 +15,11 @@ public class SQLConnector implements ISQLConnector {
 	private String password;
 
 	public SQLConnector(){
-//		PropertyHelper.writeToProperty("port", "3306");
-//		PropertyHelper.writeToProperty("password", "hastings");
-//		PropertyHelper.writeToProperty("database", "s134000");
-//		PropertyHelper.writeToProperty("server", "sql-lab1.cc.dtu.dk");
-//		PropertyHelper.writeToProperty("username", "s134000");
+		PropertyHelper.writeToProperty("port", "3306");
+		PropertyHelper.writeToProperty("password", "hastings");
+		PropertyHelper.writeToProperty("database", "s134000");
+		PropertyHelper.writeToProperty("server", "sql-lab1.cc.dtu.dk");
+		PropertyHelper.writeToProperty("username", "s134000");
 		server = PropertyHelper.readFromProperty("server");
 		port = PropertyHelper.readFromProperty("port");
 		database = PropertyHelper.readFromProperty("database");
@@ -39,22 +38,6 @@ public class SQLConnector implements ISQLConnector {
 		loadDriver(); 
 	}
 
-	/* (non-Javadoc)
-	 * @see javaMeasure.control.IDBConnector#connect()
-	 */
-	public Statement getStatement() throws DataBaseException  {
-		Statement statement = null;
-		try {
-			statement = getConnection().createStatement();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DataBaseException();
-		} catch (DBConnectFailedException e) {
-			e.printStackTrace();
-			throw new DataBaseException();
-		}
-		return statement;
-	}
 	public PreparedStatement getPreparedStatement(String sqlStatement) throws DataBaseException{
 		return getPreparedStatement(sqlStatement, -1);
 	}
@@ -67,10 +50,9 @@ public class SQLConnector implements ISQLConnector {
 			else
 			prepStatement = getConnection().prepareStatement(sqlStatement);
 		} catch (SQLException e){
-			e.printStackTrace();
+			throw new DataBaseException("SQL exception - getPreparedStatement: " + e.getMessage());
 		} catch (DBConnectFailedException e) {
-			throw new DataBaseException();
-			//e.printStackTrace();
+			throw new DataBaseException("DatabaseConnectionException - SQLConnector.getPreparedStatement(): " + e.getMessage());
 		}
 		return prepStatement;
 	}
@@ -85,7 +67,7 @@ public class SQLConnector implements ISQLConnector {
 		try {
 			isAlive = this.connection.isValid(1);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DBConnectFailedException();
 		}
 		if (isAlive){
 		return this.connection;
@@ -105,8 +87,7 @@ public class SQLConnector implements ISQLConnector {
 			System.out.println("loaded mySQLdriver");
 			return true;
 		} catch (ClassNotFoundException e) {
-			System.err.println("No mySQL driver found!");
-			e.printStackTrace();
+			System.err.println("No mySQL driver found!" + e.getMessage());
 		}
 		return false;
 	}

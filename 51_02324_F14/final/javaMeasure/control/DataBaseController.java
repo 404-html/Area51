@@ -1,6 +1,5 @@
 package javaMeasure.control;
 
-import java.sql.*;
 import java.util.ArrayList;
 
 import javaMeasure.*;
@@ -8,7 +7,6 @@ import javaMeasure.Measurement.MeasurementType;
 import javaMeasure.interfaces.*;
 import javaMeasure.control.interfaces.IDatabaseController;
 import javaMeasure.control.interfaces.ISQLConnector;
-import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 
 
 public class DataBaseController implements IDatabaseController {
@@ -173,9 +171,9 @@ public class DataBaseController implements IDatabaseController {
 	}
 
 	@Override
-	public void updateBatchSettings(BatchSetting b, int profileID)
+	public void updateBatchSettings(ArrayList<BatchSetting> settings, int profileID)
 			throws DataBaseException {
-		batchDAO.updateBatchSettings(b, profileID);
+		batchDAO.updateBatchSettings(settings, profileID);
 		
 	}
 //	public void updateBatchSettings(BatchSetting b) throws DataBaseException{

@@ -66,7 +66,7 @@
 						<div>
 							<input id="username" name="username" class="element text medium"
 								type="text" maxlength="255" 
-								list="batches" autocomplete="on" value=<%u.getUserName();%> />
+								list="batches" autocomplete="on" value="<%=u.getUserName()%>" />
 										
 						</div>
 
@@ -74,7 +74,7 @@
 					<li id="li_"><label class="description" for="element_4">Password</label>
 						<div>
 							<input id="element_4" name="password" class="element text medium"
-								type="text" maxlength="255" value=<%u.getPassWord();%> />
+								type="text" maxlength="255" value="<%=u.getPassWord()%>" />
 						  <input type="hidden" name="form_id"
 						value="812583" />
 				  </div>                    
