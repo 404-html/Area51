@@ -4,7 +4,6 @@ import java.sql.*;
 
 import javaMeasure.PropertyHelper;
 import javaMeasure.control.interfaces.ISQLConnector;
-import javaMeasure.control.interfaces.ISQLConnector.DBConnectFailedException;
 import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 
 public class SQLConnector implements ISQLConnector {

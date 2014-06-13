@@ -1,6 +1,10 @@
 package javaMeasure.control;
 
 public class ConnectionException extends Exception {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int e;
 	private boolean C=false;
 	

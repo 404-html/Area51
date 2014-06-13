@@ -180,5 +180,10 @@ public class DataBaseController implements IDatabaseController {
 //		batchDAO.updateBatchSettings(b);
 //	}
 
+	@Override
+	public boolean canWeRemoveAnotherAdmin() throws DataBaseException {
+		return this.userDAO.canWeRemoveAnotherAdmin();
+	}
+
 	
 }

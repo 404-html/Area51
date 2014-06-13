@@ -76,11 +76,12 @@ public class Batch {
 	}
 
 	public boolean deleteLastStrokeMeasurement(){
-		Object[] row = getMeasurementsList().get(currentStrokeElement-1);
+		
 		ArrayList<Object[]> list = getMeasurementsList();
-		if(currentStrokeElement < currentLeakElement || currentLeakElement == 0)
+		if(currentStrokeElement < currentLeakElement || currentStrokeElement == 0)
 			return false;
 		else{
+			Object[] row = getMeasurementsList().get(currentStrokeElement-1);
 			row[2] = null;
 			if(row[3] == null){
 				list.remove(currentStrokeElement-1);
@@ -91,11 +92,12 @@ public class Batch {
 	}
 
 	public boolean deleteLastLeakMeasurement(){
-		Object[] row = getMeasurementsList().get(currentLeakElement-1);
+		
 		ArrayList<Object[]> list = getMeasurementsList();
 		if(currentLeakElement < currentStrokeElement || currentLeakElement == 0)
 			return false;
 		else{
+			Object[] row = getMeasurementsList().get(currentLeakElement-1);
 			row[3] = null;
 			if(row[2] == null){
 				list.remove(currentLeakElement-1);

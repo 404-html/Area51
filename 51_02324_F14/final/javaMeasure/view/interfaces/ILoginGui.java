@@ -1,7 +1,6 @@
 package javaMeasure.view.interfaces;
 
 import java.awt.event.ActionListener;
-import java.awt.event.WindowListener;
 
 public interface ILoginGui extends Runnable,ActionListener {
 	void setUserList(String[] users);

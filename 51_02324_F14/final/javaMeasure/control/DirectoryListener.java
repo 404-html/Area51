@@ -10,13 +10,7 @@ import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.util.List;
 
-import javaMeasure.Batch;
-import javaMeasure.Measurement;
-import javaMeasure.PropertyHelper;
 import javaMeasure.control.interfaces.IBatchMeasureController;
-import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
-import javaMeasure.control.interfaces.IMainController;
-import javaMeasure.view.interfaces.IBatchMeasureGui;
 
 public class DirectoryListener extends Thread
 {
@@ -24,27 +18,19 @@ public class DirectoryListener extends Thread
 	private String path;
 	private Path dir;
 	private WatchService watcher;
-	private IMainController mainController;
-	private IBatchMeasureGui batchMeasureGui;
 	private IBatchMeasureController batchMeasureController;
-	private Batch activeBatch;
 	
-	
-//	public DirectoryListener(String path, IMainController mainController, IBatchMeasureGui batchMeasureGui, Batch activeBatch)
-//	{
 	public DirectoryListener(String path, IBatchMeasureController batchMeasureController)
 	{
 		System.out.println("initialize: " + System.nanoTime());
 		this.path = path;
 		this.batchMeasureController = batchMeasureController;
-//		this.mainController = mainController;
-//		this.batchMeasureGui = batchMeasureGui;
-//		this.activeBatch = activeBatch;
+
 		try {
 			this.watcher = FileSystems.getDefault().newWatchService();
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			this.batchMeasureGui.updateLog("something went wrong when newWatchService() was called"); 
+			System.err.println("something went wrong when newWatchService() was called");
+			System.err.println(e1.getMessage());
 		}
 		this.dir = Paths.get(path);
 		
@@ -59,15 +45,10 @@ public class DirectoryListener extends Thread
 				WatchService watcher = this.dir.getFileSystem().newWatchService();
 				this.dir.register(watcher, StandardWatchEventKinds.ENTRY_CREATE,
 						StandardWatchEventKinds.ENTRY_DELETE, StandardWatchEventKinds.ENTRY_MODIFY);
-
-				batchMeasureController.updateLog("DasyLab files are automatically being read from: ");
-				batchMeasureController.updateLog(path);
 				
-//				batchMeasureGui.updateLog("DasyLab files are automatically being read from: ");
-//				batchMeasureGui.updateLog(path);
 				WatchKey watchKey = null;
 				System.out.println("before .take(): " + System.nanoTime());
-				watchKey = watcher.take(); // waits until any changes occur
+				watchKey = this.watcher.take(); // waits until any changes occur
 				System.out.println(path + " is being watched");
 				while(!this.isInterrupted())
 				{
@@ -82,7 +63,7 @@ public class DirectoryListener extends Thread
 					System.out.println("checking: " + path);
 					List<WatchEvent<?>> events = watchKey.pollEvents();
 					// one change can trigger up to 3 events
-					for (WatchEvent event : events)
+					for (WatchEvent<?> event : events)
 					{
 						filename = event.context().toString();
 						

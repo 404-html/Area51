@@ -37,7 +37,7 @@ public class CConnector implements ICConnector
 		} 
 		catch (UnknownHostException e1)
 		{
-			e1.printStackTrace();
+			System.err.println("unknownHostException CConnector - constructor");
 		}
 
 		System.out.println("IP in CConnector is: "+this.IP.getHostAddress());
@@ -54,6 +54,9 @@ public class CConnector implements ICConnector
 		int hardwarePort = 0;
 		switch(measurementType)
 		{
+		//port 0 = physical hardware
+		//port 99 = random data
+		//port 98 = always returns 1
 		case LEAK:
 			//ports=1234;
 			hardwarePort=99;
@@ -99,7 +102,7 @@ public class CConnector implements ICConnector
 			}
 			catch (IOException e)
 			{
-				e.printStackTrace();
+				System.err.println("IOException CConnector - readMeasurements(MeasurementType measurementType, int number, int period) - try{socket.close()}");
 			}
 		}
 
@@ -171,12 +174,10 @@ public class CConnector implements ICConnector
 		}
 		catch(SocketTimeoutException ste)
 		{
-			//ste.printStackTrace();
 			throw new ConnectionException(4);
 		}
 		catch (IOException ioe) 
 		{
-			ioe.printStackTrace();
 			throw new ConnectionException(9);
 		}
 
@@ -193,7 +194,7 @@ public class CConnector implements ICConnector
 		}
 		catch (UnknownHostException e)
 		{
-			e.printStackTrace();
+			System.err.println("UnknownHostException CConnector - setIP()");
 		}
 	}
 

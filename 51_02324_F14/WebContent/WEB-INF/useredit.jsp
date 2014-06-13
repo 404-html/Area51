@@ -82,32 +82,22 @@
           </td>
 		  <td width="50%">
 	
-         <input type="checkbox" name="active" value="active"checked> active<BR>
+         <input type="checkbox" name="active" value="active"<%if(u.isActive()){%>checked<%} %>> active<BR>
 		  <input type="checkbox" name="admin" value="admin"<%if(u.isAdmin()){%>checked<%} %>> admin<BR></tr>
+		  </table>
+		  
 		 
-				
-       <table width="100%" border="0" cellpadding="2" cellspacing="0">
-		<tr>
-			<td>
 				  <span class="buttons">
 				  
 				  <input id="submit" class="button_text"
 						type="submit" name="Save" value="save" />
-						</span>
-                         </td>
-				
 
-                  <td width="95%">
-                  
-                  
-                  <span class="buttons">
+
                 
 				  <input id="Done" class="button_text"
 						type="submit" name="Done" value="Done" />
 				  </span>
-                  </td>
-                  </tr>
-                  </table>
+
 
 
 				
