@@ -57,14 +57,12 @@ public class LoginController implements ILoginController{
 		User user=null;
 		try {
 			user = mainCtrl.getDatabaseController().getUserFromString(loginString);
-			if (user != null){
-				mainCtrl.userLoggedIn(user);
-			}else {
-				userNotFound(loginString);
-			}
+			mainCtrl.userLoggedIn(user);
 		} catch (DataBaseException e) {
 			System.err.println("Database Connection failed - LoginController");
 			System.err.println(e.getMessage());
+		} catch (UserNotFoundException e) {
+			userNotFound(loginString);
 		} 
 	}
 

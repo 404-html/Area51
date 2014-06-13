@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javaMeasure.control.interfaces.IDatabaseController.UserNotFoundException;
 import javaMeasure.control.interfaces.ISQLConnector;
 import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 import javaMeasure.interfaces.IUserDAO;
@@ -81,7 +82,7 @@ public class UserDAO implements IUserDAO {
 	}
 
 
-	public User getUserFromString(String userString) throws DataBaseException {
+	public User getUserFromString(String userString) throws DataBaseException, UserNotFoundException {
 		String query = "SELECT * FROM users WHERE username=?";
 		PreparedStatement statement = sqlConnector.getPreparedStatement(query);
 		ResultSet result = null;
@@ -92,12 +93,12 @@ public class UserDAO implements IUserDAO {
 			if (result.next()){
 				User user = new User(result.getString("username"), result.getInt("id"),result.getString("password"),result.getBoolean("active"),result.getBoolean("admin"));
 				return user;
-			} 
+			} else {
+				throw new UserNotFoundException();
+			}
 		} catch (SQLException e) {
 			throw new DataBaseException("SQLException UserDAO - getUserFromString(String userString): " + e.getMessage()); 
 		}
-
-		return null;
 	}
 
 	public void updateUser(User change)throws DataBaseException{
