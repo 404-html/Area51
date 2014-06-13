@@ -94,7 +94,7 @@ public class BatchDAO implements IBatchDAO {
 		}
 
 	}
-
+	// Method for updating the batchsettings of a batch. Is used by the NewBatchController
 	@Override
 	public void updateBatchSettings(ArrayList<BatchSetting> settings, int profileID) throws DataBaseException {
 		String query = null;
@@ -113,6 +113,7 @@ public class BatchDAO implements IBatchDAO {
 		}
 	}
 
+	//	Method for deleting a batch's settings from the Database. Is currently not used.
 	@Override
 	public void deleteBatchSettings(Batch batch) throws DataBaseException {
 		String query = "DELETE FROM batchsettings WHERE profileid =?";
