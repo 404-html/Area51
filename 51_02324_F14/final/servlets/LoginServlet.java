@@ -61,18 +61,36 @@ public class LoginServlet extends HttpServlet {
 			}
 			System.out.println(loginSuccess);
 			if (loginSuccess) {
-				System.out.println("Login success forwarding");
 				try {
-					request.getSession().setAttribute("user", dbctrl.getUserFromString(username));
-				} catch (DataBaseException e) {
-					e.printStackTrace();
-				} catch (UserNotFoundException e) {
-					e.printStackTrace();
-				}
+				User log=dbctrl.getUserFromString(username);
+				if(log.isActive()){
+				System.out.println("Login success forwarding");
+				
+					request.getSession().setAttribute("user", log );
+				
 				request.getSession().setAttribute("database", dbctrl);
 				response.sendRedirect("MenuServlet");
 				System.out.println("forward finished");
+				}
+				else{
+					request.setAttribute("loginFail", true);
+					request.getRequestDispatcher("WEB-INF/userlogin.jsp").forward(request, response);
+				}
+				
+			} catch (DataBaseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (UserNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally{}
+				}
+			else{
+				request.setAttribute("loginFail", true);
+				request.getRequestDispatcher("WEB-INF/userlogin.jsp").forward(request, response);
 			}
+				
+			
 		} else {
 			if (request.getParameter("username")  != null) 
 				request.setAttribute("loginFail", true);
