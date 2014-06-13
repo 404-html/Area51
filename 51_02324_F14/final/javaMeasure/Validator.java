@@ -6,11 +6,11 @@ import java.util.regex.Pattern;
 
 public class Validator {
 	public static boolean validateUsername(String s){
-		return validate(s, "[^a-zA-Z0-9@\\.\\_\\-øæåØÆÅú]");
+		return validate(s, "[^a-zA-Z0-9@\\.\\_\\-]");
 	}
 	
 	public static boolean validatePassword(String s) {
-		boolean valid =  validate(s,"[^a-zA-Z0-9@\\.\\_\\-øæåØÆÅú]");	
+		boolean valid =  validate(s,"[^a-zA-Z0-9@\\.\\_\\-]");	
 		return valid && s.length() >=4 && s.length() <=100;	
 	}
 	
