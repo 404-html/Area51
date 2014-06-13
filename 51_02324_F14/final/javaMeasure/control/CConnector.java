@@ -62,7 +62,7 @@ public class CConnector implements ICConnector
 			hardwarePort=99;
 			break;
 		case STROKE:
-			hardwarePort=0;
+			hardwarePort=99;
 			break;
 		}
 		String returnString = writeToSocket(hardwarePort + ";" + number + ";" + period + ";<EOF>", period, number);
