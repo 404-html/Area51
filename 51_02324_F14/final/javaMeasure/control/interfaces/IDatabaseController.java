@@ -14,6 +14,7 @@ public interface IDatabaseController {
 	void addToDB(User user) throws DataBaseException;
 	void deleteUser(User user) throws DataBaseException;
 	public void updateUser(User change)throws DataBaseException;
+	boolean canWeRemoveAnotherAdmin()throws DataBaseException;
 	
 	// Measurements
 	void addToDB(Measurement measurement) throws DataBaseException;

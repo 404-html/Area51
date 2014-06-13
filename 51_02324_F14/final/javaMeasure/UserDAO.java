@@ -123,6 +123,21 @@ public class UserDAO implements IUserDAO {
 			throw new DataBaseException("SQLException UserDAO - updateUser(User change): " + e.getMessage());
 		}
 	}
+	
+	public boolean canWeRemoveAnotherAdmin()throws DataBaseException{
+		String query = "Select Count(*) FROM users WHERE active=1 and admin=1";
+		PreparedStatement statement = sqlConnector.getPreparedStatement(query);
+		int result;
+		try{
+			result=statement.executeUpdate();
+		} catch (SQLException e) {
+			throw new DataBaseException("SQLException UserDAO - canWeRemoveAnotherAdmin(): " + e.getMessage());
+		}
+		if(result>1){
+			return true;
+		}
+		return false;
+	}
 	@Override
 	public void deleteUser(User user) throws DataBaseException {
 		String query = "DELETE FROM users WHERE id=?";
