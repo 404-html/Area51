@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import javaMeasure.control.interfaces.ISQLConnector;
 import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 import javaMeasure.interfaces.IUserDAO;
-import javaMeasure.control.interfaces.IDatabaseController.UserNotFoundException;
 
 public class UserDAO implements IUserDAO {
 	private ISQLConnector sqlConnector;
@@ -82,7 +81,7 @@ public class UserDAO implements IUserDAO {
 	}
 
 
-	public User getUserFromString(String userString) throws DataBaseException, UserNotFoundException {
+	public User getUserFromString(String userString) throws DataBaseException {
 		String query = "SELECT * FROM users WHERE username=?";
 		PreparedStatement statement = sqlConnector.getPreparedStatement(query);
 		ResultSet result = null;
@@ -98,7 +97,7 @@ public class UserDAO implements IUserDAO {
 			throw new DataBaseException("SQLException UserDAO - getUserFromString(String userString): " + e.getMessage()); 
 		}
 
-		throw new UserNotFoundException(); // TODO is this neccessary?? could we not just return null?
+		return null;
 	}
 
 	public void updateUser(User change)throws DataBaseException{

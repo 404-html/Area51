@@ -25,7 +25,6 @@ public class LoginController implements ILoginController{
 		this.Gui = new LoginGui(this);
 		EventQueue.invokeLater(this.Gui);
 		ArrayList<User> users = new ArrayList<User>();
-//		User[] users = null;
 		try {
 			users = mainCtrl.getDatabaseController().getUserList();
 			Gui.changestatus(Status.Connected);
@@ -37,8 +36,6 @@ public class LoginController implements ILoginController{
 			Gui.enableButtons(true);
 		} catch (DataBaseException e) {
 			Gui.changestatus(Status.Noconnection);
-			
-			//e.printStackTrace();
 		}
 		
 	}
@@ -62,7 +59,7 @@ public class LoginController implements ILoginController{
 			mainCtrl.userLoggedIn(user);
 		} catch (DataBaseException e) {
 			System.err.println("Database Connection failed - LoginController");
-			e.printStackTrace();
+			System.err.println(e.getMessage());
 		} catch (UserNotFoundException e) {
 			userNotFound(loginString);
 		}
@@ -84,7 +81,7 @@ public class LoginController implements ILoginController{
 			userExists =  dbCtrl.isUserNameInDB(this.Gui.getSelectedUser());
 		} catch (DataBaseException e) {
 			System.err.println("Database Error - LoginController");
-			e.printStackTrace();
+			System.err.println(e.getMessage());
 		}
 		if (userExists){
 			this.Gui.showUserAlreadyExists();
@@ -101,11 +98,10 @@ public class LoginController implements ILoginController{
 			try {
 				mainCtrl.userLoggedIn(dbCtrl.getUserFromString(userName));
 			} catch (DataBaseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.err.println(e.getMessage());;
 			} catch (UserNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.err.println("UserNotFoundException LoginController() - btnNewUserPressed()");
+				System.err.println(e.getMessage());
 			}
 		}
 		
