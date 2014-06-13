@@ -3,6 +3,7 @@ package javaMeasure.control;
 import java.awt.EventQueue;
 
 import javaMeasure.User;
+import javaMeasure.Validator;
 import javaMeasure.control.interfaces.IDatabaseController;
 import javaMeasure.control.interfaces.ILoginController;
 import javaMeasure.control.interfaces.IMainController;
@@ -37,7 +38,7 @@ public class LoginController implements ILoginController{
 		} catch (DataBaseException e) {
 			Gui.changestatus(Status.Noconnection);
 		}
-		
+
 	}
 
 	@Override
@@ -56,15 +57,15 @@ public class LoginController implements ILoginController{
 		User user=null;
 		try {
 			user = mainCtrl.getDatabaseController().getUserFromString(loginString);
-			mainCtrl.userLoggedIn(user);
+			if (user != null){
+				mainCtrl.userLoggedIn(user);
+			}else {
+				userNotFound(loginString);
+			}
 		} catch (DataBaseException e) {
 			System.err.println("Database Connection failed - LoginController");
 			System.err.println(e.getMessage());
-		} catch (UserNotFoundException e) {
-			userNotFound(loginString);
-		}
-		
-		
+		} 
 	}
 
 	private void userNotFound(String loginString) {
@@ -74,38 +75,41 @@ public class LoginController implements ILoginController{
 
 	@Override
 	public void btnNewUserPressed() {
-		IDatabaseController dbCtrl = mainCtrl.getDatabaseController();
-		//Check if user already is in db;
-		boolean userExists = false;
-		try {
-			userExists =  dbCtrl.isUserNameInDB(this.Gui.getSelectedUser());
-		} catch (DataBaseException e) {
-			System.err.println("Database Error - LoginController");
-			System.err.println(e.getMessage());
-		}
-		if (userExists){
-			this.Gui.showUserAlreadyExists();
+		if (!Validator.validateUsername(this.Gui.getSelectedUser()) ){
+			this.Gui.showInvalidUsername();
 		} else {
-			//Insert new User in to db
-			String userName = null;
+			IDatabaseController dbCtrl = mainCtrl.getDatabaseController();
+			//Check if user already is in db;
+			boolean userExists = false;
 			try {
-				userName = this.Gui.getSelectedUser();
-				dbCtrl.addToDB(new User(userName, 0));
+				userExists =  dbCtrl.isUserNameInDB(this.Gui.getSelectedUser());
 			} catch (DataBaseException e) {
-				System.err.println("Db Error - LoginController");
-				e.printStackTrace();
-			}
-			try {
-				mainCtrl.userLoggedIn(dbCtrl.getUserFromString(userName));
-			} catch (DataBaseException e) {
-				System.err.println(e.getMessage());;
-			} catch (UserNotFoundException e) {
-				System.err.println("UserNotFoundException LoginController() - btnNewUserPressed()");
+				System.err.println("Database Error - LoginController");
 				System.err.println(e.getMessage());
 			}
+			if (userExists){
+				this.Gui.showUserAlreadyExists();
+			} else {
+				//Insert new User in to db
+				String userName = null;
+				try {
+					userName = this.Gui.getSelectedUser();
+					dbCtrl.addToDB(new User(userName, 0));
+				} catch (DataBaseException e) {
+					System.err.println("Db Error - LoginController");
+					e.printStackTrace();
+				}
+				try {
+					mainCtrl.userLoggedIn(dbCtrl.getUserFromString(userName));
+				} catch (DataBaseException e) {
+					System.err.println(e.getMessage());;
+				} catch (UserNotFoundException e) {
+					System.err.println("UserNotFoundException LoginController() - btnNewUserPressed()");
+					System.err.println(e.getMessage());
+				}
+			}
 		}
-		
-		
+
 	}
 
 

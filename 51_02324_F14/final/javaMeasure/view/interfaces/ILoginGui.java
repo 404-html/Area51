@@ -10,6 +10,7 @@ public interface ILoginGui extends Runnable,ActionListener {
 	void showUserAlreadyExists();
 	void enableButtons(boolean b);
 	public enum Status {Connecting, Connected, Noconnection};
-	void changestatus(Status s);	
+	void changestatus(Status s);
+	void showInvalidUsername();	
 	
 }

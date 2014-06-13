@@ -133,6 +133,11 @@ public class LoginGui extends JFrame implements ILoginGui {
 	}
 
 	@Override
+	public void showInvalidUsername() {
+		this.headLine.setText("Invalid Username - use A-Z and 0-9");
+		this.headLine.setForeground(Color.red);
+	}
+	@Override
 	public void showGui(boolean b) {
 		this.setVisible(b);
 	}
