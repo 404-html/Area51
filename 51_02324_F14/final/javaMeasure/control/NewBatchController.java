@@ -28,7 +28,7 @@ public class NewBatchController implements INewBatchController {
 		}
 		this.newBatchGui.setVisibility(true);
 	}
-
+//	En overload af construkteren, der bliver brugt, når vi åbner NewBatchGui i editmode
 	public NewBatchController(IMainController mainController, Batch activeBatch){
 		this.mainController = mainController;
 		this.newBatchGui = new NewBatchGui(this, true);
@@ -115,7 +115,7 @@ public class NewBatchController implements INewBatchController {
 		}
 	}
 
-	//TODO Use update methods instead of delete and create
+	//	Metode til at gemme de opdaterede indstillinger til Batchet. 
 	
 	@Override
 	public void saveEditedBatchSettingsPressed(ArrayList<String> profileSettings) throws DataBaseException {
@@ -127,11 +127,9 @@ public class NewBatchController implements INewBatchController {
 				}
 
 					try {
-						//Saves batch and sets the active batch in batchMeasureController;
-						
-//						mainController.getDatabaseController().addToDB(b);
-							mainController.getDatabaseController().updateBatchSettings(settings, mainController.getBatchMeasureController().getActiveBatch().getProfileID());
-						
+						//Updates batch and sets the active batch in batchMeasureController;
+
+						mainController.getDatabaseController().updateBatchSettings(settings, mainController.getBatchMeasureController().getActiveBatch().getProfileID());
 						mainController.getBatchMeasureController().setActiveBatch(activeBatch);
 					} catch (DataBaseException e) {
 						e.printStackTrace();
@@ -219,16 +217,6 @@ public class NewBatchController implements INewBatchController {
 		mainController.getDatabaseController().deleteBatchProfile(bp);
 
 	}
-
-//	public void editBatchProfilePressed(String profileName)	throws DataBaseException {
-//		BatchProfile bp = null;
-//		try{
-//			bp = getBatchProfile(profileName);
-//		} catch (DataBaseException e) {
-//			e.printStackTrace();
-//		}
-//		mainController.getDatabaseController().editBatchProfile(bp);
-//	}
 
 
 }
