@@ -15,7 +15,7 @@ public class BatchDAO implements IBatchDAO {
 	public BatchDAO(ISQLConnector sqlConnector) {
 		this.sqlConnector = sqlConnector;
 	}
-	/* (non-Javadoc)ø
+	/* (non-Javadoc)
 	 * @see javaMeasure.IBatchDAO#getBatches()
 	 */
 	public ArrayList<Batch> getBatches() throws DataBaseException {
@@ -37,15 +37,16 @@ public class BatchDAO implements IBatchDAO {
 		} 
 		PreparedStatement statement = sqlConnector.getPreparedStatement(query);
 		ResultSet result = null;
+		Batch b;
 		try {
 			if(partialBatchName != null){
 				statement.setString(1, "%" + partialBatchName + "%");
 			}
 			result = statement.executeQuery();
 			while (result.next()){
-				Batch b = new Batch(result.getInt("id"), result.getString("name"), result.getInt("profile"), 
-						result.getString("created_by"), result.getDate("created_date"), result.getString("approved_by"), result.getDate("approved_date")
-						);
+				b = new Batch(result.getInt("id"), result.getString("name"), result.getInt("profile"), 
+						result.getString("created_by"), result.getDate("created_date"), 
+						result.getString("approved_by"), result.getDate("approved_date"));
 				batches.add(b);
 			}
 		} catch (SQLException e) {
@@ -146,8 +147,8 @@ public class BatchDAO implements IBatchDAO {
 			ResultSet result = statement.executeQuery();
 			if (result.next()){
 				returBatch = new Batch(result.getInt("id"), result.getString("name"), result.getInt("profile"),
-						result.getString("created_by"), result.getDate("created_date"), result.getString("approved_by"), result.getDate("approved_date")
-						);
+						result.getString("created_by"), result.getTimestamp("created_date"), result.getString("approved_by"), 
+						result.getTimestamp("approved_date"));
 
 				String query2 = "SELECT * FROM measurements WHERE batchid=?";
 				PreparedStatement p = sqlConnector.getPreparedStatement(query2);
@@ -157,10 +158,14 @@ public class BatchDAO implements IBatchDAO {
 
 				while(result.next()){
 					if(result.getString("measurementtype").equals("LEAK")){
-						leak.add(new Measurement(result.getInt("batchid"), result.getInt("elementnumber"), result.getFloat("measurementvalue"), result.getBoolean("verified"), Measurement.MeasurementType.LEAK, result.getLong("timestamp")));						
+						leak.add(new Measurement(result.getInt("batchid"), result.getInt("elementnumber"), 
+								result.getFloat("measurementvalue"), result.getBoolean("verified"), Measurement.MeasurementType.LEAK, 
+								result.getLong("timestamp")));						
 					}
 					else if (result.getString("measurementtype").equals("STROKE")){
-						stroke.add(new Measurement(result.getInt("batchid"), result.getInt("elementnumber"), result.getFloat("measurementvalue"), result.getBoolean("verified"), Measurement.MeasurementType.STROKE, result.getLong("timestamp")));
+						stroke.add(new Measurement(result.getInt("batchid"), result.getInt("elementnumber"), 
+								result.getFloat("measurementvalue"), result.getBoolean("verified"), Measurement.MeasurementType.STROKE, 
+								result.getLong("timestamp")));
 					}
 				}
 			}
@@ -201,25 +206,14 @@ public class BatchDAO implements IBatchDAO {
 			ResultSet result = p.executeQuery();
 			if(result.next()){
 				returBatch = new Batch(result.getInt("id"), result.getString("name"), result.getInt("profile"),
-						result.getString("created_by"), result.getDate("created_date"), result.getString("approved_by"), result.getDate("approved_date")
-						);
+						result.getString("created_by"), result.getDate("created_date"), 
+						result.getString("approved_by"), result.getDate("approved_date"));
 
 				query = "SELECT * FROM measurements WHERE batchid=?";
 				p = sqlConnector.getPreparedStatement(query);
 				p.setInt(1, batchId);
 				result = p.executeQuery();
 
-				//				if(result.next()){
-				//					if(result.getString("measurementtype").equals("LEAK")){
-				//						translate = Measurement.MeasurementType.LEAK;						
-				//					}
-				//					else{
-				//						translate = Measurement.MeasurementType.STROKE;
-				//					}
-				//					Measurement measure = new Measurement(result.getFloat("measurmentvalue"), translate, result.getInt("timestamp"));
-				//					measure.setElementNo(result.getInt("elementnumber"));
-				//					measure.setBatchID(result.getInt("id"));
-				//					returBatch.addMeasurement(measure);
 				while(result.next()){
 					if(result.getString("measurementtype").equals("LEAK")){
 						type = Measurement.MeasurementType.LEAK;						
@@ -227,15 +221,10 @@ public class BatchDAO implements IBatchDAO {
 					else{
 						type = Measurement.MeasurementType.STROKE;
 					}
-					returBatch.addMeasurement(new Measurement(result.getInt("id"), result.getInt("elementnumber"), result.getFloat("measurementvalue"), result.getBoolean("verified"), type, result.getLong("timestamp")));
-					//						measure = new Measurement(result.getFloat("measurmentvalue"), translate, result.getInt("timestamp"));
-					//						measure.setElementNo(result.getInt("elementnumber"));
-					//						measure.setBatchID(result.getInt("id"));
-					//						returBatch.addMeasurement(measure);
+					returBatch.addMeasurement(new Measurement(result.getInt("id"), result.getInt("elementnumber"), 
+							result.getFloat("measurementvalue"), result.getBoolean("verified"), type, result.getLong("timestamp")));
+
 				}
-				//				} else{
-				//					throw new DataBaseException();
-				//				}
 
 			} else{
 				return null; // if returned table is empty
