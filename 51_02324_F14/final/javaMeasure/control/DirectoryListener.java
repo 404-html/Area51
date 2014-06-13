@@ -10,12 +10,7 @@ import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.util.List;
 
-import javaMeasure.Batch;
-import javaMeasure.Measurement;
-import javaMeasure.PropertyHelper;
 import javaMeasure.control.interfaces.IBatchMeasureController;
-import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
-import javaMeasure.control.interfaces.IMainController;
 import javaMeasure.view.interfaces.IBatchMeasureGui;
 
 public class DirectoryListener extends Thread
@@ -24,10 +19,8 @@ public class DirectoryListener extends Thread
 	private String path;
 	private Path dir;
 	private WatchService watcher;
-	private IMainController mainController;
 	private IBatchMeasureGui batchMeasureGui;
 	private IBatchMeasureController batchMeasureController;
-	private Batch activeBatch;
 	
 	
 //	public DirectoryListener(String path, IMainController mainController, IBatchMeasureGui batchMeasureGui, Batch activeBatch)
@@ -63,11 +56,9 @@ public class DirectoryListener extends Thread
 				batchMeasureController.updateLog("DasyLab files are automatically being read from: ");
 				batchMeasureController.updateLog(path);
 				
-//				batchMeasureGui.updateLog("DasyLab files are automatically being read from: ");
-//				batchMeasureGui.updateLog(path);
 				WatchKey watchKey = null;
 				System.out.println("before .take(): " + System.nanoTime());
-				watchKey = watcher.take(); // waits until any changes occur
+				watchKey = this.watcher.take(); // waits until any changes occur
 				System.out.println(path + " is being watched");
 				while(!this.isInterrupted())
 				{
@@ -82,7 +73,7 @@ public class DirectoryListener extends Thread
 					System.out.println("checking: " + path);
 					List<WatchEvent<?>> events = watchKey.pollEvents();
 					// one change can trigger up to 3 events
-					for (WatchEvent event : events)
+					for (WatchEvent<?> event : events)
 					{
 						filename = event.context().toString();
 						
