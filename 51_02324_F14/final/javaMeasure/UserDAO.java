@@ -108,7 +108,7 @@ public class UserDAO implements IUserDAO {
 		//Parse results
 		try {
 			if (result.next()){
-				User user = new User(result.getString("username"), result.getInt("id"));
+				User user = new User(result.getString("username"), result.getInt("id"),result.getString("password"),result.getBoolean("active"),result.getBoolean("admin"));
 				return user;
 			} 
 		} catch (SQLException e) {
@@ -119,7 +119,7 @@ public class UserDAO implements IUserDAO {
 	}
 	
 	public void updateUser(User change)throws DataBaseException{
-		String query = "UPDATE users SET password = ?, admin = ?, active = ? WHERE id=?";
+		String query = "UPDATE users SET password = ?, admin = ?, active = ?, username = ? WHERE id=?";
 		PreparedStatement statement = sqlConnector.getPreparedStatement(query);
 		try {
 			int ac=0;
@@ -133,7 +133,8 @@ public class UserDAO implements IUserDAO {
 			statement.setString(1, change.getPassWord());
 			statement.setInt(2,ad );
 			statement.setInt(3,ac );
-			statement.setInt(4,change.getUserID());
+			statement.setString(4, change.getUserName());
+			statement.setInt(5,change.getUserID());
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
