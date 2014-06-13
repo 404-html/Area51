@@ -3,9 +3,7 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
-import javaMeasure.Batch;
 import javaMeasure.BatchProfile;
-import javaMeasure.control.MainController;
 import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 import javaMeasure.control.interfaces.INewBatchController;
 import javaMeasure.view.interfaces.INewBatchGui;
@@ -20,7 +18,6 @@ import javax.swing.SwingConstants;
 import javax.swing.JSeparator;
 import javax.swing.JButton;
 
-import java.awt.event.ActionListener;
 
 @SuppressWarnings("serial")
 public class NewBatchGui extends JFrame implements INewBatchGui{

@@ -1,19 +1,19 @@
 package JUnitTest;
 
-import static org.junit.Assert.*;
-
-import java.io.IOException;
-import java.net.InetSocketAddress;
-
-import javaMeasure.Measurement.MeasurementType;
-import javaMeasure.control.CConnector;
-import javaMeasure.control.ConnectionException;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
-import javaMeasure.Measurement;
+//import static org.junit.Assert.*;
+//
+//import java.io.IOException;
+//import java.net.InetSocketAddress;
+//
+//import javaMeasure.Measurement.MeasurementType;
+//import javaMeasure.control.CConnector;
+//import javaMeasure.control.ConnectionException;
+//
+//import org.junit.After;
+//import org.junit.Before;
+//import org.junit.Test;
+//
+//import javaMeasure.Measurement;
 
 public class testCConnector {
 	

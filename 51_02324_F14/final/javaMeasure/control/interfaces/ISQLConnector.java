@@ -1,7 +1,6 @@
 package javaMeasure.control.interfaces;
 
 import java.sql.PreparedStatement;
-import java.sql.Statement;
 
 import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 
