@@ -71,11 +71,12 @@ public class BatchDAO implements IBatchDAO {
 	 * @see javaMeasure.IBatchDAO#addToDB(javaMeasure.Batch)
 	 */
 	public void addToDB(Batch batch) throws DataBaseException {
-		String query = "INSERT INTO batches (name, profile) VALUES (?,?)";
+		String query = "INSERT INTO batches (name, profile, Created_By) VALUES (?,?,?)";
 		PreparedStatement statement = sqlConnector.getPreparedStatement(query);
 		try {
 			statement.setString(1, batch.getBatchString());
 			statement.setInt(2, batch.getProfileID());
+			statement.setString(3, batch.getCreated_by());
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			throw new DataBaseException("SQLException BatchDAO - addToDB(Batch batch): " + e.getMessage());
@@ -236,6 +237,21 @@ public class BatchDAO implements IBatchDAO {
 		} catch (SQLException e) {
 			throw new DataBaseException("SQLException BatchDAO - getBatch(int batchId): " + e.getMessage());
 		}
+	}
+	@Override
+	public void updateBatch(Batch activeBatch) throws DataBaseException {
+		String query = "UPDATE batches SET Approved_By=?, Approved_Date=? WHERE id=?";
+		PreparedStatement statement = sqlConnector.getPreparedStatement(query);
+		
+//		try{
+//			//TODO finish this
+//			statement.setString(1, activeBatch.getApproved_by());
+//			statement.setTimestamp(2, activeBatch.getApproved_date());
+//		}
+//		catch(SQLException e){
+//			
+//		}
+		
 	}
 
 }

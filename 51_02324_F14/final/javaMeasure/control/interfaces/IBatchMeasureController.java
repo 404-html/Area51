@@ -31,6 +31,8 @@ public interface IBatchMeasureController {
 	void btnDeleteStroke();
 
 	void btnDeleteLeak();
+
+	void btnApproveBatchPressed();
 	
 	
 	

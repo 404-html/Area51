@@ -185,5 +185,11 @@ public class DataBaseController implements IDatabaseController {
 		return this.userDAO.canWeRemoveAnotherAdmin();
 	}
 
+	@Override
+	public void updateBatch(Batch activeBatch) throws DataBaseException {
+		batchDAO.updateBatch(activeBatch);
+		
+	}
+
 	
 }

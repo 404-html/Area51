@@ -26,4 +26,6 @@ public interface IBatchDAO {
 
 	void updateBatchSettings(ArrayList<BatchSetting> settings, int profileID) throws DataBaseException;
 
+	void updateBatch(Batch activeBatch) throws DataBaseException;
+
 }

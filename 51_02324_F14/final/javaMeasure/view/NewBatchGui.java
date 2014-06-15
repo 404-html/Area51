@@ -448,24 +448,10 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 				try {
 					newBatchController.deleteBatchProfilePressed(profileName);
 				} catch (DataBaseException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					System.err.println(e1.getMessage());
 				}
 			}
 			break;
-//		case "editProfile":
-//			ArrayList<String> list3 = newBatchController.getSavedBatchProfiles();
-//			Object o3 = JOptionPane.showInputDialog(getContentPane(), "Choose profile to edit: ", "Edit Profile", JOptionPane.QUESTION_MESSAGE, null, list3.toArray(), list3.get(0));
-//			if(o3 != null){
-//				profileName = o3.toString();
-//				try {
-//					newBatchController.editBatchProfilePressed(profileName);
-//				} catch (DataBaseException e1) {
-//					// TODO Auto-generated catch block
-//					e1.printStackTrace();
-//				}
-//			}
-//			break;
 		default: System.err.println("ActionCommand is not recognized");
 		}		
 	}
@@ -487,7 +473,5 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 	@Override
 	public void setbatchName(String batchString) {
 		textBatch.setText(batchString);
-		// TODO Auto-generated method stub
-		
 	}
 }

@@ -35,6 +35,7 @@ import javaMeasure.view.interfaces.IBatchMeasureGui;
 
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
+import java.awt.event.ActionListener;
 
 @SuppressWarnings("serial")
 public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
@@ -224,6 +225,12 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		JSeparator separator = new JSeparator();
 		separator.setBounds(585, 120, 440, 2);
 		getContentPane().add(separator);
+		
+		JButton btnApproveBatch = new JButton("Approve batch");
+		btnApproveBatch.setActionCommand("approveBatch");
+		btnApproveBatch.addActionListener(this);
+		btnApproveBatch.setBounds(360, 290, 210, 23);
+		getContentPane().add(btnApproveBatch);
 
 
 		// labels for the "+-" label 
@@ -522,6 +529,9 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 			break;
 		case "leakCurrent":
 			batchMeasureController.btnLeakCurrent();
+			break;
+		case "approveBatch":
+			batchMeasureController.btnApproveBatchPressed();
 			break;
 		case "deleteLeak":
 			batchMeasureController.btnDeleteLeak();

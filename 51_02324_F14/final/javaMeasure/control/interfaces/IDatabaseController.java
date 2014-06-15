@@ -24,6 +24,7 @@ public interface IDatabaseController {
 		
 	//Batches
 	void addToDB(Batch batch) throws DataBaseException;
+	void updateBatch(Batch activeBatch) throws DataBaseException;
 	ArrayList<Batch> getBatches() throws DataBaseException;
 	ArrayList<String> getBatchNames() throws DataBaseException;
 	public Batch getBatch(String batchName) throws DataBaseException;
@@ -61,6 +62,7 @@ public interface IDatabaseController {
 	public class UserNotFoundException extends Exception {
 
 	}
+	
 
 
 	

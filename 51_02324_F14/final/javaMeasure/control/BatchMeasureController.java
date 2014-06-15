@@ -1,6 +1,7 @@
 package javaMeasure.control;
 
 import java.awt.EventQueue;
+import java.util.Date;
 import java.util.ArrayList;
 
 import javaMeasure.*;
@@ -146,9 +147,24 @@ public class BatchMeasureController implements IBatchMeasureController {
 	}
 	
 	@Override
+	public void btnApproveBatchPressed() {
+		if(activeBatch != null){
+			activeBatch.setApproved_by(mainController.getActiveUser().getUserName());
+			activeBatch.setApproved_date(new Date());
+		try {
+			mainController.getDatabaseController().updateBatch(activeBatch);
+		} catch (DataBaseException e) {
+			batchGUI.updateLog("Failed to update batch in database");
+			System.out.println(e.getMessage());
+		}
+		}
+		
+	}
+	
+	@Override
 	public void btnDeleteStroke() {
 		// trying to delete stroke measurement in activebatch. false is returned if failed and therefore code in if is not run
-		if(activeBatch.deleteLastStrokeMeasurement()){
+		if(activeBatch != null && activeBatch.deleteLastStrokeMeasurement()){
 			try {
 				// measurement is deleted from batch and now trying to delete from database
 				mainController.getDatabaseController().deleteMeasurement(activeBatch.getBatchID(), activeBatch.getCurrentStrokeElement(), MeasurementType.STROKE);
@@ -161,13 +177,13 @@ public class BatchMeasureController implements IBatchMeasureController {
 		}
 		else{
 			// this could happen if measurements in table get out of sync if measurement is deleted or if there is no measurement to delete
-			batchGUI.showInformationMessage("Not able to delete selected measurement!", "Error");
+			batchGUI.updateLog("Not able to delete measurement!");
 		}
 	}
 
 	@Override
 	public void btnDeleteLeak() {
-		if(activeBatch.deleteLastLeakMeasurement()){
+		if(activeBatch != null && activeBatch.deleteLastLeakMeasurement()){
 			try {
 				mainController.getDatabaseController().deleteMeasurement(activeBatch.getBatchID(), activeBatch.getCurrentLeakElement(), MeasurementType.LEAK);
 				batchGUI.updateTable(activeBatch);
@@ -178,7 +194,7 @@ public class BatchMeasureController implements IBatchMeasureController {
 			}
 		}
 		else{
-			batchGUI.showInformationMessage("Not able to delete selected measurement!", "Error");
+			batchGUI.updateLog("Not able to delete measurement!");
 		}
 	}
 
@@ -264,4 +280,6 @@ public class BatchMeasureController implements IBatchMeasureController {
 			batchGUI.updateLog("failed to update measurements");
 		}	
 	}
+
+	
 }
