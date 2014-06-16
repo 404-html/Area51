@@ -8,9 +8,11 @@ public class BatchProfile {
 	public int profileID;
 	public ArrayList<BatchSetting> profileSettings;
 	
+	/**
+	 * Overloaded Constructor 
+	 */
 	public BatchProfile(){
-		this.profileName=null;
-		this.profileSettings = new ArrayList<>();
+		this(null,new ArrayList<BatchSetting>());
 	}
 	
 	public BatchProfile(String profileName, ArrayList<BatchSetting> profileSettings){
