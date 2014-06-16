@@ -11,6 +11,7 @@ public class Batch {
 	private int BatchID;
 	private String BatchString;
 	private int profileID;
+	//TODO change to <Measurement[]> or perhaps generic ArrayList<boolean, int, Measurement, Measurement> ??
 	private ArrayList<Object[]> measurementsList; // this list is made compatible with the JTable in BatchMeasureGui. now it is easier to copy over
 	private int currentStrokeElement = 0; // counter for where to put the next stroke measurement, this is also an easy way to give measurements an elementnumber
 	private int currentLeakElement = 0; // counter for where to put the next leak measurement.
@@ -20,12 +21,15 @@ public class Batch {
 	private String approved_by;
 	private Timestamp approved_date;
 
+	/**
+	 * Constuctor for simple Batch
+	 * @param batchID
+	 * @param batchString
+	 * @param profileID
+	 */
 	public Batch(int batchID, String batchString, int profileID) {
-		super();
-		setBatchID(batchID);
-		setBatchString(batchString);
-		this.profileID = profileID;
-		this.measurementsList = new ArrayList<>();
+		
+		this(batchID, batchString, profileID, null, null, null, null);
 	}
 
 	/**
@@ -40,8 +44,8 @@ public class Batch {
 	 */
 	public Batch(int batchID, String batchString, int profileID, String created_by, Timestamp created_date, String approved_by, Timestamp approved_date) {
 		super();
-		setBatchID(batchID);
-		setBatchString(batchString);
+		this.BatchID = batchID;
+		this.BatchString = batchString;
 		this.profileID = profileID;
 		this.measurementsList = new ArrayList<>();
 
@@ -77,15 +81,19 @@ public class Batch {
 
 	public boolean deleteLastStrokeMeasurement(){
 		
-		ArrayList<Object[]> list = getMeasurementsList();
+		ArrayList<Object[]> list = measurementsList;
 		if(currentStrokeElement < currentLeakElement || currentStrokeElement == 0)
+			//Checks if Stroke list is shorter than Leak list and returns false - to avoid asynchronous data collection
 			return false;
 		else{
 			Object[] row = getMeasurementsList().get(currentStrokeElement-1);
+			//TODO whats in row[2]???
 			row[2] = null;
+			//TODO and whats in row(3)???
 			if(row[3] == null){
 				list.remove(currentStrokeElement-1);
 			}
+			//What does this do?
 			currentStrokeElement--;
 			return true;
 		}
@@ -98,6 +106,7 @@ public class Batch {
 			return false;
 		else{
 			Object[] row = getMeasurementsList().get(currentLeakElement-1);
+			//TODO What is going on?
 			row[3] = null;
 			if(row[2] == null){
 				list.remove(currentLeakElement-1);
@@ -113,6 +122,7 @@ public class Batch {
 		MeasurementType type = measurement.getMeasurementType();
 		int dif = currentLeakElement - currentStrokeElement;
 		if(type.equals(MeasurementType.LEAK))
+			//TODO - what does this do???
 			dif++;
 		else dif--;
 		if(dif > 1 || dif < -1){
@@ -122,7 +132,8 @@ public class Batch {
 		if(type.equals(MeasurementType.LEAK)){
 			// the try catch is to make sure that the measurement never is put out bounds
 			// if the currentLeakElement points out of bounds, a new object is created in the catch clause
-			try{ measurementsList.get(currentLeakElement)[3] = measurement;
+			try{ 
+				measurementsList.get(currentLeakElement)[3] = measurement;
 			} catch (IndexOutOfBoundsException e){
 				measurementsList.add(new Object[]{measurement.getVerified(), currentLeakElement, null, measurement});
 			}
@@ -140,7 +151,7 @@ public class Batch {
 		return true;
 	}
 
-	// method for database to add the whole list without trouble
+	// method for database to add the whole list without trouble //TODO describe!!
 	public void setMeasurementList(ArrayList<Measurement> stroke, ArrayList<Measurement> leak){
 		int size = 0;
 		if(stroke.size() > leak.size()){
@@ -159,6 +170,7 @@ public class Batch {
 			}
 		}
 	}
+	//TODO needs commenting!
 	public float getAverageStroke(){
 		int length = 0;
 		float total = 0;
