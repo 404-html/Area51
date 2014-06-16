@@ -52,7 +52,7 @@
 					<h1>Noliac User Edit</h1>
 					
 				
-	<%if(u.isAdmin()){ %>)
+	<%if(((User)request.getSession().getAttribute("user")).isAdmin()){ %>)
 				
 	<table width="100%" border="0" cellpadding="2" cellspacing="0">
 		<tr>
@@ -87,7 +87,7 @@
 		  </table>
 		  <%} else{ %>
 		 <div> <input id="element_4" name="password" class="element text medium"
-								type="text" maxlength="255" value="<%=u.getPassWord()%>" /></div><%} %>
+								type="text" maxlength="255" value="<%=((User)request.getSession().getAttribute("user")).getPassWord()%>" /></div><%} %>
 		  
 		 
 				  <span class="buttons">
