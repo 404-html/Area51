@@ -39,13 +39,8 @@ public class UserEditServlet extends HttpServlet {
 	protected void check(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(((User) request.getSession().getAttribute("user")) != null){
 			if(((User) request.getSession().getAttribute("user")).isActive()){
-				if(((User) request.getSession().getAttribute("user")).isAdmin()){
 					onPage(request, response);
 				}
-				else{
-					request.getRequestDispatcher("MenuServlet").forward(request, response);
-				}
-			}	
 			else{
 				request.getRequestDispatcher("LoginServlet").forward(request, response);
 			}
@@ -64,23 +59,37 @@ public class UserEditServlet extends HttpServlet {
 	protected void onPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//User posts edit
 		System.out.println("UserLogin - Post");
-		String name = request.getParameter("username");
+
 		String password = request.getParameter("password");
-		String active = request.getParameter("active");
-		String admin = request.getParameter("admin");
-		boolean ad = true;
-		if(admin==null){
-			ad=false;
-		}
-		boolean ac = true;
-		if(active==null){
-			ac=false;
-		}
+
+		
 		if((request.getParameter("Save")!=null)){
 			try {
-	
+				if(!((User)request.getSession().getAttribute("user")).isAdmin()){
+					User u = (User)request.getSession().getAttribute("user");
+					u.setPassWord(password);
+					dbctrl.updateUser(u);
+					request.getRequestDispatcher("MenuServlet").forward(request, response);
+					
+				}else{
+					
+					String name = request.getParameter("username");
+					String active = request.getParameter("active");
+					String admin = request.getParameter("admin");
+					boolean ad = true;
+					
+					if(admin==null){
+						ad=false;
+					}
+					boolean ac = true;
+					if(active==null){
+						ac=false;
+					}
+					
+					
 					User u = (User)request.getSession().getAttribute("editing");
 					if(!(u.isActive()&&u.isAdmin())||(u.isActive()&&u.isAdmin()&&(dbctrl.canWeRemoveAnotherAdmin()||(ac&&ad)))){
+
 						u.setUserName(name);
 						u.setPassWord(password);
 						u.setActive(ac);
@@ -110,6 +119,7 @@ public class UserEditServlet extends HttpServlet {
 						System.out.println("I can't let you remove the last admin, " +request.getSession().getAttribute("username")+".");
 						request.getRequestDispatcher("WEB-INF/useredit.jsp").forward(request, response);
 					}
+				}
 					
 			} catch (DataBaseException e) {
 				request.getRequestDispatcher("WEB-INF/useredit.jsp").forward(request, response);
