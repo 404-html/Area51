@@ -22,7 +22,8 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/ReportServlet")
 public class ReportServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	private Batch batch = null;
+	private BatchProfile profile = null;
 	/**
 	 * Default constructor. 
 	 */
@@ -58,8 +59,6 @@ public class ReportServlet extends HttpServlet {
 			String batchName = request.getParameter("selectedbatch");
 			System.out.println(batchName);
 			DataBaseController dbctrl = (DataBaseController) request.getSession().getAttribute("database");
-			Batch batch = null;
-			BatchProfile profile = null;
 			try {
 				batch = dbctrl.getBatch(batchName);
 				profile = dbctrl.getBatchProfile(batch.getProfileID());
@@ -105,8 +104,11 @@ public class ReportServlet extends HttpServlet {
 	
 	private StringBuffer generateCsvFileBuffer() {
 		StringBuffer writer = new StringBuffer();
-		
-		writer.append("Aced it.");
+		String[] report;
+		report = this.getReport(batch, profile);
+		for(int i = 0; i < report.length; i++){
+		writer.append(report[i]);
+		}
 		return writer;
 	}
 

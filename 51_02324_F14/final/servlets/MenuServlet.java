@@ -1,6 +1,8 @@
 package servlets;
 
 import java.io.IOException;
+
+import javaMeasure.User;
 import javaMeasure.control.DataBaseController;
 
 import javax.servlet.ServletException;
@@ -54,7 +56,13 @@ public class MenuServlet extends HttpServlet {
 				request.getRequestDispatcher("ReportServlet").forward(request, response);
 			} else {
 				if(request.getParameter("edit")!=null){
-					request.getRequestDispatcher("UserChooseServlet").forward(request, response);
+					if(((User)request.getSession().getAttribute("user")).isAdmin()){
+						request.getRequestDispatcher("UserChooseServlet").forward(request, response);
+					}
+					else{
+						request.getRequestDispatcher("UserEditServlet").forward(request, response);
+					}
+					
 				}
 				else{
 					request.getRequestDispatcher("WEB-INF/menu.jsp").forward(request, response);

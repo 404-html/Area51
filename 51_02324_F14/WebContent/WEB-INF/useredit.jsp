@@ -52,7 +52,7 @@
 					<h1>Noliac User Edit</h1>
 					
 				
-				
+	<%if(u.isAdmin()){ %>)
 				
 	<table width="100%" border="0" cellpadding="2" cellspacing="0">
 		<tr>
@@ -85,6 +85,9 @@
          <input type="checkbox" name="active" value="active"<%if(u.isActive()){%>checked<%} %>> active<BR>
 		  <input type="checkbox" name="admin" value="admin"<%if(u.isAdmin()){%>checked<%} %>> admin<BR></tr>
 		  </table>
+		  <%} else{ %>
+		 <div> <input id="element_4" name="password" class="element text medium"
+								type="text" maxlength="255" value="<%=u.getPassWord()%>" /></div><%} %>
 		  
 		 
 				  <span class="buttons">
