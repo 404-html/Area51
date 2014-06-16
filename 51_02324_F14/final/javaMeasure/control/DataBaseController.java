@@ -188,5 +188,15 @@ public class DataBaseController implements IDatabaseController {
 		
 	}
 
+	@Override
+	public ArrayList<User> getActiveUserList() throws DataBaseException {
+		return userDAO.getActiveUserList();
+	}
+
+	@Override
+	public User getActiveUserFromString(String loginString) throws DataBaseException, UserNotFoundException {
+		return userDAO.getActiveUserFromString(loginString);
+	}
+
 	
 }

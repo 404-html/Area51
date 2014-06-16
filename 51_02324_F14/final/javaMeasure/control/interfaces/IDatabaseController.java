@@ -7,6 +7,8 @@ import javaMeasure.Measurement.MeasurementType;
 public interface IDatabaseController {
 	
 	//User functionality
+	User getActiveUserFromString(String loginString) throws DataBaseException, UserNotFoundException;
+	ArrayList<User> getActiveUserList() throws DataBaseException;
 	ArrayList<User> getUserList() throws DataBaseException;
 	boolean isUserNameInDB(String userName) throws DataBaseException;
 	boolean validateUser(User user) throws DataBaseException;
@@ -62,6 +64,7 @@ public interface IDatabaseController {
 	public class UserNotFoundException extends Exception {
 
 	}
+
 	
 
 

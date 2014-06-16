@@ -8,76 +8,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<%// String username = (String) session.getAttribute("username"); %>
 <title>Noliac : <%//out.println(username);%> | Final report</title>
 <link rel="stylesheet" type="text/css" href="view.css" media="all" />
 <script type="text/javascript" src="view.js"></script>
 <script type="text/javascript" src="calendar.js"></script>
 </head>
-<%
-	// input actions from buttons
-	String newReport = request.getParameter("newReport");
-	String excel = request.getParameter("saveAsExcel");
-	
+<%	
 	// batch and profile for table input
-// 	javaMeasure.Batch batch = (javaMeasure.Batch) request.getAttribute("batch");
-// 	javaMeasure.BatchProfile profile = (javaMeasure.BatchProfile) request.getAttribute("profile");
-
-// 	if(session.getAttribute("user") == null)
-// 	{	
-// 		response.sendRedirect("NoliacServlet");
-// 	}
-// 	else if(newReport != null)
-// 	{
-// 		session.setAttribute("corruptSettings", null);
-// 		response.sendRedirect("form.jsp");
-// 	}
-// 	else if(profile.getProfileSettings().size() < 40)
-// 	{
-// 		session.setAttribute("corruptSettings", "corrupt");
-// 		response.sendRedirect("form.jsp");
-// 	}
-// 	else if(excel != null)
-// 	{
-// 		session.setAttribute("corruptSettings", null);
-// 		response.sendRedirect("newfile.csv"); // should be something else later on
-// 	}
-// 	else{
-	// values
-	//TODO robustness against empty sets...
-// 	String lengthNorm = profile.getProfileSettings().get(0).getValue();
-// 	String lengthMin = String.valueOf(Double.parseDouble(lengthNorm) - Double.parseDouble(profile.getProfileSettings().get(12).getValue()));
-// 	String lengthMax = String.valueOf(Double.parseDouble(lengthNorm) + Double.parseDouble(profile.getProfileSettings().get(12).getValue()));
-// 	String lengthInsp = profile.getProfileSettings().get(21).getValue();
-// 	String mLengthNorm = String.valueOf(batch.getAverageLeak());
-	
-// 	String widthNorm = profile.getProfileSettings().get(1).getValue();
-// 	String widthMin = String.valueOf(Double.parseDouble(widthNorm) - Double.parseDouble(profile.getProfileSettings().get(13).getValue()));
-// 	String widthMax = String.valueOf(Double.parseDouble(widthNorm) + Double.parseDouble(profile.getProfileSettings().get(13).getValue()));
-// 	String widthInsp = profile.getProfileSettings().get(22).getValue();
-	
-// 	String thickNorm = profile.getProfileSettings().get(2).getValue();
-// 	String thickMin = String.valueOf(Double.parseDouble(thickNorm) - Double.parseDouble(profile.getProfileSettings().get(14).getValue()));
-// 	String thickMax = String.valueOf(Double.parseDouble(thickNorm) + Double.parseDouble(profile.getProfileSettings().get(14).getValue()));
-// 	String thickInsp = profile.getProfileSettings().get(23).getValue();
-	
-// 	String capNorm = profile.getProfileSettings().get(7).getValue();
-// 	String capMin = String.valueOf(Double.parseDouble(capNorm) - Double.parseDouble(profile.getProfileSettings().get(17).getValue()));
-// 	String capMax = String.valueOf(Double.parseDouble(capNorm) + Double.parseDouble(profile.getProfileSettings().get(17).getValue()));
-// 	String capInsp = profile.getProfileSettings().get(28).getValue();
-	
-// 	String strokeNorm = profile.getProfileSettings().get(8).getValue();
-// 	String strokeMin = String.valueOf(Double.parseDouble(strokeNorm) - Double.parseDouble(profile.getProfileSettings().get(18).getValue()));
-// 	String strokeMax = String.valueOf(Double.parseDouble(strokeNorm) + Double.parseDouble(profile.getProfileSettings().get(18).getValue()));
-// 	String strokeInsp = profile.getProfileSettings().get(29).getValue();
-	
-// 	String leakNorm = profile.getProfileSettings().get(38).getValue();
-// 	String leakInsp = profile.getProfileSettings().get(33).getValue();
-	
-// 	String visualNorm = profile.getProfileSettings().get(40).getValue();
-// 	String visualInsp = profile.getProfileSettings().get(35).getValue();
-
-
 	String[] reportData = (String[]) request.getAttribute("reportData");  %>
 
 <body id="main-body">
@@ -90,7 +27,7 @@
 		<div id="form_container">
 
 			<!--<h1><a>Noliac</a></h1>-->
-			<form id="form_812583" class="appnitro" method="post">
+			<form id="form_812583" class="appnitro" method="post" action="ReportServlet">
 				<div class="form_description">
 					<h1>Noliac Batch report</h1>
 				</div>
@@ -255,10 +192,7 @@
 					</li>
 
 					<li class="buttons">
-					<input type="hidden" name="form_id"	value="812583" /> 
 					<input id="newReport" class="button_text" type="submit" name="newReport" value="Ny rapport" />
-					
-
                     <input id="saveAsExcel" class="button_text" type="submit" name="saveAsExcel" value="gem som Excel" />
 					</li>
 				</ul>
@@ -270,20 +204,7 @@
 
 		</div>
 	</div>
-	<% 
-// 	out.println(request);
-//  out.println(request.getParameterNames());
-//  Enumeration paramNames = request.getParameterNames();
-//  while(paramNames.hasMoreElements())
-//  {
-//        String paramName =
-//  (String)paramNames.nextElement();
-//        out.print(paramName);
-//  }
-	%>
 </body>
-<%
-// 	}
-%>
+
 
 </html>
