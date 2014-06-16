@@ -109,6 +109,14 @@ public class ReportServlet extends HttpServlet {
 		for(int i = 0; i < report.length; i++){
 		writer.append(report[i]);
 		}
+		for(int i = 0; i < report.length; i++){
+			if(i > 7){
+			if(i%8 == 0){
+				writer.append(";");
+			}
+			System.out.print(i + ": " + report[i] + "\t");
+			}
+		}
 		return writer;
 	}
 
