@@ -126,17 +126,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		separator.setBounds(580, 10, 10, 601);
 		getContentPane().add(separator);
 
-		//setup for the log
-		logModel = new DefaultTableModel(null, columnNames);
-		logModel.setColumnCount(1);
-		
-		log = new JList<Object>();
-		logScroll = new JScrollPane();
-		logScroll.setViewportView(log);
-		log.setEnabled(false);
-		logScroll.setBounds(10, 443, 340, 165);
-		log.setBounds(10, 443, 340, 160);
-		getContentPane().add(logScroll);
+		setupLog();
 
 		// table setup for measurements
 		this.tableData = new String[][]{{null,null,null,null}};
@@ -303,6 +293,35 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 			}
 		}
 	}
+	
+	//setup for the log
+	private void setupLog(){
+		
+		logModel = new DefaultTableModel(null, columnNames);
+		logModel.setColumnCount(1);
+		
+		log = new JList<Object>();
+		logScroll = new JScrollPane();
+		logScroll.setViewportView(log);
+		log.setEnabled(false);
+		logScroll.setBounds(10, 443, 340, 165);
+		log.setBounds(10, 443, 340, 160);
+		getContentPane().add(logScroll);
+		
+		logScroll.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
+			int rowCount = 0;
+			@Override
+			public void adjustmentValueChanged(AdjustmentEvent arg0)
+			{
+				logModel.getRowCount();
+				if(logModel.getRowCount() != rowCount){
+				logScroll.getVerticalScrollBar().setValue(logModel.getRowCount() * 16);
+				
+				}
+				rowCount = logModel.getRowCount();	
+			}
+		});
+	}
 
 	// extracted method because it is so large. sets up the JTable with all the extra features needed
 	private void setupTable() {
@@ -375,7 +394,6 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 						update(getGraphics()); // very important. updates graphics: when one checkbox is changed the whole row changes colour 
 					}
 				}
-//				scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum() );
 			}
 		});
 
@@ -384,19 +402,19 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		scrollTable.setBounds(10, 10, 340, 380);
 		table.setFillsViewportHeight(true);
 		getContentPane().add(scrollTable);
-//		scrollTable.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
-//			int rowCount = 0;
-//			@Override
-//			public void adjustmentValueChanged(AdjustmentEvent arg0)
-//			{
-//				model.getRowCount();
-//				if(model.getRowCount() != rowCount){
-//				scrollTable.getVerticalScrollBar().setValue(model.getRowCount() * 16);
-//				
-//				}
-//				rowCount = model.getRowCount();	
-//			}
-//		});
+		scrollTable.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
+			int rowCount = 0;
+			@Override
+			public void adjustmentValueChanged(AdjustmentEvent arg0)
+			{
+				model.getRowCount();
+				if(model.getRowCount() != rowCount){
+				scrollTable.getVerticalScrollBar().setValue(model.getRowCount() * 16);
+				
+				}
+				rowCount = model.getRowCount();	
+			}
+		});
 	
 
 		// used to find row when checkboxes are clicked

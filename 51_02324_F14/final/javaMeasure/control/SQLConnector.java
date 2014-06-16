@@ -100,7 +100,6 @@ public class SQLConnector implements ISQLConnector {
 			return true;
 		} catch (SQLException e) {
 			System.err.println("Connection to DB failed!");
-			//e.printStackTrace();
 		}
 		return false;
 	}

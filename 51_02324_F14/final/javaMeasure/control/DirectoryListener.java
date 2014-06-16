@@ -42,12 +42,11 @@ public class DirectoryListener extends Thread
 			try
 			{
 				// wait for key to be signaled
-				WatchService watcher = this.dir.getFileSystem().newWatchService();
-				this.dir.register(watcher, StandardWatchEventKinds.ENTRY_CREATE,
+				this.watcher = this.dir.getFileSystem().newWatchService();
+				this.dir.register(this.watcher, StandardWatchEventKinds.ENTRY_CREATE,
 						StandardWatchEventKinds.ENTRY_DELETE, StandardWatchEventKinds.ENTRY_MODIFY);
 				
 				WatchKey watchKey = null;
-				System.out.println("before .take(): " + System.nanoTime());
 				watchKey = this.watcher.take(); // waits until any changes occur
 				System.out.println(path + " is being watched");
 				while(!this.isInterrupted())
@@ -58,9 +57,9 @@ public class DirectoryListener extends Thread
 					createdFile = false;
 					modifiedFile = false;
 					Thread.sleep(1000);
-
-					System.out.println("start check: " + System.nanoTime());
-					System.out.println("checking: " + path);
+//
+//					System.out.println("start check: " + System.nanoTime());
+//					System.out.println("checking: " + path);
 					List<WatchEvent<?>> events = watchKey.pollEvents();
 					// one change can trigger up to 3 events
 					for (WatchEvent<?> event : events)
