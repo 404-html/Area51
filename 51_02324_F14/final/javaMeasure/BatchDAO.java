@@ -19,6 +19,7 @@ public class BatchDAO implements IBatchDAO {
 	 * @see javaMeasure.IBatchDAO#getBatches()
 	 */
 	public ArrayList<Batch> getBatches() throws DataBaseException {
+		//returns all batches with "" in name - In effect All batches
 		return getBatches(null);
 	}
 
@@ -29,7 +30,7 @@ public class BatchDAO implements IBatchDAO {
 	 * @throws DataBaseException
 	 */
 	public ArrayList<Batch> getBatches(String partialBatchName) throws DataBaseException {
-		//TODO needs testing
+		//TODO needs testing AND COMMENTING!!!
 		ArrayList<Batch> batches = new ArrayList<Batch>();
 		String query = "SELECT * FROM batches";
 		if(partialBatchName != null){
@@ -197,7 +198,7 @@ public class BatchDAO implements IBatchDAO {
 		return false;
 	}
 	public Batch getBatch(int batchId) throws DataBaseException {
-		//TODO testing
+		//TODO testing and commenting
 		Batch returBatch;
 		Measurement.MeasurementType type; 
 		String query = "SELECT * FROM batches WHERE id=?";
@@ -229,7 +230,7 @@ public class BatchDAO implements IBatchDAO {
 				}
 
 			} else{
-				return null; // if returned table is empty
+				return null; // if returned table is empty null is returned
 			}
 
 			return returBatch;
