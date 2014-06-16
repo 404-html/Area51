@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
-
+//Standalone application for configuring main application - implements ActionListener to handle button events
 public class Configuration implements ActionListener {
 
 	private JFrame frmConfigureProgram;
@@ -105,21 +105,22 @@ public class Configuration implements ActionListener {
 		
 		JButton btnOk = new JButton("Ok");
 		btnOk.setBounds(81, 140, 89, 23);
-		btnOk.setActionCommand("ok");
+		btnOk.setActionCommand("ok"); //To identify button
 		btnOk.addActionListener(this);
 		frmConfigureProgram.getContentPane().add(btnOk);
 		
 		JButton btnCancel = new JButton("Cancel");
 		btnCancel.setBounds(180, 140, 89, 23);
-		btnCancel.setActionCommand("cancel");
+		btnCancel.setActionCommand("cancel"); // to identify button
 		btnCancel.addActionListener(this);
 		frmConfigureProgram.getContentPane().add(btnCancel);
 	}
 
-	@Override
+	@Override //ActionListening
 	public void actionPerformed(ActionEvent e) {
+		//Check which button was pressed
 		switch (e.getActionCommand()){
-		case "ok":
+		case "ok": // OK button
 			writeProp("server", serverField);
 			writeProp("port", portField);
 			writeProp("database", databaseField);
@@ -127,7 +128,7 @@ public class Configuration implements ActionListener {
 			writeProp("password", passwordField);
 			System.exit(0);
 			break;
-		case "cancel":
+		case "cancel": // Cancel button
 			System.exit(0);
 			break;
 		default:
@@ -136,10 +137,12 @@ public class Configuration implements ActionListener {
 	}
 
 	private void writeProp(String key, JTextField field) {
+		//Uses static helper class PropertyHelper to write in configuration.properties.
 		PropertyHelper.writeToProperty(key, field.getText());
 	}
 	
 	private String getProp(String string) {
+		//Uses static helper class PropertyHelper to read from configuration.properties.
 		return PropertyHelper.readFromProperty(string);
 	}
 
