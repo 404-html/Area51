@@ -71,10 +71,13 @@ public class UserDAO implements IUserDAO {
 
 
 	public void addToDB(User user) throws DataBaseException{
-		String query = "INSERT INTO users (username) VALUES (?)";
+		String query = "INSERT INTO users (username,password,admin,active) VALUES (?,?,?,?)";
 		PreparedStatement statement = sqlConnector.getPreparedStatement(query);
 		try {
 			statement.setString(1, user.getUserName());
+			statement.setString(2, user.getPassWord());
+			statement.setBoolean(3, user.isAdmin());
+			statement.setBoolean(4, user.isActive());
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			throw new DataBaseException("SQLException UserDAO - addToDB(User user): " + e.getMessage());
