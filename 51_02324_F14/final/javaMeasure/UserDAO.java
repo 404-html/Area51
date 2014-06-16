@@ -71,7 +71,7 @@ public class UserDAO implements IUserDAO {
 
 
 	public void addToDB(User user) throws DataBaseException{
-		String query = "INSERT INTO users (username) VALUES (?)(?)(?)(?)(?)";
+		String query = "INSERT INTO users (username,password,admin,active) VALUES (?,?,?,?)";
 		PreparedStatement statement = sqlConnector.getPreparedStatement(query);
 		try {
 			statement.setString(1, user.getUserName());
