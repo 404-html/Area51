@@ -18,9 +18,97 @@
 	out.println(user.getUserName());
 %> | udtræk
 </title>
-<link rel="stylesheet" type="text/css" href="view.css" media="all" />
+<link rel="stylesheet" type="text/css" href="menu.css" media="all" />
 <script type="text/javascript" src="view.js"></script>
 <script type="text/javascript" src="calendar.js"></script>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+	//AJAX
+	$(document).on('keyup', '#batchname', function() {
+		console.log("tast");
+		//henter siden returnDataAjax 
+		if($("#batchname").val().length>=2){
+			console.log("get");
+			$.get("returnDataAjax.jsp?input="+$("#batchname").val(),function(data,status){
+			    if(status = "success"){
+			    	//indsæt de hentede data i div element
+			    	$("#return_data").html(data);
+			    }
+		
+			});
+		}
+		
+	});
+	
+	$(document).on('click', '.scrollContent tr', function(event) {
+		//denne function skal submitte form
+		alert(event.target.id);
+		console.log("click");
+
+	});
+	
+	//Date functions for input fields
+	function fillToday(){
+		var today = new Date();
+		var dd = today.getDate();
+		var mm = today.getMonth()+1; //January is 0!
+		var yyyy = today.getFullYear();
+
+		fillElement(today, today);
+	};
+	
+	function fillYesterday(){
+		var today = new Date();
+		console.log(today.getDay());
+		if(today.getDay() == 1){
+			today.setDate(today.getDate() - 3);
+		}
+		else{
+			today.setDate(today.getDate() - 1);
+		}
+		
+		var dd = today.getDate();
+		var mm = today.getMonth()+1; //January is 0!
+		var yyyy = today.getFullYear();
+
+		fillElement(today, today);
+	};
+	
+	function fillLastWeek(){
+		var today = new Date();
+		var startday = new Date();
+		var endday = new Date();
+
+		startday.setDate(today.getDate() - today.getDay() -6);
+		endday.setDate(startday.getDate()+4);
+		
+		fillElement(startday, endday);
+	};
+	
+	function fillThisWeek(){
+		var today = new Date();
+		var startday = new Date();
+
+		startday.setDate(today.getDate() - today.getDay()+1);
+		
+		fillElement(startday, today);
+	};
+	
+	function fillElement(startdate, enddate){
+		document.getElementById('element_1_2').value = startdate.getDate();
+		document.getElementById('element_1_1').value = startdate.getMonth()+1; //January is 0!
+		document.getElementById('element_1_3').value = startdate.getFullYear();
+		
+		document.getElementById('element_2_2').value = enddate.getDate();
+		document.getElementById('element_2_1').value = enddate.getMonth()+1; //January is 0!
+		document.getElementById('element_2_3').value = enddate.getFullYear();
+	}
+</script>
+
+
+
+
 </head>
 <body id="main-body">
 	<div id="wrapper">
@@ -107,18 +195,31 @@
 										onSelect : selectDate
 									});
 								</script></li>
+								<button type="button" onClick="fillToday()">I dag</button>
+								<button type="button" onClick="fillThisWeek()">Denne uge</button>
+								<button type="button" onClick="fillYesterday()">I går</button>
+								<button type="button" onClick="fillLastWeek()">Sidste uge</button>
 							</ul>
 						</td>
-						<td width="50%"><label class="description" for="selectedbatch">
-								Fundne batches </label> <select name="selectedbatch" id="selectedbatch"
-							size="10">
-								<% //TODO replace with AJAX
-								for (String batchName : batchNames){ %>
-								<option>
-									<%=batchName%></option>
-								<%
-											}%>
-						</select></td>
+						<td width="50%" id="return_data">
+							<div  class="tableContainer">
+								<table border="0" cellpadding="0" cellspacing="0" width="100%" class="scrollTable">
+									<thead class="fixedHeader">
+										<tr>
+											<th><a href="#">Batch navn</a></th>
+											<th><a href="#">Oprettet af</a></th>
+											<th><a href="#">Oprettet dato</a></th>
+											<th><a href="#">Godkendt af</a></th>
+											<th><a href="#">Godkendt dato</a></th>
+										</tr>
+									</thead>
+									<tbody class="scrollContent">
+									</tbody>
+								</table>
+							</div>
+						
+						
+						</td>
 					</tr>
 				</table>
 
@@ -130,9 +231,9 @@
 					
 					<input id="logout" class="button_text" type="submit" name="logout"
 					value="logout" /> 
-					<%if(user.isAdmin()){ %>
+					
 					<input id="edit" class="button_text" type="submit" name="edit"
-					value="Edit Users" /> <%}%>
+					value="Edit Users" /> 
 					</form>
 			<div id="footer">By Area51</div>
 

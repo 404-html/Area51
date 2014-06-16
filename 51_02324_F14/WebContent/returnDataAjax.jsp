@@ -47,8 +47,8 @@ String username = (String) session.getAttribute("username");
 
 		String created_by = (batch.getCreated_by()=="null" ? batch.getCreated_by() : "&nbsp");
 		String approved_by = (batch.getApproved_by()=="null" ? batch.getApproved_by() : "&nbsp");
-		//table row
-		returnString = returnString + ("<tr class=\"returnRow\">\n");
+		//table row  class=\"returnRow\"
+		returnString = returnString + ("<tr>\n");
 		
 		//batch navn
 		returnString = returnString + "\t<td id=\"" + batch.getBatchString() + "\">" + batch.getBatchString() + "</td>\n"; 
@@ -74,23 +74,36 @@ String username = (String) session.getAttribute("username");
 
 <%
 String input = request.getParameter("input");
-System.out.println("input:" +input);
 BatchDAO b = new BatchDAO(new SQLConnector());
 
 
 
 //out.println("test");
-	out.println("<table class=\"returnTable\" style=\"border-collapse:collapse\">");
-	out.println("	<th class=\"None\">&nbsp&nbspBatch navn&nbsp&nbsp</th>");
-	out.println("	<th class=\"None\">&nbsp&nbspOprettet af&nbsp&nbsp</th>");
-	out.println("	<th class=\"None\">&nbsp&nbspOprettet dato&nbsp&nbsp</th>");
-	out.println("	<th class=\"None\">&nbsp&nbspGodkendt af&nbsp&nbsp</th>");
-	out.println("	<th class=\"None\">&nbsp&nbspGodkendt dato&nbsp&nbsp</th>");
+	out.println("<div  class=\"tableContainer\">");
+	out.println("	<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" class=\"scrollTable\">");
+	out.println("		<thead class=\"fixedHeader\">");
+	out.println("			<tr>");
+	out.println("				<th><a href=\"#\">Batch navn</a></th>");
+	out.println("				<th><a href=\"#\">Oprettet af</a></th>");
+	out.println("				<th><a href=\"#\">Oprettet dato</a></th>");	
+	out.println("				<th><a href=\"#\">Godkendt af</a></th>");
+	out.println("				<th><a href=\"#\">Godkendt dato</a></th>");	
+	out.println("			</tr>");
+	out.println("		</thead>");
+	out.println("		<tbody class=\"scrollContent\">");
 
 	for(Batch b2 : b.getBatches(input)){
-		System.out.println("for loop");
 		out.println(createTableRow(b2));
-	}
+	}	
+	
+	out.println("		</tbody>");
+	//out.println("	<th class=\"None\">&nbsp&nbspBatch navn&nbsp&nbsp</th>");
+	//out.println("	<th class=\"None\">&nbsp&nbspOprettet af&nbsp&nbsp</th>");
+	//out.println("	<th class=\"None\">&nbsp&nbspOprettet dato&nbsp&nbsp</th>");
+	//out.println("	<th class=\"None\">&nbsp&nbspGodkendt af&nbsp&nbsp</th>");
+	//out.println("	<th class=\"None\">&nbsp&nbspGodkendt dato&nbsp&nbsp</th>");
+
+
 	//out.println("<tr>");
 // 	out.println("<tr class=\"returnRow\">");
 // 	out.print(createTableRow(5,1));
@@ -101,5 +114,6 @@ BatchDAO b = new BatchDAO(new SQLConnector());
 // 	out.println("<tr class=\"returnRow\">");
 // 	out.print(createTableRow(5,3));
 // 	out.println("</tr>");
- 	out.println("</table>");
+ 	out.println("	</table>");
+ 	out.println("</div>");
 %>
