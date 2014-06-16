@@ -132,9 +132,7 @@
 					value="logout" /> 
 					<%if(user.isAdmin()){ %>
 					<input id="edit" class="button_text" type="submit" name="edit"
-					value="Edit Users" /> <%} else{ %>
-					  <input type="hidden" name="edit" value="Edit Users" /> 
-					  <%} %>
+					value="Edit Users" /> <%}%>
 					</form>
 					
             <a href="UserChooseServlet">Administrer brugere</a>

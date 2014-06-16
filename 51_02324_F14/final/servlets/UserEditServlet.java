@@ -34,13 +34,27 @@ public class UserEditServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("WEB-INF/useredit.jsp").forward(request, response);
+		if(((User) request.getSession().getAttribute("user")) != null){
+			if(((User) request.getSession().getAttribute("user")).isActive()){
+				if(((User) request.getSession().getAttribute("user")).isAdmin()){
+					request.getRequestDispatcher("WEB-INF/useredit.jsp").forward(request, response);
+				}
+				else{
+					request.getRequestDispatcher("MenuServlet").forward(request, response);
+				}
+			}	
+			else{
+				request.getRequestDispatcher("LoginServlet").forward(request, response);
+			}
+		}
+		else{
+			request.getRequestDispatcher("LoginServlet").forward(request, response);
+		}
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	@SuppressWarnings("unused")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//User posts edit
 		System.out.println("UserLogin - Post");
@@ -73,17 +87,17 @@ public class UserEditServlet extends HttpServlet {
 							if(ac){
 							
 								request.getSession().setAttribute("user", u);
-								request.getRequestDispatcher("WEB-INF/userchoose.jsp").forward(request, response);
+								request.getRequestDispatcher("UserChooseServlet").forward(request, response);
 							}
 							else{
 								request.getSession().setAttribute("user", null);
-								request.getRequestDispatcher("WEB-INF/userlogin.jsp").forward(request, response);
+								request.getRequestDispatcher("LoginServlet").forward(request, response);
 							}
 							
 						}
 						else{
 						System.out.println("forwarding");
-						request.getRequestDispatcher("WEB-INF/userchoose.jsp").forward(request, response);
+						request.getRequestDispatcher("UserChooseServlet").forward(request, response);
 						}
 					}
 					else{
@@ -98,8 +112,11 @@ public class UserEditServlet extends HttpServlet {
 			
 			}
 		}
+		else if(request.getParameter("Done")!=null){
+			request.getRequestDispatcher("MenuServlet").forward(request, response);
+		}
 		else {
-			request.getRequestDispatcher("WEB-INF/form.jsp").forward(request, response);
+			request.getRequestDispatcher("WEB-INF/useredit.jsp").forward(request, response);
 		}
 	}
 

@@ -89,7 +89,7 @@
 		 
 				  <span class="buttons">
 				  
-				  <input id="submit" class="button_text"
+				  <input id="save" class="button_text"
 						type="submit" name="Save" value="save" />
 
 
