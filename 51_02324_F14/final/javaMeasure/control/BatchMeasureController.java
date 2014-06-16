@@ -1,6 +1,7 @@
 package javaMeasure.control;
 
 import java.awt.EventQueue;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.ArrayList;
 
@@ -40,8 +41,8 @@ public class BatchMeasureController implements IBatchMeasureController {
 	// opens a modified (newBatchGui) interface, where the specifications for activeBatch can be edited
 	public void btnEditBatchSettingsPressed(){
 		if(getActiveBatch() != null){
-		mainController.startNewBatchController(getActiveBatch());
-		batchGUI.updateLog("Edit batch settings window opened...");
+			mainController.startNewBatchController(getActiveBatch());
+			batchGUI.updateLog("Edit batch settings window opened...");
 		} else {
 			batchGUI.updateLog("Could not open edit batch window - No batch loaded.");
 		}
@@ -79,7 +80,7 @@ public class BatchMeasureController implements IBatchMeasureController {
 				}
 			}
 			if(!exists){
-				batchGUI.showInformationMessage("There is no batch with this name.", "No batch found");
+				batchGUI.showPopupMessage("There is no batch with this name.", "No batch found");
 			}
 		} else batchGUI.updateLog("batch loading canceled");
 	}
@@ -105,7 +106,7 @@ public class BatchMeasureController implements IBatchMeasureController {
 						boolean measurementAdded = activeBatch.addMeasurement(measurement[0]);
 						if(!measurementAdded)
 						{
-							batchGUI.showInformationMessage("measurements should be taken in sync", "measurements not synced");
+							batchGUI.showPopupMessage("measurements should be taken in sync", "measurements not synced");
 						} else
 						{
 							// after measurement is added to batch, it is added to database
@@ -124,12 +125,12 @@ public class BatchMeasureController implements IBatchMeasureController {
 			}
 			// gui is updated as the last thing, but only if there is an active batch
 			batchGUI.updateTable(activeBatch);
-		} else batchGUI.showInformationMessage("You have to create or load batch before making measurements", "No active batch");
+		} else batchGUI.showPopupMessage("You have to create or load batch before making measurements", "No active batch");
 	}
 
 	public void btnLeakCurrent() {
 		if(activeBatch == null){
-			batchGUI.showInformationMessage("You have to create batch before reading measurements", "No batch settings loaded");
+			batchGUI.showPopupMessage("You have to create batch before reading measurements", "No batch settings loaded");
 		} else{
 			// popup window where the folder with dasyLab files. If cancel, path is null
 			String path = batchGUI.getDasyPath();
@@ -145,22 +146,33 @@ public class BatchMeasureController implements IBatchMeasureController {
 			}
 		}
 	}
-	
+
 	@Override
 	public void btnApproveBatchPressed() {
 		if(activeBatch != null){
-			activeBatch.setApproved_by(mainController.getActiveUser().getUserName());
-			activeBatch.setApproved_date(new Date());
-		try {
-			mainController.getDatabaseController().updateBatch(activeBatch);
-		} catch (DataBaseException e) {
-			batchGUI.updateLog("Failed to update batch in database");
-			System.out.println(e.getMessage());
+			if(activeBatch.getApproved_by() == null){
+				activeBatch.setApproved_by(mainController.getActiveUser().getUserName());
+				activeBatch.setApproved_date(new Timestamp(new Date().getTime()));
+				batchApproved(false);
+				batchGUI.updateLog("batch is approved");
+			} else{
+				activeBatch.setApproved_by(null);
+				activeBatch.setApproved_date(null);
+				batchApproved(true);
+				batchGUI.updateLog("batch is disapproved");
+			}
+
+			try {
+				mainController.getDatabaseController().updateBatch(activeBatch);
+
+			} catch (DataBaseException e) {
+				batchGUI.updateLog("Failed to update batch in database");
+				System.out.println(e.getMessage());
+			}
 		}
-		}
-		
+
 	}
-	
+
 	@Override
 	public void btnDeleteStroke() {
 		// trying to delete stroke measurement in activebatch. false is returned if failed and therefore code in if is not run
@@ -201,25 +213,25 @@ public class BatchMeasureController implements IBatchMeasureController {
 	@SuppressWarnings("static-access")
 	public void btnLogOutPressed() {
 		if(this.directoryListener != null){
-		this.directoryListener.interrupt();
-		System.out.println(this.directoryListener.interrupted()); // check if directoryListener stops
+			this.directoryListener.interrupt();
+			System.out.println(this.directoryListener.interrupted()); // check if directoryListener stops
 		}
 		mainController.logOut();
 	}
-	
+
 	public void addLeakMeasurement(String path, String filename){
 
 		// gets the timestamp for what value should be read in dasyLab file from config.properties
 		long timestamp = Long.parseLong(PropertyHelper.readFromProperty("leakvalue"));
-		
+
 		System.out.println("timestamp: " + timestamp);
 		System.out.println(path + "/" + filename);
-		
+
 		// creating leak measurement to be added to batch and saved in database		
 		Measurement measurement = mainController.getDasyController().getCurrentValue(timestamp, path + "/" + filename);
 		measurement.setBatchID(activeBatch.getBatchID());
 		measurement.setElementNo(activeBatch.getCurrentLeakElement());
-		
+
 		// adds the measurement to guis JTable before saved in database	
 		batchGUI.updateLog("new leak measurement: " + measurement.getMeasureValue());
 		batchGUI.updateLog("read from: " + filename);
@@ -227,7 +239,7 @@ public class BatchMeasureController implements IBatchMeasureController {
 		try {
 			if(!activeBatch.addMeasurement(measurement)) // if failed to add measurement to batch this is not run
 			{
-				batchGUI.showInformationMessage("measurements should be taken in sync", "measurements not in sync");
+				batchGUI.showPopupMessage("measurements should be taken in sync", "measurements not in sync");
 			} else
 			{
 				mainController.getDatabaseController().addToDB(measurement);
@@ -256,8 +268,23 @@ public class BatchMeasureController implements IBatchMeasureController {
 		} catch (DataBaseException e) {
 			batchGUI.updateLog("failed to load batch profile from database");
 			System.err.println(e.getMessage());
-		}	
+		}
+		if(activeBatch.getApproved_by() != null)
+			batchApproved(false);
+		else batchApproved(true);
+
 		batchGUI.updateTable(this.activeBatch);
+	}
+
+	private void batchApproved(boolean approved) {
+
+		batchGUI.btnBatchApproved(approved);
+		batchGUI.enableDeleteLeak(approved);
+		batchGUI.enableDeleteStroke(approved);
+		batchGUI.enableEditBatchSettings(approved);
+		batchGUI.enableLeakMeasurement(approved);
+		batchGUI.enableStrokeMeasurement(approved);
+
 	}
 
 	public Batch getActiveBatch(){
@@ -273,13 +300,13 @@ public class BatchMeasureController implements IBatchMeasureController {
 		// updates verified value for both stroke and leak measurement for the chosen element
 		activeBatch.updateMeasurements(elementNumber, verified);
 		try{
-		mainController.getDatabaseController().updateMeasurement(activeBatch.getMeasurement(elementNumber, MeasurementType.LEAK));
-		mainController.getDatabaseController().updateMeasurement(activeBatch.getMeasurement(elementNumber, MeasurementType.STROKE));
+			mainController.getDatabaseController().updateMeasurement(activeBatch.getMeasurement(elementNumber, MeasurementType.LEAK));
+			mainController.getDatabaseController().updateMeasurement(activeBatch.getMeasurement(elementNumber, MeasurementType.STROKE));
 		} catch(DataBaseException e){
 			System.err.println(e.getMessage());
 			batchGUI.updateLog("failed to update measurements");
 		}	
 	}
 
-	
+
 }

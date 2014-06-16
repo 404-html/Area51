@@ -45,8 +45,8 @@ public class BatchDAO implements IBatchDAO {
 			result = statement.executeQuery();
 			while (result.next()){
 				b = new Batch(result.getInt("id"), result.getString("name"), result.getInt("profile"), 
-						result.getString("created_by"), result.getDate("created_date"), 
-						result.getString("approved_by"), result.getDate("approved_date"));
+						result.getString("created_by"), result.getTimestamp("created_date"), 
+						result.getString("approved_by"), result.getTimestamp("approved_date"));
 				batches.add(b);
 			}
 		} catch (SQLException e) {
@@ -208,8 +208,8 @@ public class BatchDAO implements IBatchDAO {
 			ResultSet result = p.executeQuery();
 			if(result.next()){
 				returBatch = new Batch(result.getInt("id"), result.getString("name"), result.getInt("profile"),
-						result.getString("created_by"), result.getDate("created_date"), 
-						result.getString("approved_by"), result.getDate("approved_date"));
+						result.getString("created_by"), result.getTimestamp("created_date"), 
+						result.getString("approved_by"), result.getTimestamp("approved_date"));
 
 				query = "SELECT * FROM measurements WHERE batchid=?";
 				p = sqlConnector.getPreparedStatement(query);
@@ -243,14 +243,15 @@ public class BatchDAO implements IBatchDAO {
 		String query = "UPDATE batches SET Approved_By=?, Approved_Date=? WHERE id=?";
 		PreparedStatement statement = sqlConnector.getPreparedStatement(query);
 		
-//		try{
-//			//TODO finish this
-//			statement.setString(1, activeBatch.getApproved_by());
-//			statement.setTimestamp(2, activeBatch.getApproved_date());
-//		}
-//		catch(SQLException e){
-//			
-//		}
+		try{
+			statement.setString(1, activeBatch.getApproved_by());
+			statement.setTimestamp(2, activeBatch.getApproved_date());
+			statement.setInt(3, activeBatch.getBatchID());
+			statement.executeUpdate();
+		}
+		catch(SQLException e){
+			throw new DataBaseException("Failed to update batch - batchDAO.updateBatch(Batch batch) " + e.getMessage());
+		}
 		
 	}
 

@@ -168,7 +168,7 @@ public class NewBatchController implements INewBatchController {
 			try {
 				//Saves batchProfile in DB and creates a batch with the batchProfile ID
 				profileID = mainController.getDatabaseController().saveBatchProfile(bp);
-				Batch b = new Batch(-1, batchString, profileID, mainController.getActiveUser().getUserName(), new Date(), null, null);
+				Batch b = new Batch(-1, batchString, profileID, mainController.getActiveUser().getUserName(), new Timestamp(new Date().getTime()), null, null);
 				System.out.println(b.getCreated_date().getTime());
 				//Saves batch and sets the active batch in batchMeasureController
 				mainController.getDatabaseController().addToDB(b);

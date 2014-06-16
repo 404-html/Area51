@@ -1,9 +1,9 @@
 package javaMeasure;
 
+import java.sql.Timestamp;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import javaMeasure.Measurement.MeasurementType;
 
@@ -16,9 +16,9 @@ public class Batch {
 	private int currentLeakElement = 0; // counter for where to put the next leak measurement.
 
 	private String created_by;
-	private Date created_date;
+	private Timestamp created_date;
 	private String approved_by;
-	private Date approved_date;
+	private Timestamp approved_date;
 
 	public Batch(int batchID, String batchString, int profileID) {
 		super();
@@ -38,7 +38,7 @@ public class Batch {
 	 * @param approved_by
 	 * @param approved_date
 	 */
-	public Batch(int batchID, String batchString, int profileID, String created_by, Date created_date, String approved_by, Date approved_date) {
+	public Batch(int batchID, String batchString, int profileID, String created_by, Timestamp created_date, String approved_by, Timestamp approved_date) {
 		super();
 		setBatchID(batchID);
 		setBatchString(batchString);
@@ -199,7 +199,7 @@ public class Batch {
 	}
 	
 	//used in jsp
-	public String getDateAsString(Date date){
+	public String getDateAsString(Timestamp date){
 		Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		return formatter.format(date);
 	}
@@ -233,11 +233,11 @@ public class Batch {
 		this.created_by = created_by;
 	}
 
-	public Date getCreated_date() {
+	public Timestamp getCreated_date() {
 		return created_date;
 	}
 
-	public void setCreated_date(Date created_date) {
+	public void setCreated_date(Timestamp created_date) {
 		this.created_date = created_date;
 	}
 
@@ -249,11 +249,11 @@ public class Batch {
 		this.approved_by = approved_by;
 	}
 
-	public Date getApproved_date() {
+	public Timestamp getApproved_date() {
 		return approved_date;
 	}
 
-	public void setApproved_date(Date approved_date) {
+	public void setApproved_date(Timestamp approved_date) {
 		this.approved_date = approved_date;
 	}
 

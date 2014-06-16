@@ -176,9 +176,6 @@ public class DataBaseController implements IDatabaseController {
 		batchDAO.updateBatchSettings(settings, profileID);
 		
 	}
-//	public void updateBatchSettings(BatchSetting b) throws DataBaseException{
-//		batchDAO.updateBatchSettings(b);
-//	}
 
 	@Override
 	public boolean canWeRemoveAnotherAdmin() throws DataBaseException {
