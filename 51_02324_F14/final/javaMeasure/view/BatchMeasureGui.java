@@ -1,5 +1,6 @@
 package javaMeasure.view;
 
+import javax.jws.Oneway;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -16,6 +17,8 @@ import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.JTable;
 import javax.swing.event.TableModelEvent;
@@ -35,6 +38,7 @@ import javaMeasure.view.interfaces.IBatchMeasureGui;
 
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
+
 import java.awt.event.ActionListener;
 
 @SuppressWarnings("serial")
@@ -68,10 +72,30 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		this.batchMeasureController = batchMeasureController;
 		setTitle("Logged in as: " + batchMeasureController.getMainController().getActiveUser().getUserName());
 		setResizable(false);
-		setDefaultCloseOperation(this.batchMeasureController.getMainController().closeProgram()); // exit on close return 3, there this method returns 3
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
 
 		setBounds(100, 100, 1040, 650);
+		
+		addWindowListener(new WindowListener()  {
+			@Override
+			public void windowOpened(WindowEvent arg0) {}
+			@Override
+			public void windowIconified(WindowEvent arg0) {}
+			@Override
+			public void windowDeiconified(WindowEvent arg0) {}
+			@Override
+			public void windowDeactivated(WindowEvent arg0) {}
+			@Override
+			public void windowClosed(WindowEvent arg0) {}
+			@Override
+			public void windowActivated(WindowEvent arg0) {}
+			
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				BatchMeasureGui.this.batchMeasureController.getMainController().getcConnector().closeProcess();
+			}
+		});
 
 		JButton btnNewBatch = new JButton("New Batch");
 		btnNewBatch.setActionCommand("newBatch");

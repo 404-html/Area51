@@ -85,13 +85,6 @@ public class MainController implements IMainController{
 		return loginController;
 	}
 	
-	// should probably contain thread for directoryListener too
-		@Override
-		public int closeProgram() {
-			cConnector.closeProcess();
-			return 3; // 3 is equal to JFrame.EXIT_ON_CLOSE
-		}
-	
 //----- Private Method to set the look of the Guis -------	
 
 
@@ -113,7 +106,7 @@ public class MainController implements IMainController{
 
 	@Override
 	public void logOut() {
-		//mainMenuController.showGui(false);
+		cConnector.closeProcess();
 		batchMeasureController.showGui(false);
 		loginController.showGui(true);
 		activeUser= null;

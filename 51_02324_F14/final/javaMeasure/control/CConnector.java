@@ -38,11 +38,9 @@ public class CConnector implements ICConnector
 		CodeSource codeSource = CConnector.class.getProtectionDomain().getCodeSource();
 		String CComponentPath = null;
 		File jarFile = null;
-		String name = null;
 		// finds location of the jar file. to make it possible to have the file anywhere you want to
 		try {
-			jarFile = new File(codeSource.getLocation().toURI().getPath());
-			name = new File(codeSource.getLocation().getPath()).getName(); 
+			jarFile = new File(codeSource.getLocation().toURI().getPath()); 
 			CComponentPath = jarFile.getParentFile().getParentFile().getPath();
 			CComponentPath = CComponentPath + "/C#Code/CDIO_Demo uden mccdaq v4/CDIO_Demo.exe";
 			CComponentPath = CComponentPath.replace("\\", "/");
@@ -72,6 +70,7 @@ public class CConnector implements ICConnector
 	}
 	
 	public void closeProcess(){
+		System.out.println("C# component destroyed");
 		process.destroy();
 	}
 
