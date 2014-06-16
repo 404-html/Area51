@@ -68,7 +68,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		this.batchMeasureController = batchMeasureController;
 		setTitle("Logged in as: " + batchMeasureController.getMainController().getActiveUser().getUserName());
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(this.batchMeasureController.getMainController().closeProgram()); // exit on close return 3, there this method returns 3
 		getContentPane().setLayout(null);
 
 		setBounds(100, 100, 1040, 650);
@@ -316,7 +316,6 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 				logModel.getRowCount();
 				if(logModel.getRowCount() != rowCount){
 				logScroll.getVerticalScrollBar().setValue(logModel.getRowCount() * 16);
-				
 				}
 				rowCount = logModel.getRowCount();	
 			}
@@ -334,19 +333,15 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 			public Component prepareRenderer(
 					TableCellRenderer renderer, int row, int column) {
 				Component c = super.prepareRenderer(renderer, row, column);
-				
-//				System.out.println("row: " + row);
-//				System.out.println("column: " + column);
+
 				if(row == getRowCount()-1){
 					c.setBackground(Color.YELLOW);
 					c.setForeground(Color.BLACK);
 				} else {
 					if(getValueAt(row, 0).toString().equalsIgnoreCase("false")){
-//						batchMeasureController.verifyElement(false, row);
 						c.setBackground(Color.RED);
 						c.setForeground(Color.BLACK);
 					} else{
-//						batchMeasureController.verifyElement(true, row);
 						c.setBackground(Color.WHITE);
 						c.setForeground(Color.BLACK);
 					}

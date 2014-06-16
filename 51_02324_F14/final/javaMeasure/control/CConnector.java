@@ -1,6 +1,7 @@
 package javaMeasure.control;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -9,7 +10,9 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
+import java.net.URISyntaxException;
 import java.net.UnknownHostException;
+import java.security.CodeSource;
 
 import javaMeasure.Measurement;
 import javaMeasure.Measurement.MeasurementType;
@@ -24,6 +27,7 @@ public class CConnector implements ICConnector
 {
 	private Socket socket;
 	private InetAddress IP = null;
+	private Process process;
 	private int networkPort = 4567;
 
 	/**
@@ -31,6 +35,30 @@ public class CConnector implements ICConnector
 	 */
 	public CConnector()
 	{
+		CodeSource codeSource = CConnector.class.getProtectionDomain().getCodeSource();
+		String CComponentPath = null;
+		File jarFile = null;
+		String name = null;
+		// finds location of the jar file. to make it possible to have the file anywhere you want to
+		try {
+			jarFile = new File(codeSource.getLocation().toURI().getPath());
+			name = new File(codeSource.getLocation().getPath()).getName(); 
+			CComponentPath = jarFile.getParentFile().getParentFile().getPath();
+			CComponentPath = CComponentPath + "/C#Code/CDIO_Demo uden mccdaq v4/CDIO_Demo.exe";
+			CComponentPath = CComponentPath.replace("\\", "/");
+			System.out.println("dir: " + CComponentPath);
+		} catch (URISyntaxException e) {
+			System.err.println("could not find jar file location!");
+			e.printStackTrace();
+		}
+		Runtime rt = Runtime.getRuntime() ;     
+		try {
+			process = rt.exec(CComponentPath) ;
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		try
 		{
 			this.IP = InetAddress.getLocalHost();
@@ -41,6 +69,10 @@ public class CConnector implements ICConnector
 		}
 
 		System.out.println("IP in CConnector is: "+this.IP.getHostAddress());
+	}
+	
+	public void closeProcess(){
+		process.destroy();
 	}
 
 
@@ -202,6 +234,10 @@ public class CConnector implements ICConnector
 	public void setPort(int port)
 	{
 		this.networkPort=port;
+	}
+	
+	public static void main(String[] args){
+		CConnector c = new CConnector();
 	}
 
 

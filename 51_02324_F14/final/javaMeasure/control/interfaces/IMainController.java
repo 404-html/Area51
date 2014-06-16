@@ -16,4 +16,5 @@ public interface IMainController {
 	void logOut();
 	IDasyFileReader getDasyController();
 	IBatchMeasureController getBatchMeasureController();
+	int closeProgram();
 }

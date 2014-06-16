@@ -24,5 +24,6 @@ public interface ICConnector {
 	 * @param port The port on the remote system that the C# application runs on.
 	 */
 	void setPort(int port);
+	void closeProcess();
 }
 

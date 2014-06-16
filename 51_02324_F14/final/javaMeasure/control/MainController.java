@@ -85,6 +85,13 @@ public class MainController implements IMainController{
 		return loginController;
 	}
 	
+	// should probably contain thread for directoryListener too
+		@Override
+		public int closeProgram() {
+			cConnector.closeProcess();
+			return 3; // 3 is equal to JFrame.EXIT_ON_CLOSE
+		}
+	
 //----- Private Method to set the look of the Guis -------	
 
 
@@ -94,16 +101,12 @@ public class MainController implements IMainController{
 			UIManager.setLookAndFeel(
 			        UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -116,6 +119,8 @@ public class MainController implements IMainController{
 		activeUser= null;
 		
 	}
+
+	
 
 	
 	
