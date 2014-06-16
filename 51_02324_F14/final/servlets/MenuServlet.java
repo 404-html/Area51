@@ -53,7 +53,13 @@ public class MenuServlet extends HttpServlet {
 			if (request.getParameter("submitForm")!= null) {
 				request.getRequestDispatcher("ReportServlet").forward(request, response);
 			} else {
-				request.getRequestDispatcher("WEB-INF/form.jsp").forward(request, response);
+				if(request.getParameter("edit")!=null){
+					request.getRequestDispatcher("UserChooseServlet").forward(request, response);
+				}
+				else{
+					request.getRequestDispatcher("WEB-INF/menu.jsp").forward(request, response);
+				}
+				
 			}
 		}
 	}

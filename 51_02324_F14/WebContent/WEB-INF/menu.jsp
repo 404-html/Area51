@@ -123,15 +123,20 @@
 				</table>
 
 
-			  <input type="hidden" name="cmd"
-					value="report" /> <input id="submitForm" class="button_text"
+<!-- 			  <input type="hidden" name="cmd" value="report" />  -->
+			  
+				    <input id="submitForm" class="button_text"
 					type="submit" name="submitForm" value="SubmitForm" />
+					
 					<input id="logout" class="button_text" type="submit" name="logout"
-					value="logout" /> </form>
-          <form> <input type="hidden" name="cmd" value="logout"/>
-                    
+					value="logout" /> 
+					<%if(user.isAdmin()){ %>
+					<input id="edit" class="button_text" type="submit" name="edit"
+					value="Edit Users" /> <%} else{ %>
+					  <input type="hidden" name="edit" value="Edit Users" /> 
+					  <%} %>
 					</form>
-			</form>
+					
             <a href="UserChooseServlet">Administrer brugere</a>
 			<div id="footer">By Area51</div>
 
