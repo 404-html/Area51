@@ -15,4 +15,6 @@ public interface IUserDAO {
 	void updateUser(User change) throws DataBaseException;
 	void deleteUser(User user) throws DataBaseException;
 	boolean canWeRemoveAnotherAdmin()throws DataBaseException;
+	ArrayList<User> getActiveUserList() throws DataBaseException;
+	User getActiveUserFromString(String loginString) throws DataBaseException, UserNotFoundException;
 }

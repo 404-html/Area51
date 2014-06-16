@@ -154,4 +154,40 @@ public class UserDAO implements IUserDAO {
 			throw new DataBaseException("SQLException UserDAO - deleteUser(User user): " + e.getMessage());
 		}
 	}
+	@Override
+	public ArrayList<User> getActiveUserList() throws DataBaseException {
+		String query = "SELECT * FROM users WHERE active=1 ORDER BY username";
+		PreparedStatement statement = sqlConnector.getPreparedStatement(query);
+		ArrayList<User> users = new ArrayList<>();		
+		try {
+			ResultSet result = statement.executeQuery();
+			while (result.next()){
+				String userName = result.getString("username");
+				int userID = result.getInt("id");
+				users.add(new User(userName, userID));	
+			}
+		} catch (SQLException e) {
+			throw new DataBaseException("SQLException UserDAO - getActiveUserList(): " + e.getMessage());
+		}			
+		return  users; 
+	}
+	
+	public User getActiveUserFromString(String loginString) throws DataBaseException, UserNotFoundException{
+		String query = "SELECT * FROM users WHERE active=1 and username=?";
+		PreparedStatement statement = sqlConnector.getPreparedStatement(query);
+		ResultSet result = null;
+		//Query DB
+		try {
+			statement.setString(1, loginString);
+			result = statement.executeQuery();
+			if (result.next()){
+				User user = new User(result.getString("username"), result.getInt("id"),result.getString("password"),result.getBoolean("active"),result.getBoolean("admin"));
+				return user;
+			} else {
+				throw new UserNotFoundException();
+			}
+		} catch (SQLException e) {
+			throw new DataBaseException("SQLException UserDAO - getUserFromString(String userString): " + e.getMessage()); 
+		}
+	}
 }
