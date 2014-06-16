@@ -34,10 +34,13 @@ public class UserEditServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		check(request, response);
+	}
+	protected void check(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(((User) request.getSession().getAttribute("user")) != null){
 			if(((User) request.getSession().getAttribute("user")).isActive()){
 				if(((User) request.getSession().getAttribute("user")).isAdmin()){
-					request.getRequestDispatcher("WEB-INF/useredit.jsp").forward(request, response);
+					onPage(request, response);
 				}
 				else{
 					request.getRequestDispatcher("MenuServlet").forward(request, response);
@@ -56,6 +59,9 @@ public class UserEditServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		check(request, response);
+	}
+	protected void onPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//User posts edit
 		System.out.println("UserLogin - Post");
 		String name = request.getParameter("username");

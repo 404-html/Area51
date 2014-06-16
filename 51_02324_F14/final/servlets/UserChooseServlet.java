@@ -32,11 +32,15 @@ public class UserChooseServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+    
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		check(request, response);
+	}
+	protected void check(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(((User) request.getSession().getAttribute("user")) != null){
 			if(((User) request.getSession().getAttribute("user")).isActive()){
 				if(((User) request.getSession().getAttribute("user")).isAdmin()){
-					request.getRequestDispatcher("WEB-INF/userchoose.jsp").forward(request, response);
+					onpage(request, response);
 				}
 				else{
 					request.getRequestDispatcher("MenuServlet").forward(request, response);
@@ -54,7 +58,12 @@ public class UserChooseServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		check(request, response);
+		
+	}
+	protected void onpage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("UserChoose - Post");
 		String chosen = request.getParameter("chosen");
 		System.out.println(chosen);

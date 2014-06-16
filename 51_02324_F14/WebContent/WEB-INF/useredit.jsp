@@ -90,12 +90,12 @@
 				  <span class="buttons">
 				  
 				  <input id="save" class="button_text"
-						type="submit" name="Save" value="save" />
+						type="submit" name="Save" value="Save" />
 
 
                 
 				  <input id="Done" class="button_text"
-						type="submit" name="Done" value="Done" />
+						type="submit" name="Done" value="Cancel" />
 				  </span>
 
 
