@@ -74,7 +74,6 @@ public class NewBatchController implements INewBatchController {
 	public BatchProfile getBatchProfile(String profileName) throws DataBaseException {
 		return mainController.getDatabaseController().getBatchProfile(profileName);
 	}
-	//TODO cleanup and handle exceptions
 	@Override
 	public ArrayList<String> getSavedBatchProfiles(){
 		try{
@@ -111,8 +110,7 @@ public class NewBatchController implements INewBatchController {
 					mainController.getDatabaseController().saveBatchProfile(new BatchProfile(profileName, profile));
 				} catch (DataBaseException e) {
 					// TODO should be more specific. profileAlreadyExistsException
-					// TODO needs further implementation
-					e.printStackTrace();
+					System.err.println("failed to save batchProfile in database - newBatchController");
 				}
 			}
 		}

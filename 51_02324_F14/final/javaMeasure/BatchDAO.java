@@ -138,8 +138,6 @@ public class BatchDAO implements IBatchDAO {
 	 */
 	public Batch getBatch(String batchname) throws DataBaseException {
 		// TODO needs testing   measurements (elementnumber, measurementtype, measurementvalue, timestamp)
-		ArrayList<Measurement> stroke = new ArrayList<>(); // list needed for new way of adding measurements to batch
-		ArrayList<Measurement> leak = new ArrayList<>();	// list needed for new way of adding measurements to batch
 		Batch returBatch;
 
 		//Measurement.MeasurementType type; 
@@ -161,12 +159,12 @@ public class BatchDAO implements IBatchDAO {
 
 				while(result.next()){
 					if(result.getString("measurementtype").equals("LEAK")){
-						leak.add(new Measurement(result.getInt("batchid"), result.getInt("elementnumber"), 
+						returBatch.addMeasurement(new Measurement(result.getInt("batchid"), result.getInt("elementnumber"), 
 								result.getFloat("measurementvalue"), result.getBoolean("verified"), Measurement.MeasurementType.LEAK, 
 								result.getLong("timestamp")));						
 					}
 					else if (result.getString("measurementtype").equals("STROKE")){
-						stroke.add(new Measurement(result.getInt("batchid"), result.getInt("elementnumber"), 
+						returBatch.addMeasurement(new Measurement(result.getInt("batchid"), result.getInt("elementnumber"), 
 								result.getFloat("measurementvalue"), result.getBoolean("verified"), Measurement.MeasurementType.STROKE, 
 								result.getLong("timestamp")));
 					}
@@ -175,7 +173,6 @@ public class BatchDAO implements IBatchDAO {
 			else {
 				return null; // if no Batch is found in database with selected batchname
 			}
-			returBatch.setMeasurementList(stroke, leak);
 			return returBatch;
 
 		} catch (SQLException e) {

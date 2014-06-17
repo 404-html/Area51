@@ -54,8 +54,7 @@ public class CConnector implements ICConnector
 			process = rt.exec(CComponentPath) ;
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("failed to execute C# process");
 		}
 		try
 		{
@@ -235,8 +234,9 @@ public class CConnector implements ICConnector
 		this.networkPort=port;
 	}
 	
+	// testing if C# process starts correctly
 	public static void main(String[] args){
-		CConnector c = new CConnector();
+		new CConnector();
 	}
 
 

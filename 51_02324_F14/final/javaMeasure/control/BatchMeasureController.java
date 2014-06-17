@@ -124,7 +124,8 @@ public class BatchMeasureController implements IBatchMeasureController {
 				batchGUI.updateLog("Check your connection to the DAQ");
 			}
 			// gui is updated as the last thing, but only if there is an active batch
-			batchGUI.updateTable(activeBatch);
+			//			batchGUI.updateTable(activeBatch);
+			updateTable();
 		} else batchGUI.showPopupMessage("You have to create or load batch before making measurements", "No active batch");
 	}
 
@@ -180,7 +181,8 @@ public class BatchMeasureController implements IBatchMeasureController {
 			try {
 				// measurement is deleted from batch and now trying to delete from database
 				mainController.getDatabaseController().deleteMeasurement(activeBatch.getBatchID(), activeBatch.getCurrentStrokeElement(), MeasurementType.STROKE);
-				batchGUI.updateTable(activeBatch);
+				//				batchGUI.updateTable(activeBatch);
+				updateTable();
 				batchGUI.updateLog("last stroke measurement deleted");
 			} catch (DataBaseException e) {
 				System.err.println(e.getMessage());
@@ -198,7 +200,8 @@ public class BatchMeasureController implements IBatchMeasureController {
 		if(activeBatch != null && activeBatch.deleteLastLeakMeasurement()){
 			try {
 				mainController.getDatabaseController().deleteMeasurement(activeBatch.getBatchID(), activeBatch.getCurrentLeakElement(), MeasurementType.LEAK);
-				batchGUI.updateTable(activeBatch);
+				//				batchGUI.updateTable(activeBatch);
+				updateTable();
 				batchGUI.updateLog("last leak measurement deleted");
 			} catch (DataBaseException e) {
 				System.err.println(e.getMessage());
@@ -243,7 +246,8 @@ public class BatchMeasureController implements IBatchMeasureController {
 			} else
 			{
 				mainController.getDatabaseController().addToDB(measurement);
-				batchGUI.updateTable(activeBatch);
+				updateTable();
+				//				batchGUI.updateTable(activeBatch);
 			}
 		} catch (DataBaseException e) {
 			System.err.println(e.getMessage());
@@ -273,7 +277,11 @@ public class BatchMeasureController implements IBatchMeasureController {
 			batchApproved(false);
 		else batchApproved(true);
 
-		batchGUI.updateTable(this.activeBatch);
+		//		batchGUI.updateTable(this.activeBatch);
+
+
+		updateTable();
+		System.out.println("testing new list for JTable");
 	}
 
 	private void batchApproved(boolean approved) {
@@ -306,6 +314,49 @@ public class BatchMeasureController implements IBatchMeasureController {
 			System.err.println(e.getMessage());
 			batchGUI.updateLog("failed to update measurements");
 		}	
+	}
+
+	public void updateTable(){
+		if(activeBatch == null) return;
+
+		ArrayList<Measurement[]> measurementList = activeBatch.getNewList();
+		System.out.println("measurementList: " + measurementList);
+		//		ArrayList<String[]> newList = new ArrayList<>();
+		String[][] newList = new String[measurementList.size()][4];
+		System.out.println("newList: " + newList);
+
+		for(int i = 0; i < measurementList.size(); i++){
+
+			try{
+				System.out.println(measurementList.get(i)[0].getVerified());
+				newList[i][0] = String.valueOf(measurementList.get(i)[0].getVerified());
+				System.out.println(measurementList.get(i)[0].getElementNo());
+				newList[i][1] = String.valueOf(measurementList.get(i)[0].getElementNo());
+				System.out.println(measurementList.get(i)[0].getMeasureValue());
+				newList[i][2] = String.valueOf(measurementList.get(i)[0].getMeasureValue());
+//				System.out.println(measurementList.get(i)[1].getMeasureValue());
+				if(measurementList.get(i)[1] != null){
+				newList[i][3] = String.valueOf(measurementList.get(i)[1].getMeasureValue());
+				}
+			} catch (NullPointerException e){
+				System.out.println(measurementList.get(i)[1].getVerified());
+				newList[i][0] = String.valueOf(measurementList.get(i)[1].getVerified());
+				System.out.println(measurementList.get(i)[1].getElementNo());
+				newList[i][1] = String.valueOf(measurementList.get(i)[1].getElementNo());
+				System.out.println(measurementList.get(i)[1].getMeasureValue());
+				newList[i][3] = String.valueOf(measurementList.get(i)[1].getMeasureValue());
+			}
+
+		}
+
+
+
+		batchGUI.updateTable(newList);
+
+
+
+
+
 	}
 
 
