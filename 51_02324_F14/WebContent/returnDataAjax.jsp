@@ -1,4 +1,7 @@
 <%@page import="java.util.ArrayList"%>
+<%@page import="java.util.Date"%>
+<%@page import="java.sql.Timestamp"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="javaMeasure.control.interfaces.IDatabaseController.DataBaseException"%>
 <%@page import="javaMeasure.control.MainController"%>
 <%@page import="javaMeasure.control.DataBaseController"%>
@@ -55,14 +58,14 @@ String username = (String) session.getAttribute("username");
 		//created by
 		returnString = returnString + "\t<td id=\"" + batch.getBatchString() + "\">" + created_by	+ "</td>\n"; 
 		//created date
-		returnString = returnString + "\t<td id=\"" + batch.getBatchString() + "\">&nbsp</td>\n"; 
-		//returnString = returnString + "\t<td>" + batch.getDateAsString(batch.getCreated_date()) + "</td>\n"; 
+		//returnString = returnString + "\t<td id=\"" + batch.getBatchString() + "\">&nbsp</td>\n"; 
+		returnString = returnString + "\t<td>" + batch.getDateAsString(batch.getCreated_date()) + "</td>\n"; 
 		//approved by
 		
 		returnString = returnString + "\t<td id=\"" + batch.getBatchString() + "\">" + approved_by + "</td>\n";  	
 		//approved date
-		returnString = returnString + "\t<td id=\"" + batch.getBatchString() + "\">&nbsp</td>\n"; 
-		//returnString = returnString + "\t<td>" + batch.getDateAsString(batch.getApproved_date()) + "</td>\n";
+		//returnString = returnString + "\t<td id=\"" + batch.getBatchString() + "\">&nbsp</td>\n"; 
+		returnString = returnString + "\t<td>" + batch.getDateAsString(batch.getApproved_date()) + "</td>\n";
 		
 		//end table row
 		returnString = returnString + "</tr>";
@@ -73,12 +76,38 @@ String username = (String) session.getAttribute("username");
 %>
 
 <%
-String input = request.getParameter("input");
-BatchDAO b = new BatchDAO(new SQLConnector());
+	String input = request.getParameter("input");
+	String startDate = request.getParameter("startDate");
+	String endDate = request.getParameter("endDate");
+	String fieldName = request.getParameter("fieldName");
+	
+	Timestamp startDateTS = null;
+	Timestamp endDateTS = null;
+	BatchDAO b = new BatchDAO(new SQLConnector());
 
-
-
-//out.println("test");
+	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//hh:mm:ss.SSS
+	//tester om datoer er indtastet korrekt
+	System.out.println("start:" + startDate);
+	try{
+		Date parsedDate = dateFormat.parse(startDate);
+		startDateTS = new Timestamp(parsedDate.getTime());
+	}catch(Exception e){//hvis dato ikke var korrekt, timestamp = null
+		startDateTS = null;
+	}
+	
+	try{
+		Date parsedDate = dateFormat.parse(endDate);
+		endDateTS = new Timestamp(parsedDate.getTime());
+	}catch(Exception e){//hvis dato ikke var korrekt, timestamp = null
+		endDateTS = null;
+	}
+	
+	if(!(fieldName == "created_date" || fieldName == "approved_date")){ 
+		fieldName = null;
+	}
+	
+	//print table header
 	out.println("<div  class=\"tableContainer\">");
 	out.println("	<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" class=\"scrollTable\">");
 	out.println("		<thead class=\"fixedHeader\">");
@@ -92,28 +121,15 @@ BatchDAO b = new BatchDAO(new SQLConnector());
 	out.println("		</thead>");
 	out.println("		<tbody class=\"scrollContent\">");
 
-	for(Batch b2 : b.getBatches(input)){
+	//print table rows
+
+	
+	for(Batch b2 : b.getBatches(input, fieldName,startDateTS,endDateTS)){
 		out.println(createTableRow(b2));
 	}	
 	
+	//end table
 	out.println("		</tbody>");
-	//out.println("	<th class=\"None\">&nbsp&nbspBatch navn&nbsp&nbsp</th>");
-	//out.println("	<th class=\"None\">&nbsp&nbspOprettet af&nbsp&nbsp</th>");
-	//out.println("	<th class=\"None\">&nbsp&nbspOprettet dato&nbsp&nbsp</th>");
-	//out.println("	<th class=\"None\">&nbsp&nbspGodkendt af&nbsp&nbsp</th>");
-	//out.println("	<th class=\"None\">&nbsp&nbspGodkendt dato&nbsp&nbsp</th>");
-
-
-	//out.println("<tr>");
-// 	out.println("<tr class=\"returnRow\">");
-// 	out.print(createTableRow(5,1));
-// 	out.println("</tr>");
-// 	out.println("<tr class=\"returnRow\">");
-// 	out.print(createTableRow(5,2));
-// 	out.println("</tr>");
-// 	out.println("<tr class=\"returnRow\">");
-// 	out.print(createTableRow(5,3));
-// 	out.println("</tr>");
  	out.println("	</table>");
  	out.println("</div>");
 %>

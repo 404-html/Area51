@@ -26,17 +26,10 @@
 <script>
 	//AJAX
 	$(document).on('keyup', '#batchname', function() {
-		console.log("tast");
+
 		//henter siden returnDataAjax 
 		if($("#batchname").val().length>=2){
-			console.log("get");
-			$.get("returnDataAjax.jsp?input="+$("#batchname").val(),function(data,status){
-			    if(status = "success"){
-			    	//indsæt de hentede data i div element
-			    	$("#return_data").html(data);
-			    }
-		
-			});
+			search();
 		}
 		
 	});
@@ -48,7 +41,45 @@
 
 	});
 	
+	function getFormString(){
+		return "returnDataAjax.jsp?input="+$("#batchname").val()+ "&fieldName="+ "&startDate="+getFormDate(true)+"&endDate="+getFormDate(false);
+	}
+	
+	function getFieldName(){
+		return $('input[name="rdoCreatedApproved"]:checked').val();
+		//document.getElementByName('rdoCreatedApproved');
+	}
+	
+	function search(){
+		$.get(getFormString(),function(data,status){
+		    if(status = "success"){
+		    	//indsæt de hentede data i div element
+		    	$("#return_data").html(data);
+		    }
+		});
+
+	}
+	
 	//Date functions for input fields
+	function getFormDate(getStartDate){
+		if(getStartDate){
+			var dd = document.getElementById('element_1_2').value;
+			var mm = document.getElementById('element_1_1').value;
+			var yyyy = document.getElementById('element_1_3').value;
+		}
+		else{
+			var dd = document.getElementById('element_2_2').value;
+			var mm = document.getElementById('element_2_1').value;
+			var yyyy = document.getElementById('element_2_3').value;
+		}
+		if(dd && mm && yyyy){
+			return yyyy + "-" + mm + "-" + dd;
+		}
+		else{
+			return "";
+		}
+	}
+	
 	function fillToday(){
 		var today = new Date();
 		var dd = today.getDate();
@@ -62,7 +93,7 @@
 		var today = new Date();
 		console.log(today.getDay());
 		if(today.getDay() == 1){
-			today.setDate(today.getDate() - 3);
+			today.setDate(today.getDate() - 3); //if monday, get last friday
 		}
 		else{
 			today.setDate(today.getDate() - 1);
@@ -80,8 +111,8 @@
 		var startday = new Date();
 		var endday = new Date();
 
-		startday.setDate(today.getDate() - today.getDay() -6);
-		endday.setDate(startday.getDate()+4);
+		startday.setDate(today.getDate() - today.getDay() -6); //get last monday
+		endday.setDate(startday.getDate()+4); //get last friday
 		
 		fillElement(startday, endday);
 	};
@@ -90,7 +121,7 @@
 		var today = new Date();
 		var startday = new Date();
 
-		startday.setDate(today.getDate() - today.getDay()+1);
+		startday.setDate(today.getDate() - today.getDay()+1); //get monday in this week
 		
 		fillElement(startday, today);
 	};
@@ -129,63 +160,76 @@
 					<tr>
 						<td>
 							<ul>
-								<li id="li_3" name="li_3"><label class="description"
-									for="batchname"> <% //Checks if Batch was found
-											if (request.getParameter("fail") != null) out.print("Batch navn ikke genkendt! -");
-										%> Indtast Batch navn
-								</label>
+								<li id="li_3" name="li_3">
+									<label class="description" for="batchname"> 
+									<% //Checks if Batch was found
+										if (request.getParameter("fail") != null) out.print("Batch navn ikke genkendt! -");
+									%> Indtast Batch navn
+									</label>
 									<div>
-										<input id="batchname" name="batchname"
-											class="element text medium" type="text" maxlength="255"
+										<input id="batchname" name="batchname" class="element text medium" type="text" maxlength="255"
 											list="batches" autocomplete="on" value="" />
-										<datalist id="batches"> <% //TODO replace with AJAX call
- 	ArrayList<String> batchNames = ((DataBaseController) request.getSession().getAttribute("database")).getBatchNames();
+										<datalist id="batches"> 
+										<% //TODO replace with AJAX call
+ 											ArrayList<String> batchNames = ((DataBaseController) request.getSession().getAttribute("database")).getBatchNames();
 
- 						for (String batchName : batchNames){
- %>
-										<option>
-											<%=batchName%></option>
+ 											for (String batchName : batchNames){
+ 										%>
+											<option>
+												<%=batchName%>
+											</option>
 										<%
 											}
-										%> </datalist>
+										%> 
+										</datalist>
 									</div>
-									</li>
-								<li id="li_1"><label class="description" for="element_1">Start
-										dato </label> <span> <input id="element_1_2" name="element_1_2"
-										class="element text" size="2" maxlength="2" value=""
-										type="text"> / <label for="element_1_2">DD</label>
-								</span> <span> <input id="element_1_1" name="element_1_1"
-										class="element text" size="2" maxlength="2" value=""
-										type="text"> / <label for="element_1_1">MM</label>
-								</span> <span> <input id="element_1_3" name="element_1_3"
-										class="element text" size="4" maxlength="4" value=""
-										type="text"> <label for="element_1_3">YYYY</label>
-								</span> <span id="calendar_1"> <img id="cal_img_1"
-										class="datepicker" src="calendar.gif" alt="Pick a date." />
-								</span> <script type="text/javascript">
-									Calendar.setup({
-										inputField : "element_1_3",
-										baseField : "element_1",
-										displayArea : "calendar_1",
-										button : "cal_img_1",
-										ifFormat : "%B %e, %Y",
-										onSelect : selectDate
-									});
-								</script></li>
-								<li id="li_2" name="li_2"><label class="description"
-									for="element_2">Slut dato </label> <span> <input
-										id="element_2_2" name="element_2_2" class="element text"
-										size="2" maxlength="2" value="" type="text"> / <label
-										for="element_2_2">DD</label>
-								</span> <span> <input id="element_2_1" name="element_2_1"
-										class="element text" size="2" maxlength="2" value=""
-										type="text"> / <label for="element_2_1">MM</label>
-								</span> <span> <input id="element_2_3" name="element_2_3"
-										class="element text" size="4" maxlength="4" value=""
-										type="text"> <label for="element_2_3">YYYY</label>
-								</span> <span id="calendar_2"> <img id="cal_img_2"
-										class="datepicker" src="calendar.gif" alt="Pick a date.">
-								</span> <script type="text/javascript">
+								</li>
+								<li>
+									<label class="description" for="rdoCreatedApproved">Dato:</label>
+										<span class="radio2">
+											<input id="rdoCreated" name="rdoCreatedApproved" type="radio" value="created_date" checked>Oprettet<input id="rdoApproved" name="rdoCreatedApproved" type="radio" value="approved_date">Godkendt
+										</span>
+								</li>
+								<li id="li_1">
+									<label class="description" for="element_1">Start dato</label> 
+									<span> 
+										<input id="element_1_2" name="element_1_2" class="element text" size="2" maxlength="2" value="" type="text"> / <label for="element_1_2">DD</label>
+									</span> 
+									<span>
+										<input id="element_1_1" name="element_1_1" class="element text" size="2" maxlength="2" value="" type="text"> / <label for="element_1_1">MM</label>
+									</span>
+									<span>
+										<input id="element_1_3" name="element_1_3" class="element text" size="4" maxlength="4" value="" type="text"> <label for="element_1_3">YYYY</label>
+									</span>
+									<span id="calendar_1">
+										<img id="cal_img_1" class="datepicker" src="calendar.gif" alt="Pick a date." />
+									</span> 
+									<script type="text/javascript">
+										Calendar.setup({
+											inputField : "element_1_3",
+											baseField : "element_1",
+											displayArea : "calendar_1",
+											button : "cal_img_1",
+											ifFormat : "%B %e, %Y",
+											onSelect : selectDate
+										});
+									</script>
+								</li>
+								<li id="li_2" name="li_2">
+									<label class="description" for="element_2">Slut dato </label> 
+									<span>
+										<input id="element_2_2" name="element_2_2" class="element text" size="2" maxlength="2" value="" type="text"> / <label for="element_2_2">DD</label>
+									</span> 
+									<span> 
+										<input id="element_2_1" name="element_2_1" class="element text" size="2" maxlength="2" value=""	type="text"> / <label for="element_2_1">MM</label>
+									</span>
+									<span>
+										<input id="element_2_3" name="element_2_3" class="element text" size="4" maxlength="4" value=""	type="text"> <label for="element_2_3">YYYY</label>
+									</span>
+									<span id="calendar_2"> 
+										<img id="cal_img_2"	class="datepicker" src="calendar.gif" alt="Pick a date.">
+									</span>
+									<script type="text/javascript">
 									Calendar.setup({
 										inputField : "element_2_3",
 										baseField : "element_2",
@@ -194,11 +238,14 @@
 										ifFormat : "%B %e, %Y",
 										onSelect : selectDate
 									});
-								</script></li>
-								<button type="button" onClick="fillToday()">I dag</button>
-								<button type="button" onClick="fillThisWeek()">Denne uge</button>
-								<button type="button" onClick="fillYesterday()">I går</button>
-								<button type="button" onClick="fillLastWeek()">Sidste uge</button>
+								</script>
+								</li>
+								<li>
+									<button class="text" type="button" onClick="fillToday()">I dag</button>
+									<button class="text" type="button" onClick="fillThisWeek()">Denne uge</button>
+									<button class="text" type="button" onClick="fillYesterday()">I går</button>
+									<button class="text" type="button" onClick="fillLastWeek()">Sidste uge</button>
+								</li>
 							</ul>
 						</td>
 						<td width="50%" id="return_data">
@@ -226,14 +273,11 @@
 
 <!-- 			  <input type="hidden" name="cmd" value="report" />  -->
 			  
-				    <input id="submitForm" class="button_text"
-					type="submit" name="submitForm" value="SubmitForm" />
+				    <button id="btnSearch" class="text" type="button" name="btnSearch" value="Søg" onClick="search()">Søg</button>
 					
-					<input id="logout" class="button_text" type="submit" name="logout"
-					value="logout" /> 
+					<input id="logout" class="button_text" type="submit" name="logout" value="logout" /> 
 					
-					<input id="edit" class="button_text" type="submit" name="edit"
-					value="Edit Users" /> 
+					<input id="edit" class="button_text" type="submit" name="edit" value="Edit Users" /> 
 					</form>
 			<div id="footer">By Area51</div>
 

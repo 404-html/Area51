@@ -212,8 +212,13 @@ public class Batch {
 	
 	//used in jsp
 	public String getDateAsString(Timestamp date){
-		Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		return formatter.format(date);
+		//Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		//return formatter.format(date);
+		try{
+			return new SimpleDateFormat("yyyy-MM-dd HH:mm").format(date);}
+		catch(Exception e){
+			return "";
+		}
 	}
 
 	public int getCurrentLeakElement(){
