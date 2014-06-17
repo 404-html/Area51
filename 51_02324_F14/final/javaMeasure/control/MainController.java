@@ -106,7 +106,6 @@ public class MainController implements IMainController{
 
 	@Override
 	public void logOut() {
-		cConnector.closeProcess();
 		batchMeasureController.showGui(false);
 		loginController.showGui(true);
 		activeUser= null;

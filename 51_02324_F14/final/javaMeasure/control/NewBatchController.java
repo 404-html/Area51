@@ -80,6 +80,7 @@ public class NewBatchController implements INewBatchController {
 		try{
 			return mainController.getDatabaseController().getSavedBatchProfilesNames();
 		} catch (DataBaseException dbe){
+			System.out.println("failed to get batch profilenames in newBatchController: " + dbe.getMessage());
 			return null;
 		}
 	}

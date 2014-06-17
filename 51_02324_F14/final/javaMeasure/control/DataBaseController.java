@@ -166,8 +166,6 @@ public class DataBaseController implements IDatabaseController {
 	@Override
 	public void deleteBatchSettings(Batch batch) throws DataBaseException {
 		 batchDAO.deleteBatchSettings(batch);
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
