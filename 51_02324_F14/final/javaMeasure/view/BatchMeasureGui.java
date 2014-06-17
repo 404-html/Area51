@@ -29,9 +29,7 @@ import javax.swing.table.TableCellRenderer;
 import java.io.File;
 import java.util.ArrayList;
 
-import javaMeasure.Batch;
 import javaMeasure.BatchSetting;
-import javaMeasure.Measurement;
 import javaMeasure.PropertyHelper;
 import javaMeasure.control.interfaces.IBatchMeasureController;
 import javaMeasure.view.interfaces.IBatchMeasureGui;
@@ -269,7 +267,6 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 				text.setText("-");
 				getContentPane().add(text);
 				profileSettings.add(text);
-				System.out.println("normal value: " + i);
 			}
 		}
 
@@ -282,7 +279,6 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 				text.setText("-");
 				getContentPane().add(text);
 				profileSettings.add(text);
-				System.out.println("tolerance: " + (i));
 			}	
 		}
 
@@ -293,7 +289,6 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 			text.setText("-");
 			getContentPane().add(text);
 			profileSettings.add(text);
-			System.out.println("inspection level: " + (i));
 		}
 
 		// text fields for checkboxes has to be last, because the checkboxes are added last to the settings array 
@@ -377,6 +372,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 			@SuppressWarnings({ "unchecked", "rawtypes" })
 			public Class getColumnClass(int column) {
 				switch (column) {
+				
 				case 0:
 					return Boolean.class;
 				case 1:
@@ -386,7 +382,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 				case 3:
 					return String.class;
 				default:
-					return Boolean.class;
+					return String.class;
 				}
 			}
 
@@ -435,10 +431,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 				// column 0 is where checkboxes are
 				if(table.columnAtPoint(e.getPoint()) == 0){
 					int row = table.rowAtPoint(e.getPoint());
-					System.out.println("table data verified: " + tableData[row][0]);
-
 					boolean verified = (boolean) table.getValueAt(row, 0);
-					System.out.println("verified: " + verified);
 					batchMeasureController.updateMeasurements(row, verified);
 				}
 			}
@@ -450,7 +443,6 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		for(int i = 0; i < profileSettings.size(); i++){
 			JLabel l = (JLabel) profileSettings.get(i);
 			String value = settings.get(i).getValue();
-			System.out.println("update value: " + value);
 			if(value.equalsIgnoreCase("")){
 				l.setText("-"); // only for appearences to show that nothing is inserted
 			}else{
@@ -468,76 +460,30 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 
 		log.updateUI();
 		logModel.fireTableDataChanged();
-		System.out.println("log scroll max 1 : " + logScroll.getVerticalScrollBar().getMaximum());
 		logScroll.getVerticalScrollBar().setValue(logScroll.getVerticalScrollBar().getMaximum());
-		System.out.println("log scroll max 2 : " + logScroll.getVerticalScrollBar().getMaximum());
-		System.out.println("log row count: " + logModel.getRowCount());
-	}
 
-	// not used yet, but propably will be
-	public void updateTable(ArrayList<ArrayList<String>> data) {
-		updateTable(arrayListToArray(data));
-	}
-
-	public void updateTable(Batch batch){
-		ArrayList<Object[]> list = batch.getMeasurementsList();
-		Object[][] updatedList = new Object[list.size()][4];
-		for(int i = 0; i < list.size(); i++){
-			updatedList[i][0] = list.get(i)[0];
-			updatedList[i][1] = list.get(i)[1];
-			updatedList[i][2] = list.get(i)[2];
-			updatedList[i][3] = list.get(i)[3];
-		}
-		updateTable(updatedList);
 	}
 
 	// updates whole table
-	public void updateTable(Object[][] data){
-		this.tableData = data;
+	public void updateTable(String[][] data){
 		Object[][] list = new Object[data.length][COLUMNS_LENGTH];
-		for(int i = 0; i < data.length; i++)
-		{
-			try{
-				list[i][0] = data[i][0];
-				list[i][1] = data[i][1];
-
-				Measurement m = (Measurement) data[i][2];
-				if(m != null){
-					list[i][2] = m.getMeasureValue();
-				}
-				m = (Measurement) data[i][3];
-				if(m != null){
-					list[i][3] = m.getMeasureValue();
-				}
-			} catch(Exception e){
-				System.out.println("out of bounds when updating table");
-				//					list[i][j] = null;
+		for(int i = 0; i < data.length; i++){
+			for(int j = 0; j < COLUMNS_LENGTH; j++){
+				if(j == 0)
+				list[i][j] = Boolean.parseBoolean(data[i][j]);
+				else list[i][j] = data[i][j];
 			}
-
 		}
+		this.tableData = list;
+
 		table.setGridColor(Color.BLUE); // just for fun
+		
 		model.setDataVector(list, columnNames);
 		model.fireTableDataChanged(); // updates table
 		model.getColumnClass(0).cast(Boolean.class); // not sure about the effect of this one
 		scrollTable.getVerticalScrollBar().setValue(scrollTable.getVerticalScrollBar().getMaximum());
 
 
-	}
-
-
-	// converter so it is possibly to add rows to the jtable with arraylist
-	private Object[][] arrayListToArray(ArrayList<ArrayList<String>> list){
-		Object[][] data = new Object[list.size()][COLUMNS_LENGTH];
-		if(list.size() > 2)
-			for(int i = 0; i < list.size(); i++)
-			{
-				data[i][0] = list.get(i).get(0);
-				for(int j = 1; j < COLUMNS_LENGTH; j++)
-				{
-					data[i][j] =	list.get(i).get(j);
-				}
-			}
-		return data;
 	}
 
 	@Override

@@ -3,7 +3,9 @@ package javaMeasure;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javaMeasure.control.interfaces.ISQLConnector;
 import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
@@ -20,7 +22,7 @@ public class BatchDAO implements IBatchDAO {
 	 */
 	public ArrayList<Batch> getBatches() throws DataBaseException {
 		//returns all batches with "" in name - In effect All batches
-		return getBatches(null);
+		return getBatches(null,null,null,null);
 	}
 
 	/**
@@ -29,20 +31,34 @@ public class BatchDAO implements IBatchDAO {
 	 * @return Collection of batches
 	 * @throws DataBaseException
 	 */
-	public ArrayList<Batch> getBatches(String partialBatchName) throws DataBaseException {
+	public ArrayList<Batch> getBatches(String partialBatchName, String fieldName, Timestamp startDate, Timestamp endDate) throws DataBaseException {
 		//TODO needs testing AND COMMENTING!!!
 		ArrayList<Batch> batches = new ArrayList<Batch>();
-		String query = "SELECT * FROM batches";
-		if(partialBatchName != null){
-			query = query + " WHERE UPPER(name) LIKE UPPER(?)";
-		} 
+		String query = "SELECT * FROM batches WHERE UPPER(name) LIKE UPPER(?) AND ";
+		
+		if(fieldName==null){
+			fieldName="created_date";
+		}
+		
+		query = query + fieldName +">=(?) AND ";
+		query = query + "(" + fieldName + (fieldName=="Approved_Date" && endDate==null ?"<=(?) OR Approved_Date IS NULL)" :"<=(?)) ");
+		
 		PreparedStatement statement = sqlConnector.getPreparedStatement(query);
 		ResultSet result = null;
 		Batch b;
 		try {
-			if(partialBatchName != null){
-				statement.setString(1, "%" + partialBatchName + "%");
+			if(partialBatchName == null){
+				partialBatchName = "";
 			}
+			statement.setString(1, "%" + partialBatchName + "%");
+			statement.setTimestamp(2, startDate==null? new Timestamp(0): startDate);
+			
+			//opretter nyt date objekt med dags dato
+			java.util.Date date= new java.util.Date();
+			//hvis enddate = null, indsæt dags dato
+			statement.setTimestamp(3, endDate==null? new Timestamp(date.getTime()): endDate);
+			
+			System.out.println(statement.toString());
 			result = statement.executeQuery();
 			while (result.next()){
 				b = new Batch(result.getInt("id"), result.getString("name"), result.getInt("profile"), 
@@ -53,6 +69,7 @@ public class BatchDAO implements IBatchDAO {
 		} catch (SQLException e) {
 			throw new DataBaseException("SQLException BatchDAO - getBatches(String partialBatchName): " + e.getMessage());
 		}
+
 
 		return batches;
 	}
@@ -138,8 +155,6 @@ public class BatchDAO implements IBatchDAO {
 	 */
 	public Batch getBatch(String batchname) throws DataBaseException {
 		// TODO needs testing   measurements (elementnumber, measurementtype, measurementvalue, timestamp)
-		ArrayList<Measurement> stroke = new ArrayList<>(); // list needed for new way of adding measurements to batch
-		ArrayList<Measurement> leak = new ArrayList<>();	// list needed for new way of adding measurements to batch
 		Batch returBatch;
 
 		//Measurement.MeasurementType type; 
@@ -161,12 +176,12 @@ public class BatchDAO implements IBatchDAO {
 
 				while(result.next()){
 					if(result.getString("measurementtype").equals("LEAK")){
-						leak.add(new Measurement(result.getInt("batchid"), result.getInt("elementnumber"), 
+						returBatch.addMeasurement(new Measurement(result.getInt("batchid"), result.getInt("elementnumber"), 
 								result.getFloat("measurementvalue"), result.getBoolean("verified"), Measurement.MeasurementType.LEAK, 
 								result.getLong("timestamp")));						
 					}
 					else if (result.getString("measurementtype").equals("STROKE")){
-						stroke.add(new Measurement(result.getInt("batchid"), result.getInt("elementnumber"), 
+						returBatch.addMeasurement(new Measurement(result.getInt("batchid"), result.getInt("elementnumber"), 
 								result.getFloat("measurementvalue"), result.getBoolean("verified"), Measurement.MeasurementType.STROKE, 
 								result.getLong("timestamp")));
 					}
@@ -175,7 +190,6 @@ public class BatchDAO implements IBatchDAO {
 			else {
 				return null; // if no Batch is found in database with selected batchname
 			}
-			returBatch.setMeasurementList(stroke, leak);
 			return returBatch;
 
 		} catch (SQLException e) {
