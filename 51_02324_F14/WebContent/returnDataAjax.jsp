@@ -83,7 +83,8 @@ String username = (String) session.getAttribute("username");
 	
 	Timestamp startDateTS = null;
 	Timestamp endDateTS = null;
-	BatchDAO b = new BatchDAO(new SQLConnector());
+	//BatchDAO b = new BatchDAO(new SQLConnector());
+	DataBaseController dbctrl = (DataBaseController) request.getSession().getAttribute("database");
 
 	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 //hh:mm:ss.SSS
@@ -123,7 +124,7 @@ String username = (String) session.getAttribute("username");
 	//print table rows
 
 	
-	for(Batch b2 : b.getBatches(input, fieldName,startDateTS,endDateTS)){
+	for(Batch b2 : dbctrl.getBatches(input, fieldName,startDateTS,endDateTS)){
 		out.println(createTableRow(b2));
 	}	
 	
