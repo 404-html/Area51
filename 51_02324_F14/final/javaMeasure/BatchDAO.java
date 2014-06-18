@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Calendar;
 
 import javaMeasure.control.interfaces.ISQLConnector;
 import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
@@ -36,12 +37,14 @@ public class BatchDAO implements IBatchDAO {
 		ArrayList<Batch> batches = new ArrayList<Batch>();
 		String query = "SELECT * FROM batches WHERE UPPER(name) LIKE UPPER(?) AND ";
 		
+		System.out.println("field:" + fieldName);
+		
 		if(fieldName==null){
 			fieldName="created_date";
 		}
 		
 		query = query + fieldName +">=(?) AND ";
-		query = query + "(" + fieldName + (fieldName=="Approved_Date" && endDate==null ?"<=(?) OR Approved_Date IS NULL)" :"<=(?)) ");
+		query = query + "(" + fieldName + (fieldName=="approved_date" && endDate==null ?"<=(?) OR Approved_Date IS NULL)" :"<=(?)) ");
 		
 		PreparedStatement statement = sqlConnector.getPreparedStatement(query);
 		ResultSet result = null;
@@ -55,8 +58,8 @@ public class BatchDAO implements IBatchDAO {
 			
 			//opretter nyt date objekt med dags dato
 			java.util.Date date= new java.util.Date();
-			//hvis enddate = null, indsæt dags dato
-			statement.setTimestamp(3, endDate==null? new Timestamp(date.getTime()): endDate);
+			//hvis enddate = null, indsæt dags dato. Ellers find timestamp på endTime og læg 23:59:59 til (ellers er enddate tidspunkt 00:00:00) 
+			statement.setTimestamp(3, endDate==null? new Timestamp(date.getTime()): new Timestamp(endDate.getTime() + 60*60*24*1000-1));
 			
 			System.out.println(statement.toString());
 			result = statement.executeQuery();
