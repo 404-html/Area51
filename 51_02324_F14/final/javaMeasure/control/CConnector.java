@@ -16,6 +16,7 @@ import java.security.CodeSource;
 
 import javaMeasure.Measurement;
 import javaMeasure.Measurement.MeasurementType;
+import javaMeasure.PropertyHelper;
 import javaMeasure.control.interfaces.ICConnector;
 
 /**
@@ -35,28 +36,28 @@ public class CConnector implements ICConnector
 	 */
 	public CConnector()
 	{
-		CodeSource codeSource = CConnector.class.getProtectionDomain().getCodeSource();
-		String CComponentPath = null;
-		File jarFile = null;
-		// finds location of the jar file. to make it possible to have the file anywhere you want to
-		try {
-			jarFile = new File(codeSource.getLocation().toURI().getPath()); 
-			CComponentPath = jarFile.getParentFile().getParentFile().getPath();
-			CComponentPath = CComponentPath + "/C#Code/CDIO_Demo uden mccdaq v4/CDIO_Demo.exe";
-			CComponentPath = CComponentPath.replace("\\", "/");
-			System.out.println("dir: " + CComponentPath);
-		} catch (URISyntaxException e) {
-			System.err.println("could not find jar file location!");
-			e.printStackTrace();
-		}
-		Runtime rt = Runtime.getRuntime() ;     
-		try {
-			process = rt.exec(CComponentPath) ;
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		CodeSource codeSource = CConnector.class.getProtectionDomain().getCodeSource();
+//		String CComponentPath = null;
+//		File jarFile = null;
+//		// finds location of the jar file. to make it possible to have the file anywhere you want to
+//		try {
+//			jarFile = new File(codeSource.getLocation().toURI().getPath()); 
+//			CComponentPath = jarFile.getParentFile().getParentFile().getPath();
+//			CComponentPath = CComponentPath + "/C#Code/CDIO_Demo uden mccdaq v4/CDIO_Demo.exe";
+//			CComponentPath = CComponentPath.replace("\\", "/");
+//			System.out.println("dir: " + CComponentPath);
+//		} catch (URISyntaxException e) {
+//			System.err.println("could not find jar file location!");
+//			e.printStackTrace();
+//		}
+//		Runtime rt = Runtime.getRuntime() ;     
+//		try {
+//			process = rt.exec(CComponentPath) ;
+//			
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		try
 		{
 			this.IP = InetAddress.getLocalHost();
@@ -93,7 +94,7 @@ public class CConnector implements ICConnector
 			hardwarePort=99;
 			break;
 		case STROKE:
-			hardwarePort=99;
+			hardwarePort=0;
 			break;
 		}
 		String returnString = writeToSocket(hardwarePort + ";" + number + ";" + period + ";<EOF>", period, number);

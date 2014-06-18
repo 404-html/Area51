@@ -101,6 +101,7 @@ public class BatchMeasureController implements IBatchMeasureController {
 				measurement[0].setMeasurementType(MeasurementType.STROKE);
 				measurement[0].setElementNo(activeBatch.getCurrentStrokeElement());
 				measurement[0].setVerified(true); // true is default when getting measurements
+				measurement[0].setMeasureValue((float) ((measurement[0].getMeasureValue()/Float.parseFloat(PropertyHelper.readFromProperty("calibrationConstant")))-0.019531));
 				if(measurement != null)
 					try {
 						boolean measurementAdded = activeBatch.addMeasurement(measurement[0]);
