@@ -73,7 +73,7 @@ public class UserEditServlet extends HttpServlet {
 					
 				}else{
 					
-					String name = request.getParameter("username");
+//					String name = request.getParameter("username");
 					String active = request.getParameter("active");
 					String admin = request.getParameter("admin");
 					boolean ad = true;
@@ -90,13 +90,11 @@ public class UserEditServlet extends HttpServlet {
 					User u = (User)request.getSession().getAttribute("editing");
 					if(!(u.isActive()&&u.isAdmin())||(u.isActive()&&u.isAdmin()&&(dbctrl.canWeRemoveAnotherAdmin()||(ac&&ad)))){
 
-						u.setUserName(name);
+//						u.setUserName(name);
 						u.setPassWord(password);
 						u.setActive(ac);
 						u.setAdmin(ad);
 						dbctrl.updateUser(u);
-						request.setAttribute("editfail", null);
-						request.setAttribute("edited", true);
 						if(((User)request.getSession().getAttribute("user")).getUserID()==u.getUserID()){
 							
 							if(ac){

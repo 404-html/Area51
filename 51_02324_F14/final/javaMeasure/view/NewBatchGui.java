@@ -313,7 +313,7 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 		panel_1.add(btnSaveBatchSettings);
 		btnSaveBatchSettings.addActionListener(this);
 	}
-		JButton btnAnnuller = new JButton("Annuller");
+		JButton btnAnnuller = new JButton("Cancel");
 		btnAnnuller.setBounds(409, 66, 110, 23);
 		btnAnnuller.setActionCommand("annuller");
 		panel_1.add(btnAnnuller);
