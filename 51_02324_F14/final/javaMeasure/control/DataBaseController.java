@@ -1,5 +1,6 @@
 package javaMeasure.control;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import javaMeasure.*;
@@ -7,6 +8,7 @@ import javaMeasure.Measurement.MeasurementType;
 import javaMeasure.interfaces.*;
 import javaMeasure.control.interfaces.IDatabaseController;
 import javaMeasure.control.interfaces.ISQLConnector;
+import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 
 
 public class DataBaseController implements IDatabaseController {
@@ -85,10 +87,14 @@ public class DataBaseController implements IDatabaseController {
 	public void addToDB(Batch batch) throws DataBaseException {
 		batchDAO.addToDB(batch);
 	}
-
+	@Override
 	public ArrayList<Batch> getBatches() throws DataBaseException {
 		return batchDAO.getBatches();
 		}
+	@Override
+	public ArrayList<Batch> getBatches(String partialBatchName, String fieldName, Timestamp startDate, Timestamp endDate) throws DataBaseException{
+		return batchDAO.getBatches(partialBatchName, fieldName, startDate, endDate);
+	}
 	
 	@Override
 	public ArrayList<String> getBatchNames() throws DataBaseException {
