@@ -1,0 +1,2 @@
+serviceClass: noliac.client.GreetingService
+path: 1D2D326A35FDA3D5E4521F7CFD6B701A.gwt.rpc

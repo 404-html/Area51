@@ -16,6 +16,7 @@ import java.security.CodeSource;
 
 import javaMeasure.Measurement;
 import javaMeasure.Measurement.MeasurementType;
+import javaMeasure.PropertyHelper;
 import javaMeasure.control.interfaces.ICConnector;
 
 /**

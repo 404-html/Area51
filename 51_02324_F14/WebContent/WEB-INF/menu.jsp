@@ -25,6 +25,12 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script>
 	//AJAX
+	$(document).on('keyup', '#element_1_1, #element_1_2, #element_1_3, #element_2_1, #element_2_2, #element_2_3', function() {
+
+		//henter siden returnDataAjax 
+		search();
+	});
+
 	$(document).on('keyup', '#batchname', function() {
 
 		//henter siden returnDataAjax 
@@ -42,7 +48,7 @@
 	});
 	
 	function getFormString(){
-		return "returnDataAjax.jsp?input="+$("#batchname").val()+ "&fieldName="+ "&startDate="+getFormDate(true)+"&endDate="+getFormDate(false);
+		return "returnDataAjax.jsp?input="+$("#batchname").val()+ "&fieldName="+ getFieldName() + "&startDate="+getFormDate(true)+"&endDate="+getFormDate(false);
 	}
 	
 	function getFieldName(){
@@ -134,6 +140,8 @@
 		document.getElementById('element_2_2').value = enddate.getDate();
 		document.getElementById('element_2_1').value = enddate.getMonth()+1; //January is 0!
 		document.getElementById('element_2_3').value = enddate.getFullYear();
+		
+		search();
 	}
 </script>
 
@@ -145,7 +153,7 @@
 	<div id="wrapper">
 		<!-- wrapper for whole page  -->
 		<div id="header">
-			<img src="noliac_logo.png" alt="Logo">
+			<a href="http://localhost:8080/51_02324_F14/"><img src="noliac_logo.png" alt="Logo"></a>
 		</div>
 		<!-- Form begins-->
 		<div id="form_container">
