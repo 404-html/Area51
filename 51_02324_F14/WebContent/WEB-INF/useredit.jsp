@@ -15,6 +15,7 @@
 <%
 	String username = (String) session.getAttribute("username");
 	User u = (User) session.getAttribute("editing");
+	User logged=((User)request.getSession().getAttribute("user"));
 %>
 <title>User Edit</title>
 </head>
@@ -41,7 +42,11 @@
 
 			<form id="user_edit" class="appnitro" method="post" action=UserEditServlet>
 				<div class="form_description">
+					<%if(((User)request.getSession().getAttribute("user")).isAdmin()){ %>
 					<h1>Editing <%=u.getUserName() %></h1>
+					<%}else{ %>
+					<h1>Editing <%=logged.getUserName() %></h1>
+					<%} %>
 					
 				
 	<%if(((User)request.getSession().getAttribute("user")).isAdmin()){ %>
