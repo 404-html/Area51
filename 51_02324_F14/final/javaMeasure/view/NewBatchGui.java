@@ -6,7 +6,6 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 import javaMeasure.BatchProfile;
-import javaMeasure.PropertyHelper;
 import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 import javaMeasure.control.interfaces.INewBatchController;
 import javaMeasure.view.interfaces.INewBatchGui;
@@ -60,7 +59,7 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 			@Override
 			public void windowClosing(WindowEvent e) {
 				System.out.println(NewBatchGui.this.getDefaultCloseOperation());
-				NewBatchGui.this.newBatchController.annullerPressed();
+				NewBatchGui.this.newBatchController.cancelPressed();
 			}
 		});
 
@@ -451,7 +450,7 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 			System.out.println("save batch settings");
 			break;
 		case "annuller":
-			newBatchController.annullerPressed();
+			newBatchController.cancelPressed();
 			break;
 		case "deleteSettings":
 			ArrayList<String> list2 = newBatchController.getSavedBatchProfiles();
@@ -479,7 +478,7 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 	}
 
 	@Override
-	public void showInformationMessage(String message, String title){
+	public void showPopupMessage(String message, String title){
 		JOptionPane.showMessageDialog(getContentPane(), message, title, JOptionPane.INFORMATION_MESSAGE);
 	}
 

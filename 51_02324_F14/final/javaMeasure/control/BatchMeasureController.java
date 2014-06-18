@@ -13,12 +13,24 @@ import javaMeasure.view.*;
 import javaMeasure.view.interfaces.*;
 
 
+/**
+ * @author Voermadal
+ * Controller for the main GUI (BatchMeasureGui)
+ * 
+ */
 public class BatchMeasureController implements IBatchMeasureController {
 	private IBatchMeasureGui batchGUI;
 	private IMainController mainController;
 	private Batch activeBatch;
 	private DirectoryListener directoryListener;
 
+	/**
+	 * Constructor for BatchMeasureController.
+	 * creates the GUI needed to trigger events
+	 * also has an active batch that is instantiated as null
+	 * mainController is used to get other controllers and get the active user
+	 * @param mainController
+	 */
 	public BatchMeasureController(IMainController mainController){
 		super();
 		this.activeBatch = null;
@@ -28,17 +40,28 @@ public class BatchMeasureController implements IBatchMeasureController {
 		System.out.println("Active user is: " + this.mainController.getActiveUser().getUserName());
 	}
 
+	/**
+	 * Shows gui.
+	 * Used when other controllers wants this gui shown
+	 */
 	public void showGui(boolean visible){
 		batchGUI.setVisibility(visible);
 	}
 
-	// opens new user interface (newBatchGui) where specifications and other things can be set
+	/**
+	 * delegates responsibilty to newBatchController where a new batch can be created. (edit mode is false)
+	 * 
+	 */
 	public void btnNewBatchPressed() {
 		mainController.startNewBatchController();
 		batchGUI.updateLog("New Batch window opened...");
 	}
 
 	// opens a modified (newBatchGui) interface, where the specifications for activeBatch can be edited
+	/**
+	 * Called from BatchMeasureGui
+	 * Updates log and call mainController to open newBatchController in editMode
+	 */
 	public void btnEditBatchSettingsPressed(){
 		if(getActiveBatch() != null){
 			mainController.startNewBatchController(getActiveBatch());
@@ -50,42 +73,32 @@ public class BatchMeasureController implements IBatchMeasureController {
 
 	// load batch method. asks for a batchname and gets that batch from database
 	// TODO change JOptionPane for batchname, the dropdown list is not optimal should probably be new user Interface with fx autocomplete combobox 
+	/**
+	 * opens popup window in BatchMeasureGui where String is returned.
+	 * cheks if String matches a batchname in database.
+	 * if so the batch is 
+	 */
 	public void btnGetBatchPressed() {
-		ArrayList<Batch> list = null;
-		batchGUI.updateLog("Loading batchnames...");
-		try {
-			list = mainController.getDatabaseController().getBatches();
-		} catch (DataBaseException e) {
-			System.err.println(e.getMessage());
-			batchGUI.updateLog("Error in receiving batches from database!");
-		}
-		String[] batchList = new String[list.size()];
-		for(int i = 0; i < list.size(); i++){
-			batchList[i] = list.get(i).getBatchString();
-		}
-
-		String batchnumber = batchGUI.getLoadBatchName(batchList); // uses JOptionPane in GUI to get batchname
-		if(batchnumber != null){
-			boolean exists = false;
-			for(int i = 0; i < batchList.length; i++){
-				if(batchnumber.equalsIgnoreCase(list.get(i).getBatchString())){
-					try {
-						setActiveBatch(mainController.getDatabaseController().getBatch(batchnumber));
-					} catch (DataBaseException e) {
-						System.err.println(e.getMessage());
-						batchGUI.updateLog("Not able to set active batch, because of a database error");
-					}
-					exists = true;
-					break;
+		String batchnumber = batchGUI.getLoadBatchName(); // uses JOptionPane in GUI to get batchname
+		if(batchnumber != null){			
+			try {
+				Batch batch = mainController.getDatabaseController().getBatch(batchnumber);
+				if(batch != null){
+				setActiveBatch(batch);
+				} else{
+					batchGUI.showPopupMessage("There is no batch with this name.", "No batch found");
 				}
+			} catch (DataBaseException e) {
+				System.err.println(e.getMessage());
+				batchGUI.updateLog("Error in receiving batches from database!");
 			}
-			if(!exists){
-				batchGUI.showPopupMessage("There is no batch with this name.", "No batch found");
-			}
-		} else batchGUI.updateLog("batch loading canceled");
+		}
 	}
 
 	// gets stroke measurement from USB DAQ by calling CConnector
+	/**
+	 * 
+	 */
 	public void btnStrokePressed() {
 
 		Measurement[] measurement = null;

@@ -1,6 +1,5 @@
 package javaMeasure.view;
 
-import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JList;
@@ -524,12 +523,8 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 	}
 
 	// returns the name of the chosen batch. for now, chosen batch will also be returned, even if exit is pressed
-	public String getLoadBatchName(String[] batchList){
-		// by using combobox, we can have a dropdown list inside the popup ShowMessageDialog
-		JComboBox<Object> jcb = new JComboBox<Object>(batchList);
-		jcb.setEditable(true);
-		JOptionPane.showMessageDialog(getContentPane(), jcb, "Enter batchnumber:", JOptionPane.QUESTION_MESSAGE);
-		return (String) jcb.getSelectedItem();
+	public String getLoadBatchName(){
+	return (String)	JOptionPane.showInputDialog(getContentPane(), "Insert batch name to download from database", "Get batch", JOptionPane.QUESTION_MESSAGE, null, null, "EKSAMEN  BATCH");
 	}
 	
 	// browse for folder to be listened to

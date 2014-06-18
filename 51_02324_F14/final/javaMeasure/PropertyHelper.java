@@ -89,7 +89,9 @@ public class PropertyHelper {
 		String value = null;
 		Properties prop = new Properties();
 		InputStream in = null;
-		try {			
+		try {
+			System.out.println(configPath + fileName + ".properties");
+			
 			in = new FileInputStream(configPath + fileName + ".properties");
 			prop.load(in);
 			value = prop.getProperty(key);
@@ -98,7 +100,7 @@ public class PropertyHelper {
 			System.err.println("Unsupported encoding in property");
 		} catch (FileNotFoundException e) {
 			System.err.println("file is not found: " + key);
-//			System.err.println("path: " + configPath);
+			System.err.println("path: " + configPath);
 		} catch (IOException e) {
 		} finally{
 			try {
