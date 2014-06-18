@@ -48,8 +48,8 @@ String username = (String) session.getAttribute("username");
 	{
 		String returnString = "";
 
-		String created_by = (batch.getCreated_by()=="null" ? batch.getCreated_by() : "&nbsp");
-		String approved_by = (batch.getApproved_by()=="null" ? batch.getApproved_by() : "&nbsp");
+		String created_by = (batch.getCreated_by()!=null ? batch.getCreated_by() : "&nbsp");
+		String approved_by = (batch.getApproved_by()!=null ? batch.getApproved_by() : "&nbsp");
 		//table row  class=\"returnRow\"
 		returnString = returnString + ("<tr>\n");
 		
@@ -88,7 +88,6 @@ String username = (String) session.getAttribute("username");
 	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 //hh:mm:ss.SSS
 	//tester om datoer er indtastet korrekt
-	System.out.println("start:" + startDate);
 	try{
 		Date parsedDate = dateFormat.parse(startDate);
 		startDateTS = new Timestamp(parsedDate.getTime());
@@ -99,11 +98,11 @@ String username = (String) session.getAttribute("username");
 	try{
 		Date parsedDate = dateFormat.parse(endDate);
 		endDateTS = new Timestamp(parsedDate.getTime());
-	}catch(Exception e){//hvis dato ikke var korrekt, timestamp = null
+	}catch(Exception e){//hvis dato ikke var korrekt, timestamp = null  + 86399000
 		endDateTS = null;
 	}
 	
-	if(!(fieldName == "created_date" || fieldName == "approved_date")){ 
+	if(!(fieldName.equalsIgnoreCase("created_date") || fieldName.equalsIgnoreCase("approved_date"))){ 
 		fieldName = null;
 	}
 	
