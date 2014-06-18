@@ -15,7 +15,7 @@ public interface IBatchMeasureGui extends ActionListener, EventListener, Runnabl
 //	public void updateTable(ArrayList<ArrayList<String>> data);
 	void showPopupMessage(String message, String title);
 	public void updateLog(String update);
-	public String getLoadBatchName(String[] batchList);
+	public String getLoadBatchName();
 	public String getDasyPath();
 //	public void updateTable(Batch batch);
 	void btnBatchApproved(boolean enable);
