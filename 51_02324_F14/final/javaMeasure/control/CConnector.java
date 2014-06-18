@@ -16,6 +16,7 @@ import java.security.CodeSource;
 
 import javaMeasure.Measurement;
 import javaMeasure.Measurement.MeasurementType;
+import javaMeasure.PropertyHelper;
 import javaMeasure.control.interfaces.ICConnector;
 
 /**
@@ -92,7 +93,7 @@ public class CConnector implements ICConnector
 			hardwarePort=99;
 			break;
 		case STROKE:
-			hardwarePort=99;
+			hardwarePort=0;
 			break;
 		}
 		String returnString = writeToSocket(hardwarePort + ";" + number + ";" + period + ";<EOF>", period, number);
