@@ -36,28 +36,27 @@ public class CConnector implements ICConnector
 	 */
 	public CConnector()
 	{
-//		CodeSource codeSource = CConnector.class.getProtectionDomain().getCodeSource();
-//		String CComponentPath = null;
-//		File jarFile = null;
-//		// finds location of the jar file. to make it possible to have the file anywhere you want to
-//		try {
-//			jarFile = new File(codeSource.getLocation().toURI().getPath()); 
-//			CComponentPath = jarFile.getParentFile().getParentFile().getPath();
-//			CComponentPath = CComponentPath + "/C#Code/CDIO_Demo uden mccdaq v4/CDIO_Demo.exe";
-//			CComponentPath = CComponentPath.replace("\\", "/");
-//			System.out.println("dir: " + CComponentPath);
-//		} catch (URISyntaxException e) {
-//			System.err.println("could not find jar file location!");
-//			e.printStackTrace();
-//		}
-//		Runtime rt = Runtime.getRuntime() ;     
-//		try {
-//			process = rt.exec(CComponentPath) ;
-//			
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		CodeSource codeSource = CConnector.class.getProtectionDomain().getCodeSource();
+		String CComponentPath = null;
+		File jarFile = null;
+		// finds location of the jar file. to make it possible to have the file anywhere you want to
+		try {
+			jarFile = new File(codeSource.getLocation().toURI().getPath()); 
+			CComponentPath = jarFile.getParentFile().getParentFile().getPath();
+			CComponentPath = CComponentPath + "/C#Code/CDIO_Demo uden mccdaq v4/CDIO_Demo.exe";
+			CComponentPath = CComponentPath.replace("\\", "/");
+			System.out.println("dir: " + CComponentPath);
+		} catch (URISyntaxException e) {
+			System.err.println("could not find jar file location!");
+			e.printStackTrace();
+		}
+		Runtime rt = Runtime.getRuntime() ;     
+		try {
+			process = rt.exec(CComponentPath) ;
+			
+		} catch (IOException e) {
+			System.err.println("failed to execute C# process");
+		}
 		try
 		{
 			this.IP = InetAddress.getLocalHost();
@@ -236,8 +235,9 @@ public class CConnector implements ICConnector
 		this.networkPort=port;
 	}
 	
+	// testing if C# process starts correctly
 	public static void main(String[] args){
-		CConnector c = new CConnector();
+		new CConnector();
 	}
 
 

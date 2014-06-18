@@ -52,11 +52,9 @@
 					<h1>Noliac User Edit</h1>
 					
 				
-	<%if(((User)request.getSession().getAttribute("user")).isAdmin()){ %>)
+	<%if(((User)request.getSession().getAttribute("user")).isAdmin()){ %>
 				
-	<table width="100%" border="0" cellpadding="2" cellspacing="0">
-		<tr>
-			<td>
+
 				<ul>
 				
 					<li id="li_3"><label class="description" for="username" >
@@ -65,8 +63,7 @@
 											%>User name</label>
 						<div>
 							<input id="username" name="username" class="element text medium"
-								type="text" maxlength="255" 
-								list="batches" autocomplete="on" value="<%=u.getUserName()%>" />
+								type="text" maxlength="255" value="<%=u.getUserName()%>" />
 										
 						</div>
 
@@ -79,12 +76,11 @@
 						value="812583" />
 				  </div>                    
 				</ul>
-          </td>
-		  <td width="50%">
+
 	
          <input type="checkbox" name="active" value="active"<%if(u.isActive()){%>checked<%} %>> active<BR>
 		  <input type="checkbox" name="admin" value="admin"<%if(u.isAdmin()){%>checked<%} %>> admin<BR></tr>
-		  </table>
+
 		  <%} else{ %>
 		 <div> <input id="element_4" name="password" class="element text medium"
 								type="text" maxlength="255" value="<%=((User)request.getSession().getAttribute("user")).getPassWord()%>" /></div><%} %>

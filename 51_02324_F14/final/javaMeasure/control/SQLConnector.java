@@ -15,11 +15,7 @@ public class SQLConnector implements ISQLConnector {
 	private String password;
 
 	public SQLConnector(){
-		PropertyHelper.writeToProperty("port", "3306");
-		PropertyHelper.writeToProperty("password", "hastings");
-		PropertyHelper.writeToProperty("database", "s134000");
-		PropertyHelper.writeToProperty("server", "sql-lab1.cc.dtu.dk");
-		PropertyHelper.writeToProperty("username", "s134000");
+		
 		server = PropertyHelper.readFromProperty("server");
 		port = PropertyHelper.readFromProperty("port");
 		database = PropertyHelper.readFromProperty("database");
