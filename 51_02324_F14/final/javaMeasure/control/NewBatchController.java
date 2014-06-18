@@ -7,11 +7,16 @@ import javaMeasure.Batch;
 import javaMeasure.BatchProfile;
 import javaMeasure.BatchSetting;
 import javaMeasure.PropertyHelper;
+import javaMeasure.Validator;
 import javaMeasure.control.interfaces.*;
 import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 import javaMeasure.view.interfaces.*;
 import javaMeasure.view.*;
 
+/**
+ * @author Runi
+ *
+ */
 public class NewBatchController implements INewBatchController {
 	private IMainController mainController;
 	private INewBatchGui newBatchGui;
@@ -150,6 +155,12 @@ public class NewBatchController implements INewBatchController {
 		for(int i = 0; i < profileSettings.size(); i++){
 			settings.add(new BatchSetting(i, null, null, profileSettings.get(i)));
 		}
+		int indexOfError = validateProfileFloats(settings);
+		// -1 is returned if no errors are found
+		if(indexOfError != -1){
+			newBatchGui.showInformationMessage("An error was found in " + PropertyHelper.readFromProperty("TextBoxNames", "FloatIndexName" + indexOfError) + ". This should be number", "Input validation failed");
+			return;
+		}
 		try {
 			verification = isBatchInDB(batchString);
 		} catch (DataBaseException e1) {
@@ -218,6 +229,24 @@ public class NewBatchController implements INewBatchController {
 		}
 		mainController.getDatabaseController().deleteBatchProfile(bp);
 
+	}
+	
+	
+	/**
+	 * @param ArrayList<BatchSetting> checks this array of settings if valid. Is only checking normal values and tolerance
+	 * @return the first index of which profilesetting that is invalid. if everything is allright -1 is returned
+	 */
+	private int validateProfileFloats(ArrayList<BatchSetting> settings){
+		int firstIndex = Integer.parseInt(PropertyHelper.readFromProperty("firstFloatIndexInProfile"));
+		int lastIndex = Integer.parseInt(PropertyHelper.readFromProperty("lastFloatIndexInProfile"));
+		for(int i = firstIndex; i <= lastIndex; i++){
+			if(!settings.get(i).getValue().equals("")){
+				if(!Validator.validateFloat(settings.get(i).getValue())){
+					return i;
+				}
+			}
+		}
+		return -1;
 	}
 
 

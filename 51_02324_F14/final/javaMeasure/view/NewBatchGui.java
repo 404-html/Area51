@@ -6,6 +6,7 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 import javaMeasure.BatchProfile;
+import javaMeasure.PropertyHelper;
 import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 import javaMeasure.control.interfaces.INewBatchController;
 import javaMeasure.view.interfaces.INewBatchGui;
@@ -200,6 +201,8 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 				text.setBounds(149, i*25+33, 68, 20);
 				panel.add(text);
 				profileSettings.add(text);
+				System.out.println("normal values index: " + (profileSettings.size()-1));
+//				PropertyHelper.writeToProperty("TextBoxNames","FloatIndexName" + (profileSettings.size()-1), PropertyHelper.readFromProperty("newBatchGuiSetup", String.valueOf(i+ 2)) + " normal value");
 			}
 		}
 		// labels for the "+-" label 
@@ -227,7 +230,9 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 				JTextField text = new JTextField();
 				text.setBounds(274, 33 + 25*i, 68, 20);
 				panel.add(text);
-				profileSettings.add(text);	
+				profileSettings.add(text);
+				System.out.println("tolerance values index: " + (profileSettings.size()-1));
+//				PropertyHelper.writeToProperty("TextBoxNames","FloatIndexName" + (profileSettings.size()-1), PropertyHelper.readFromProperty("newBatchGuiSetup", String.valueOf(i+ 2)) + " tolerance");
 			}	
 		}
 
