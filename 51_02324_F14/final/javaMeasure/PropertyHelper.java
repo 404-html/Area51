@@ -89,9 +89,7 @@ public class PropertyHelper {
 		String value = null;
 		Properties prop = new Properties();
 		InputStream in = null;
-		try {
-			System.out.println(fileName + ".properties");
-			
+		try {			
 			in = new FileInputStream(fileName + ".properties");
 			prop.load(in);
 			value = prop.getProperty(key);

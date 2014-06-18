@@ -11,16 +11,15 @@ import javaMeasure.control.interfaces.ISQLConnector;
 
 public class DataBaseController implements IDatabaseController {
 
-	IUserDAO userDAO;
-	IBatchDAO batchDAO;
-	IBatchProfileDAO batchProfileDAO;
-	IMeasurementDAO measurementDAO;
-	
-	private ISQLConnector sqlConnector = new SQLConnector();
+	private IUserDAO userDAO;
+	private IBatchDAO batchDAO;
+	private IBatchProfileDAO batchProfileDAO;
+	private IMeasurementDAO measurementDAO;
+	private ISQLConnector sqlConnector;
 	//TODO should if there is time extend the amount of exceptions!
 	public DataBaseController() {
 		super();
-		
+		sqlConnector = new SQLConnector();
 		userDAO = new UserDAO(sqlConnector);
 		batchDAO = new BatchDAO(sqlConnector);
 		batchProfileDAO = new BatchProfileDAO(sqlConnector);

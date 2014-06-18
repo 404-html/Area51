@@ -11,6 +11,10 @@ public class Validator {
 		return valid && s.length() >=4 && s.length() <=100;	
 	}
 	
+	public static boolean validateDouble(String s) {
+		return s.matches("");
+	}
+	
 	public static void main(String[] args){
 
 		Scanner scanner = new Scanner(System.in);
