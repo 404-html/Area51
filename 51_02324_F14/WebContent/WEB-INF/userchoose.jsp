@@ -62,8 +62,8 @@
 						<div>
 							<input id="chosen" name="chosen" class="element text medium"
 								type="text" maxlength="255" 
-								list="batches" autocomplete="on" value="" />
-										<datalist id="batches"> <%
+								list="usernames" autocomplete="on" value="" />
+										<datalist id="usernames"> <%
  						ArrayList<User> userNames = database.getUserList();
  						for (User u : userNames){
  							String name=u.getUserName();
