@@ -90,7 +90,7 @@ public class CConnector implements ICConnector
 		//port 98 = always returns 1
 		case LEAK:
 			//ports=1234;
-			hardwarePort=99;
+			hardwarePort=0;
 			break;
 		case STROKE:
 			hardwarePort=0;
