@@ -41,7 +41,7 @@
 
 			<form id="user_edit" class="appnitro" method="post" action=UserEditServlet>
 				<div class="form_description">
-					<h1>Noliac User Edit</h1>
+					<h1>Editing <%=u.getUserName() %></h1>
 					
 				
 	<%if(((User)request.getSession().getAttribute("user")).isAdmin()){ %>
