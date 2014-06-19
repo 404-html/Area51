@@ -3,8 +3,6 @@ package servlets;
 import java.io.IOException;
 
 import javaMeasure.User;
-import javaMeasure.control.DataBaseController;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;

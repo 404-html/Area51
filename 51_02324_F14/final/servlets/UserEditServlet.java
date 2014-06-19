@@ -5,8 +5,6 @@ import java.io.IOException;
 import javaMeasure.User;
 import javaMeasure.control.DataBaseController;
 import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
-import javaMeasure.control.interfaces.IDatabaseController.UserNotFoundException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;

@@ -5,9 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Calendar;
-
 import javaMeasure.control.interfaces.ISQLConnector;
 import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 import javaMeasure.interfaces.IBatchDAO;

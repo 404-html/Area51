@@ -30,6 +30,7 @@
 		search();
 	});
 
+	//lytter på keyup event i elementet med id = batchname
 	$(document).on('keyup', '#batchname', function() {
 		//henter siden returnDataAjax 
 		if($("#batchname").val().length>=1){
@@ -43,6 +44,21 @@
 		$('input[name="batchNameSubmit"]').val(event.target.id);
 		document.batchform.submit();
 	});
+
+	//udfører søgningen og sætter det skjulte element "batchNameSubmit" til den første rækkes ID
+	function search(){
+		$.get(getFormString(),function(data,status){
+		    if(status = "success"){
+		    	//indsæt de hentede data i div element
+		    	$("#return_data").html(data);
+		    	var batch = $(".scrollContent tr:first").children('td:first').attr('id');
+		    	if(batch!=""){
+		    		$('input[name="batchNameSubmit"]').val(batch);
+		    	}
+		    }
+		});
+	}	
+	
 	
 	//sørger for at fange enter-tast - submitter form med den første række der er i tabellen
 	$(document).keypress( function(e) {
@@ -65,20 +81,7 @@
 		return $('input[name="rdoCreatedApproved"]:checked').val();
 	}
 	
-	//udfører søgningen og sætter det skjulte element "batchNameSubmit" til den første rækkes ID
-	function search(){
-		$.get(getFormString(),function(data,status){
-		    if(status = "success"){
-		    	//indsæt de hentede data i div element
-		    	$("#return_data").html(data);
-		    	var batch = $(".scrollContent tr:first").children('td:first').attr('id');
-		    	if(batch!=""){
-		    		$('input[name="batchNameSubmit"]').val(batch);
-		    	}
-		    }
-		});
 
-	}
 	
 	//Date functions for input fields
 	function getFormDate(getStartDate){

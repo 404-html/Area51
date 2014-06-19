@@ -8,8 +8,6 @@ import javaMeasure.PropertyHelper;
 import javaMeasure.control.DataBaseController;
 import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 
-import javax.servlet.GenericServlet;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
@@ -122,14 +120,6 @@ public class ReportServlet extends HttpServlet {
 				writer.append(";");
 			}
 		}
-//		for(int i = 0; i < report.length; i++){
-//			if(i > 7){
-//				if(i%8 == 0){
-//					writer.append(";");
-//				}
-//				System.out.print(i + ": " + report[i] + "\t");
-//			}
-//		}
 		return writer;
 	}
 
