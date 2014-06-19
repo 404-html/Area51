@@ -34,7 +34,7 @@
 	$(document).on('keyup', '#batchname', function() {
 
 		//henter siden returnDataAjax 
-		if($("#batchname").val().length>=2){
+		if($("#batchname").val().length>=1){
 			search();
 		}
 		

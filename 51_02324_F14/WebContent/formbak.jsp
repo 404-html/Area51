@@ -28,7 +28,9 @@
 		if (username == null) {
 			response.sendRedirect("userlogin.jsp");
 		} else {
+	
 
+			System.out.println("getting parameters");
 			String batchname = request.getParameter("batchname");
 			String submit = request.getParameter("submit");
 			String logout = request.getParameter("logout");
@@ -37,6 +39,7 @@
 				if (batchname != null) {
 					try {
 						batch = database.getBatch(batchname);
+						System.out.println("batchname: " + batchname);
 					} catch (DataBaseException dbe) {
 						response.sendRedirect("form.jsp?fail=notfound");
 					}

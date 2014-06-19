@@ -57,7 +57,7 @@ public class LoginServlet extends HttpServlet {
 			//Validating user
 			try {loginSuccess = dbctrl.validateUser(loginUser);
 			} catch (DataBaseException e) {		e.printStackTrace();	
-			
+				System.err.println("failed to validateUser in login servlet");
 			}
 			System.out.println(loginSuccess);
 			if (loginSuccess) {

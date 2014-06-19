@@ -1,5 +1,6 @@
 package javaMeasure.control;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import javaMeasure.*;
@@ -7,20 +8,20 @@ import javaMeasure.Measurement.MeasurementType;
 import javaMeasure.interfaces.*;
 import javaMeasure.control.interfaces.IDatabaseController;
 import javaMeasure.control.interfaces.ISQLConnector;
+import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 
 
 public class DataBaseController implements IDatabaseController {
 
-	IUserDAO userDAO;
-	IBatchDAO batchDAO;
-	IBatchProfileDAO batchProfileDAO;
-	IMeasurementDAO measurementDAO;
-	
-	private ISQLConnector sqlConnector = new SQLConnector();
+	private IUserDAO userDAO;
+	private IBatchDAO batchDAO;
+	private IBatchProfileDAO batchProfileDAO;
+	private IMeasurementDAO measurementDAO;
+	private ISQLConnector sqlConnector;
 	//TODO should if there is time extend the amount of exceptions!
 	public DataBaseController() {
 		super();
-		
+		sqlConnector = new SQLConnector();
 		userDAO = new UserDAO(sqlConnector);
 		batchDAO = new BatchDAO(sqlConnector);
 		batchProfileDAO = new BatchProfileDAO(sqlConnector);
@@ -85,10 +86,14 @@ public class DataBaseController implements IDatabaseController {
 	public void addToDB(Batch batch) throws DataBaseException {
 		batchDAO.addToDB(batch);
 	}
-
+	@Override
 	public ArrayList<Batch> getBatches() throws DataBaseException {
 		return batchDAO.getBatches();
 		}
+	@Override
+	public ArrayList<Batch> getBatches(String partialBatchName, String fieldName, Timestamp startDate, Timestamp endDate) throws DataBaseException{
+		return batchDAO.getBatches(partialBatchName, fieldName, startDate, endDate);
+	}
 	
 	@Override
 	public ArrayList<String> getBatchNames() throws DataBaseException {

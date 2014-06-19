@@ -59,7 +59,7 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 			@Override
 			public void windowClosing(WindowEvent e) {
 				System.out.println(NewBatchGui.this.getDefaultCloseOperation());
-				NewBatchGui.this.newBatchController.annullerPressed();
+				NewBatchGui.this.newBatchController.cancelPressed();
 			}
 		});
 
@@ -200,6 +200,8 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 				text.setBounds(149, i*25+33, 68, 20);
 				panel.add(text);
 				profileSettings.add(text);
+				System.out.println("normal values index: " + (profileSettings.size()-1));
+//				PropertyHelper.writeToProperty("TextBoxNames","FloatIndexName" + (profileSettings.size()-1), PropertyHelper.readFromProperty("newBatchGuiSetup", String.valueOf(i+ 2)) + " normal value");
 			}
 		}
 		// labels for the "+-" label 
@@ -227,7 +229,9 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 				JTextField text = new JTextField();
 				text.setBounds(274, 33 + 25*i, 68, 20);
 				panel.add(text);
-				profileSettings.add(text);	
+				profileSettings.add(text);
+				System.out.println("tolerance values index: " + (profileSettings.size()-1));
+//				PropertyHelper.writeToProperty("TextBoxNames","FloatIndexName" + (profileSettings.size()-1), PropertyHelper.readFromProperty("newBatchGuiSetup", String.valueOf(i+ 2)) + " tolerance");
 			}	
 		}
 
@@ -446,7 +450,7 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 			System.out.println("save batch settings");
 			break;
 		case "annuller":
-			newBatchController.annullerPressed();
+			newBatchController.cancelPressed();
 			break;
 		case "deleteSettings":
 			ArrayList<String> list2 = newBatchController.getSavedBatchProfiles();
@@ -474,7 +478,7 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 	}
 
 	@Override
-	public void showInformationMessage(String message, String title){
+	public void showPopupMessage(String message, String title){
 		JOptionPane.showMessageDialog(getContentPane(), message, title, JOptionPane.INFORMATION_MESSAGE);
 	}
 

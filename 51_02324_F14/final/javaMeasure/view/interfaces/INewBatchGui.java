@@ -10,7 +10,7 @@ public interface INewBatchGui extends ActionListener, EventListener, Runnable{
 	void setVisibility(boolean visible);
 	void setSettings(BatchProfile settingList);
 	ArrayList<String> getSettings();
-	void showInformationMessage(String message, String title);
+	void showPopupMessage(String message, String title);
 	void setbatchName(String batchString);
 
 }

@@ -127,7 +127,7 @@
 
 		catch (IOException ex) {
 			System.out.println(absoluteDiskPath);
-			System.out.println("Fuck you");
+			System.out.println("test ioexception report.jsp");
 		} finally {
 			try {
 				writer.close();
