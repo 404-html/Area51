@@ -1,9 +1,11 @@
 package servlets;
 
 import java.io.*;
+import java.util.ArrayList;
 
 import javaMeasure.Batch;
 import javaMeasure.BatchProfile;
+import javaMeasure.BatchSetting;
 import javaMeasure.control.DataBaseController;
 import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 
@@ -107,17 +109,19 @@ public class ReportServlet extends HttpServlet {
 		StringBuffer writer = new StringBuffer();
 		String[] report;
 		report = this.getReport(batch, profile);
+		//writer.append("")
 		for(int i = 0; i < report.length; i++){
-		writer.append(report[i]);
+			writer.append(report[i]);
+			writer.append(";");
 		}
-		for(int i = 0; i < report.length; i++){
-			if(i > 7){
-			if(i%8 == 0){
-				writer.append(";");
-			}
-			System.out.print(i + ": " + report[i] + "\t");
-			}
-		}
+//		for(int i = 0; i < report.length; i++){
+//			if(i > 7){
+//			if(i%8 == 0){
+//				writer.append(";");
+//			}
+//			System.out.print(i + ": " + report[i] + "\t");
+//			}
+//		}
 		return writer;
 	}
 
@@ -125,7 +129,7 @@ public class ReportServlet extends HttpServlet {
 		String[] reportData = new String[56];
 
 		reportData[0] = batch.getBatchString();
-
+		//ArrayList<BatchSetting> list = profile.getProfileSettings();
 
 		for(int i = 0; i < 7; i++){
 			reportData[i+1] = profile.getProfileSettings().get(i).getValue();

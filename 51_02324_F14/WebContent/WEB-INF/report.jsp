@@ -21,7 +21,7 @@
 	<div id="wrapper">
 
 		<div id="header">
-			<img src="noliac_logo.png" alt="Logo">
+			<a href="http://localhost:8080/51_02324_F14/"><img src="noliac_logo.png" alt="Logo"></a>
 		</div>
 
 		<div id="form_container">
