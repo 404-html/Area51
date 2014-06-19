@@ -33,29 +33,37 @@ public class CConnector implements ICConnector
 
 	/**
 	 * Constructor, sets up the Default IP = The local machine
+	 * @throws ConnectionException if primary usb daq has failed to run because of missing installation this exception is thrown
 	 */
-	public CConnector()
+	public CConnector(boolean testmode)
 	{
 		CodeSource codeSource = CConnector.class.getProtectionDomain().getCodeSource();
 		String CComponentPath = null;
+		String USBConnectorPath = null;
 		File jarFile = null;
 		// finds location of the jar file. to make it possible to have the file anywhere you want to
 		try {
 			jarFile = new File(codeSource.getLocation().toURI().getPath()); 
 			CComponentPath = jarFile.getParentFile().getParentFile().getPath();
-			CComponentPath = CComponentPath + "/C#Code/CDIO_Demo uden mccdaq v4/CDIO_Demo.exe";
-			CComponentPath = CComponentPath.replace("\\", "/");
+			if(!testmode){
+			USBConnectorPath = CComponentPath + "/C#Code/USBConnector/USBConnector.exe";
+			} else{
+				USBConnectorPath = CComponentPath + "/C#Code/CDIO_Demo uden mccdaq v4/CDIO_Demo.exe";
+			}
+			USBConnectorPath = USBConnectorPath.replace("\\", "/");
 			System.out.println("dir: " + CComponentPath);
 		} catch (URISyntaxException e) {
 			System.err.println("could not find jar file location!");
-			e.printStackTrace();
 		}
+		System.out.println("USBConnectorPath: " + USBConnectorPath);
+		System.out.println("starting in testmode: " + testmode);
 		Runtime rt = Runtime.getRuntime() ;     
 		try {
-			process = rt.exec(CComponentPath) ;
+			process = rt.exec(USBConnectorPath) ;
+			System.out.println("USBConnector started");
 			
 		} catch (IOException e) {
-			System.err.println("failed to execute C# process");
+			System.err.println("invalid execution String");
 		}
 		try
 		{
@@ -237,7 +245,7 @@ public class CConnector implements ICConnector
 	
 	// testing if C# process starts correctly
 	public static void main(String[] args){
-		new CConnector();
+			new CConnector(false);	
 	}
 
 

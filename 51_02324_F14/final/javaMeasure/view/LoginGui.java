@@ -95,7 +95,7 @@ public class LoginGui extends JFrame implements ILoginGui {
 	}
 	//Only for testing
 	public LoginGui() {
-		this(new LoginController(new MainController()));
+		this(new LoginController(new MainController(true)));
 	}
 
 	@Override

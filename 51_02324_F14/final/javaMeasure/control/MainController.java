@@ -23,11 +23,12 @@ public class MainController implements IMainController{
 	INewBatchController newBatchController;
 	User activeUser;
 
-	public MainController() {
+	public MainController(boolean testmode) {
 		super();
 		this.databaseController = new DataBaseController();
 		this.dasyFileReader = new DasyFileReader();
-		this.cConnector = new CConnector();
+		this.cConnector = new CConnector(testmode);
+		
 		setLookOfGuis();
 	}
 
