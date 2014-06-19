@@ -142,7 +142,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		setupLog();
 
 		// table setup for measurements
-		this.tableData = new String[][]{{null,null,null,null}};
+		this.tableData = new String[][]{};
 		setupTable();
 		// label setup for settings. settings are all shown on labels
 		setupLabels();
