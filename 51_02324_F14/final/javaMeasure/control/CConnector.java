@@ -49,7 +49,7 @@ public class CConnector implements ICConnector
 			if(!testmode){
 			USBConnectorPath = CComponentPath + "/C#Code/USBConnector/USBConnector.exe";
 			} else{
-				USBConnectorPath = CComponentPath + "/C#Code/CDIO_Demo uden mccdaq v4/CDIO_Demo.exe";
+				USBConnectorPath = CComponentPath + "/C#Code/USBConnector - TEST MODE/USBConnector - TEST MODE.exe";
 			}
 			USBConnectorPath = USBConnectorPath.replace("\\", "/");
 			System.out.println("dir: " + CComponentPath);
