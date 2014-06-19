@@ -1,7 +1,6 @@
 package javaMeasure;
 
 import java.sql.Timestamp;
-import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 

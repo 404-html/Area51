@@ -1,16 +1,11 @@
 package servlets;
 
 import java.io.*;
-import java.util.ArrayList;
-
 import javaMeasure.Batch;
 import javaMeasure.BatchProfile;
-import javaMeasure.BatchSetting;
 import javaMeasure.control.DataBaseController;
 import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 
-import javax.servlet.GenericServlet;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import javaMeasure.*;
 import javaMeasure.Measurement.MeasurementType;
-import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 
 public interface IDatabaseController {
 	

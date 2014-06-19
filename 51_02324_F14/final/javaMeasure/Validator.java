@@ -1,5 +1,4 @@
 package javaMeasure;
-import java.util.Scanner;
 
 public class Validator {
 	public static boolean validateUsername(String s){
