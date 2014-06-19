@@ -93,6 +93,14 @@ public class NewBatchController implements INewBatchController {
 	 */
 	@Override
 	public void saveBatchSettingsPressed(String profileName, ArrayList<String> profileSettings) {
+		
+		int indexOfError = validateProfileFloats(profileSettings);
+		// -1 is returned if no errors are found
+		if(indexOfError != -1){
+			newBatchGui.showPopupMessage("An error was found in " + PropertyHelper.readFromProperty("TextBoxNames", "FloatIndexName" + indexOfError) + ".\n This should only contain the values: 0-9 and decimals should be seperated by '.'", "Input validation failed");
+			return; // is returned so code below is not run
+		}
+		
 		if(profileName == null){System.out.println("canceled profile saving");}
 		else if(profileName.length() < 2){
 			this.newBatchGui.showPopupMessage("Name should be at least 2 characters", "Invalid name"); //TODO remove hardcoded 2, should be regular expression input verification - Rúni 
