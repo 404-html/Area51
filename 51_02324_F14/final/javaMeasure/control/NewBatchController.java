@@ -49,9 +49,6 @@ public class NewBatchController implements INewBatchController {
 		this.activeBatch = activeBatch;
 		this.newBatchGui.setbatchName(this.activeBatch.getBatchString());
 		this.newBatchGui.setVisibility(true);
-
-
-
 	}
 
 
