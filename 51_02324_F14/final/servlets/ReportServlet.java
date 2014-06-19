@@ -53,10 +53,11 @@ public class ReportServlet extends HttpServlet {
 			}
 			else if((request.getParameter("newReport")!=null)){
 				request.getRequestDispatcher("MenuServlet").forward(request, response);
+				System.out.println("redirect til menu");
 			}
 			else{
 			//Load batch from database
-			String batchName = request.getParameter("selectedbatch");
+			String batchName = request.getParameter("batchNameSubmit"); //selectedbatch
 			System.out.println(batchName);
 			DataBaseController dbctrl = (DataBaseController) request.getSession().getAttribute("database");
 			try {

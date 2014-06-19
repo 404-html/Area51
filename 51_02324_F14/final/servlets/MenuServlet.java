@@ -44,6 +44,7 @@ public class MenuServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		//DataBaseController dbctrl = (DataBaseController) request.getSession().getAttribute("database");
 		//Login Check
+		System.out.println("get request");
 		if (request.getSession().getAttribute("user") == null) 
 			request.getRequestDispatcher("NoliacServlet").forward(request, response);
 		//Button logout pressed
@@ -52,7 +53,7 @@ public class MenuServlet extends HttpServlet {
 			response.sendRedirect("LoginServlet");
 		} else {
 			//submitform pressed
-			if (request.getParameter("submitForm")!= null) {
+			if (request.getParameter("batchNameSubmit")!= null) {
 				request.getRequestDispatcher("ReportServlet").forward(request, response);
 			} else {
 				if(request.getParameter("edit")!=null){

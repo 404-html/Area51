@@ -33,7 +33,7 @@
 				</div>
 				<ul>
 					<li id="li_2" name="li_2">
-						<table width="100%" border="1">
+						<table width="100%" border="1" style="border-collapse:collapse;">
 							<tr>
 								<td colspan="5"><h3>Final Inspection and Test Report<br>Certificate of Conformance</h3></td>
 
