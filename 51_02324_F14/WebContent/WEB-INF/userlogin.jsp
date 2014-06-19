@@ -44,7 +44,7 @@
 						</p></li>
 					<li id="li_"><label class="description" for="element_4">Password</label>
 						<div>
-							<input id="password" name="password" class="element text medium"
+							<input id="password" name="password" type="password" class="element text medium"
 								type="text" maxlength="255" value="123456" />
 						</div>
 						<p class="guidelines" id="guide_">

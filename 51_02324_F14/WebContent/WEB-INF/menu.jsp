@@ -332,7 +332,7 @@
 			  <!--  <button id="testsdf" class="text" type="button" name="testsdf" value="testsd" onClick="test()">test</button> -->
 				<input id="logout" class="button_text" type="submit" name="logout" value="logout" /> 
 					
-				<input id="edit" class="button_text" type="submit" name="edit" value="Edit Users" /> 
+				<input id="edit" class="button_text" type="submit" name="edit" value="Edit User" /> 
 		</form>
 			<div id="footer">By Area51</div>
 

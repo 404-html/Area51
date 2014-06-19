@@ -50,18 +50,18 @@ public class MenuServlet extends HttpServlet {
 			request.getSession().setAttribute("user", null);
 			response.sendRedirect("LoginServlet");
 		} else {
-			//submitform pressed
-			if (request.getParameter("batchNameSubmit")!= null) {
-				request.getRequestDispatcher("ReportServlet").forward(request, response);
-			} else {
-				if(request.getParameter("edit")!=null){
-					if(((User)request.getSession().getAttribute("user")).isAdmin()){
-						request.getRequestDispatcher("UserChooseServlet").forward(request, response);
-					}
-					else{
-						request.getRequestDispatcher("UserEditServlet").forward(request, response);
-					}
-					
+			if(request.getParameter("edit")!=null){
+				if(((User)request.getSession().getAttribute("user")).isAdmin()){
+					request.getRequestDispatcher("UserChooseServlet").forward(request, response);
+				}
+				else{
+					request.getRequestDispatcher("UserEditServlet").forward(request, response);
+				}
+				
+			}else {
+				//submitform pressed
+				if (request.getParameter("batchNameSubmit")!= null) {
+					request.getRequestDispatcher("ReportServlet").forward(request, response);
 				}
 				else{
 					request.getRequestDispatcher("WEB-INF/menu.jsp").forward(request, response);
