@@ -26,43 +26,55 @@
 <script>
 	//AJAX
 	$(document).on('keyup', '#element_1_1, #element_1_2, #element_1_3, #element_2_1, #element_2_2, #element_2_3', function() {
-
 		//henter siden returnDataAjax 
 		search();
 	});
 
 	$(document).on('keyup', '#batchname', function() {
-
 		//henter siden returnDataAjax 
 		if($("#batchname").val().length>=1){
 			search();
 		}
-		
 	});
 	
+	//click event er affyres, når bruger klikker på en række i tabellen
 	$(document).on('click', '.scrollContent tr', function(event) {
-		//denne function skal submitte form
+		//det skjulte form element "batchNameSubmit" sættes til batchnavnet på den række man har klikket på
 		$('input[name="batchNameSubmit"]').val(event.target.id);
 		document.batchform.submit();
-		//alert(event.target.id);
-		console.log("click");
-
 	});
 	
+	//sørger for at fange enter-tast - submitter form med den første række der er i tabellen
+	$(document).keypress( function(e) {
+        var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
+        if(key == 13) {
+            e.preventDefault();
+            if($('input[name="batchNameSubmit"]').val()!=""){
+            	document.batchform.submit();
+            }
+        }
+    });
+	
+	//laver den streng der skal bruges til GET request
 	function getFormString(){
 		return "returnDataAjax.jsp?input="+$("#batchname").val()+ "&fieldName="+ getFieldName() + "&startDate="+getFormDate(true)+"&endDate="+getFormDate(false);
 	}
 	
+	//finder ud af hvilken radiobutton der er valgt
 	function getFieldName(){
 		return $('input[name="rdoCreatedApproved"]:checked').val();
-		//document.getElementByName('rdoCreatedApproved');
 	}
 	
+	//udfører søgningen og sætter det skjulte element "batchNameSubmit" til den første rækkes ID
 	function search(){
 		$.get(getFormString(),function(data,status){
 		    if(status = "success"){
 		    	//indsæt de hentede data i div element
 		    	$("#return_data").html(data);
+		    	var batch = $(".scrollContent tr:first").children('td:first').attr('id');
+		    	if(batch!=""){
+		    		$('input[name="batchNameSubmit"]').val(batch);
+		    	}
 		    }
 		});
 
@@ -169,12 +181,10 @@
 			} else {
 				return false;
 			}
-			
 		}
 	}
-	
+
 	function test(){
-		
 		alert($('input[name="batchNameSubmit"]').val());
 	}
 </script>
@@ -316,8 +326,7 @@
  			    <input type="hidden" name="batchNameSubmit" id="batchNameSubmit" value="" />
 		
 			    <button id="btnSearch" class="text" type="button" name="btnSearch" value="Søg" onClick="search()">Søg</button>
-				<button id="btnSearch2" class="text" type="button" name="btnSearch2" value="Søg2" onClick="test()">Søg2</button>
-				<input id="submitReport" class="button_text" type="submit" name="submitReport" value="submitForm" /> 
+			  <!--  <button id="testsdf" class="text" type="button" name="testsdf" value="testsd" onClick="test()">test</button> -->
 				<input id="logout" class="button_text" type="submit" name="logout" value="logout" /> 
 					
 				<input id="edit" class="button_text" type="submit" name="edit" value="Edit Users" /> 
