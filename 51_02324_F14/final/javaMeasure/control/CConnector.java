@@ -16,7 +16,6 @@ import java.security.CodeSource;
 
 import javaMeasure.Measurement;
 import javaMeasure.Measurement.MeasurementType;
-import javaMeasure.PropertyHelper;
 import javaMeasure.control.interfaces.ICConnector;
 
 /**
@@ -30,6 +29,7 @@ public class CConnector implements ICConnector
 	private InetAddress IP = null;
 	private Process process;
 	private int networkPort = 4567;
+	private boolean testmode;
 
 	/**
 	 * Constructor, sets up the Default IP = The local machine
@@ -37,6 +37,7 @@ public class CConnector implements ICConnector
 	 */
 	public CConnector(boolean testmode)
 	{
+		this.testmode = testmode;
 		CodeSource codeSource = CConnector.class.getProtectionDomain().getCodeSource();
 		String CComponentPath = null;
 		String USBConnectorPath = null;
@@ -101,7 +102,7 @@ public class CConnector implements ICConnector
 			hardwarePort=99;
 			break;
 		case STROKE:
-			hardwarePort=0;
+			hardwarePort = (testmode ? 99 : 0); 
 			break;
 		}
 		String returnString = writeToSocket(hardwarePort + ";" + number + ";" + period + ";<EOF>", period, number);
