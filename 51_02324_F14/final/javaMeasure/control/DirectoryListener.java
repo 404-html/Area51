@@ -19,7 +19,7 @@ public class DirectoryListener extends Thread
 	private Path dir;
 	private WatchService watcher;
 	private IBatchMeasureController batchMeasureController;
-	
+
 	public DirectoryListener(String path, IBatchMeasureController batchMeasureController)
 	{
 		System.out.println("initialize: " + System.nanoTime());
@@ -33,68 +33,52 @@ public class DirectoryListener extends Thread
 			System.err.println(e1.getMessage());
 		}
 		this.dir = Paths.get(path);
-		
+
 	}
-	public void run()
-	{
+	public void run(){
 		synchronized(this){
 			boolean deletedFile, createdFile, modifiedFile;
-			try
-			{
-				// wait for key to be signaled
+			try	{	// wait for key to be signaled
 				this.watcher = this.dir.getFileSystem().newWatchService();
 				this.dir.register(this.watcher, StandardWatchEventKinds.ENTRY_CREATE,
 						StandardWatchEventKinds.ENTRY_DELETE, StandardWatchEventKinds.ENTRY_MODIFY);
-				
-				WatchKey watchKey = null;
-				watchKey = this.watcher.take(); // waits until any changes occur
+				WatchKey watchKey = this.watcher.take(); // waits until any changes occur
 				System.out.println(path + " is being watched");
 				while(!this.isInterrupted()){	
 					String filename = null;
-					deletedFile = false;
-					createdFile = false;
-					modifiedFile = false;
-					Thread.sleep(1000);
-
+					deletedFile = false; createdFile = false; modifiedFile = false;
+					
+					Thread.sleep(1000); //1 sec update interval
 					List<WatchEvent<?>> events = watchKey.pollEvents();
-					// one change can trigger up to 3 events
+					// one change can trigger up to 3 events - Finding the filename
 					for (WatchEvent<?> event : events)
 					{
 						filename = event.context().toString();
-						
 						if (event.kind() == StandardWatchEventKinds.ENTRY_CREATE)
 							createdFile = true;
-
 						if (event.kind() == StandardWatchEventKinds.ENTRY_DELETE)
 							deletedFile = true;
-						
 						if (event.kind() == StandardWatchEventKinds.ENTRY_MODIFY)
 							modifiedFile = true;
 					}	
-					
-					if(deletedFile && createdFile && modifiedFile) // if file is renamed
-					{
-						System.out.println("renamed file");	
+
+					if(deletedFile && createdFile && modifiedFile) { 
+						System.out.println("renamed file");	// file is renamed
 					}
-					else if(createdFile && modifiedFile) // if file is pasted these events are triggered
-					{			
-						batchMeasureController.addLeakMeasurement(path, filename);
+					else if(createdFile && modifiedFile) {			
+						batchMeasureController.addLeakMeasurement(path, filename); // file is pasted
 					}
-					else if(deletedFile) // if file is deleted
-					{
-						System.out.println("deleted file");
+					else if(deletedFile) {
+						System.out.println("deleted file"); // if file is deleted
 					}
-					else if(modifiedFile) // changes made in file
-					{
-						System.out.println("changes made in file");
+					else if(modifiedFile) {
+						System.out.println("changes made in file"); // changes made in file
 					}
-					else if(createdFile) // new file created
-					{
-						System.out.println("new file created");
+					else if(createdFile) {
+						System.out.println("new file created"); // new file created
 					}
-//					System.out.println("after check: " + System.nanoTime());
+					//					System.out.println("after check: " + System.nanoTime());
 				}
-				
 			} catch (Exception e){
 				System.out.println("Error: " + e.toString());
 			}
@@ -116,63 +100,63 @@ public class DirectoryListener extends Thread
 	public void interrupt(){
 		this.thread.interrupt();
 	}
-	
-// TODO these are all different form of changes in folder. if more than the current wants to be used replace current one with this	
 
-	
-//	public void run()
-//	{
-//		synchronized(this){
-//			boolean deletedFile, createdFile, modifiedFile;
-//			try
-//			{
-//				// wait for key to be signaled
-//				this.watcher = this.dir.getFileSystem().newWatchService();
-//				this.dir.register(this.watcher, StandardWatchEventKinds.ENTRY_CREATE,
-//						StandardWatchEventKinds.ENTRY_DELETE, StandardWatchEventKinds.ENTRY_MODIFY);
-//				
-//				WatchKey watchKey = null;
-//				watchKey = this.watcher.take(); // waits until any changes occur
-//				System.out.println(path + " is being watched");
-//				while(!this.isInterrupted()){	
-//					String filename = null;
-//					createdFile = false;
-//					modifiedFile = false;
-//					Thread.sleep(1000);
-//
-//					List<WatchEvent<?>> events = watchKey.pollEvents();
-//					// one change can trigger up to 3 events but only 2 of them are needed at the moment
-//					for (WatchEvent<?> event : events)
-//					{
-//						filename = event.context().toString(); // sets filename of file to be read by dasyFileReader
-//						
-//						if (event.kind() == StandardWatchEventKinds.ENTRY_CREATE)
-//							createdFile = true;
-//						
-//						if (event.kind() == StandardWatchEventKinds.ENTRY_MODIFY)
-//							modifiedFile = true;
-//					}	
-//					
-//					if(createdFile && modifiedFile) // if file is pasted these events are triggered		
-//						batchMeasureController.addLeakMeasurement(path, filename);
-//				}
-//				
-//			} catch (Exception e){
-//				System.out.println("Error: " + e.toString());
-//			}
-//		}
-//	}
-	
+	// TODO these are all different form of changes in folder. if more than the current wants to be used replace current one with this	
+
+
+	//	public void run()
+	//	{
+	//		synchronized(this){
+	//			boolean deletedFile, createdFile, modifiedFile;
+	//			try
+	//			{
+	//				// wait for key to be signaled
+	//				this.watcher = this.dir.getFileSystem().newWatchService();
+	//				this.dir.register(this.watcher, StandardWatchEventKinds.ENTRY_CREATE,
+	//						StandardWatchEventKinds.ENTRY_DELETE, StandardWatchEventKinds.ENTRY_MODIFY);
+	//				
+	//				WatchKey watchKey = null;
+	//				watchKey = this.watcher.take(); // waits until any changes occur
+	//				System.out.println(path + " is being watched");
+	//				while(!this.isInterrupted()){	
+	//					String filename = null;
+	//					createdFile = false;
+	//					modifiedFile = false;
+	//					Thread.sleep(1000);
+	//
+	//					List<WatchEvent<?>> events = watchKey.pollEvents();
+	//					// one change can trigger up to 3 events but only 2 of them are needed at the moment
+	//					for (WatchEvent<?> event : events)
+	//					{
+	//						filename = event.context().toString(); // sets filename of file to be read by dasyFileReader
+	//						
+	//						if (event.kind() == StandardWatchEventKinds.ENTRY_CREATE)
+	//							createdFile = true;
+	//						
+	//						if (event.kind() == StandardWatchEventKinds.ENTRY_MODIFY)
+	//							modifiedFile = true;
+	//					}	
+	//					
+	//					if(createdFile && modifiedFile) // if file is pasted these events are triggered		
+	//						batchMeasureController.addLeakMeasurement(path, filename);
+	//				}
+	//				
+	//			} catch (Exception e){
+	//				System.out.println("Error: " + e.toString());
+	//			}
+	//		}
+	//	}
+
 	public static void main(String[] args) throws IOException
 	{
-//		MainController m1 = new MainController();
-//		BatchMeasureController bc1 = new BatchMeasureController(m1);
-//		m1.activeUser = new User("test", 1);
-//		IDasyFileReader df = new DasyFileReader();
-//		System.out.println("file reader created");
-//		DirectoryListener dl = new DirectoryListener("C:/Dropbox/Mín mappa/Programmering/Area51/DasyLabFiles", bc1.getBatchMeasureGui(), df);
-//		dl.run();
-//		System.out.println("directoryListener running");
-		
+		//		MainController m1 = new MainController();
+		//		BatchMeasureController bc1 = new BatchMeasureController(m1);
+		//		m1.activeUser = new User("test", 1);
+		//		IDasyFileReader df = new DasyFileReader();
+		//		System.out.println("file reader created");
+		//		DirectoryListener dl = new DirectoryListener("C:/Dropbox/Mín mappa/Programmering/Area51/DasyLabFiles", bc1.getBatchMeasureGui(), df);
+		//		dl.run();
+		//		System.out.println("directoryListener running");
+
 	}
 }
