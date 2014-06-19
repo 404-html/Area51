@@ -42,7 +42,9 @@
 	
 	$(document).on('click', '.scrollContent tr', function(event) {
 		//denne function skal submitte form
-		alert(event.target.id);
+		$('input[name="batchNameSubmit"]').val(event.target.id);
+		document.batchform.submit();
+		//alert(event.target.id);
 		console.log("click");
 
 	});
@@ -143,6 +145,38 @@
 		
 		search();
 	}
+	
+	//input restriction
+	var digitsOnly = /[1234567890]/g;
+	var integerOnly = /[0-9\.]/g;
+	var alphaOnly = /[A-Za-z]/g;
+
+	function restrictCharacters(myfield, e, restrictionType) {
+		if (!e) var e = window.event
+		if (e.keyCode) code = e.keyCode;
+		else if (e.which) code = e.which;
+		var character = String.fromCharCode(code);
+	
+		// if they pressed esc... remove focus from field...
+		if (code==27) { this.blur(); return false; }
+		
+		// ignore if they are press other keys
+		// strange because code: 39 is the down key AND ' key...
+		// and DEL also equals .
+		if (!e.ctrlKey && code!=9 && code!=8 && code!=36 && code!=37 && code!=38 && (code!=39 || (code==39 && character=="'")) && code!=40) {
+			if (character.match(restrictionType)) {
+				return true;
+			} else {
+				return false;
+			}
+			
+		}
+	}
+	
+	function test(){
+		
+		alert($('input[name="batchNameSubmit"]').val());
+	}
 </script>
 
 
@@ -157,7 +191,7 @@
 		</div>
 		<!-- Form begins-->
 		<div id="form_container">
-			<form id="batch_form" class="appnitro" method="post" action="MenuServlet">
+			<form id="batchform" name="batchform" class="appnitro" method="post" action="MenuServlet">
 				<div class="form_description">
 					<h1>Noliac Batch-udtræk</h1>
 					<p>Indtast Batch ID eller vælg Batch ID fra rullemenu</p>
@@ -201,13 +235,13 @@
 								<li id="li_1">
 									<label class="description" for="element_1">Start dato</label> 
 									<span> 
-										<input id="element_1_2" name="element_1_2" class="element text" size="2" maxlength="2" value="" type="text"> / <label for="element_1_2">DD</label>
+										<input id="element_1_2" name="element_1_2" class="element text" size="2" maxlength="2" value="" type="text" onkeypress="return restrictCharacters(this, event, digitsOnly);"> / <label for="element_1_2">DD</label>
 									</span> 
 									<span>
-										<input id="element_1_1" name="element_1_1" class="element text" size="2" maxlength="2" value="" type="text"> / <label for="element_1_1">MM</label>
+										<input id="element_1_1" name="element_1_1" class="element text" size="2" maxlength="2" value="" type="text" onkeypress="return restrictCharacters(this, event, digitsOnly);"> / <label for="element_1_1">MM</label>
 									</span>
 									<span>
-										<input id="element_1_3" name="element_1_3" class="element text" size="4" maxlength="4" value="" type="text"> <label for="element_1_3">YYYY</label>
+										<input id="element_1_3" name="element_1_3" class="element text" size="4" maxlength="4" value="" type="text" onkeypress="return restrictCharacters(this, event, digitsOnly);"> <label for="element_1_3">YYYY</label>
 									</span>
 									<span id="calendar_1">
 										<img id="cal_img_1" class="datepicker" src="calendar.gif" alt="Pick a date." />
@@ -226,13 +260,13 @@
 								<li id="li_2" name="li_2">
 									<label class="description" for="element_2">Slut dato </label> 
 									<span>
-										<input id="element_2_2" name="element_2_2" class="element text" size="2" maxlength="2" value="" type="text"> / <label for="element_2_2">DD</label>
+										<input id="element_2_2" name="element_2_2" class="element text" size="2" maxlength="2" value="" type="text" onkeypress="return restrictCharacters(this, event, digitsOnly);"> / <label for="element_2_2">DD</label>
 									</span> 
 									<span> 
-										<input id="element_2_1" name="element_2_1" class="element text" size="2" maxlength="2" value=""	type="text"> / <label for="element_2_1">MM</label>
+										<input id="element_2_1" name="element_2_1" class="element text" size="2" maxlength="2" value=""	type="text" onkeypress="return restrictCharacters(this, event, digitsOnly);"> / <label for="element_2_1">MM</label>
 									</span>
 									<span>
-										<input id="element_2_3" name="element_2_3" class="element text" size="4" maxlength="4" value=""	type="text"> <label for="element_2_3">YYYY</label>
+										<input id="element_2_3" name="element_2_3" class="element text" size="4" maxlength="4" value=""	type="text" onkeypress="return restrictCharacters(this, event, digitsOnly);"> <label for="element_2_3">YYYY</label>
 									</span>
 									<span id="calendar_2"> 
 										<img id="cal_img_2"	class="datepicker" src="calendar.gif" alt="Pick a date.">
@@ -279,14 +313,15 @@
 				</table>
 
 
-<!-- 			  <input type="hidden" name="cmd" value="report" />  -->
-			  
-				    <button id="btnSearch" class="text" type="button" name="btnSearch" value="Søg" onClick="search()">Søg</button>
+ 			    <input type="hidden" name="batchNameSubmit" id="batchNameSubmit" value="" />
+		
+			    <button id="btnSearch" class="text" type="button" name="btnSearch" value="Søg" onClick="search()">Søg</button>
+				<button id="btnSearch2" class="text" type="button" name="btnSearch2" value="Søg2" onClick="test()">Søg2</button>
+				<input id="submitReport" class="button_text" type="submit" name="submitReport" value="submitForm" /> 
+				<input id="logout" class="button_text" type="submit" name="logout" value="logout" /> 
 					
-					<input id="logout" class="button_text" type="submit" name="logout" value="logout" /> 
-					
-					<input id="edit" class="button_text" type="submit" name="edit" value="Edit Users" /> 
-					</form>
+				<input id="edit" class="button_text" type="submit" name="edit" value="Edit Users" /> 
+		</form>
 			<div id="footer">By Area51</div>
 
 		</div>

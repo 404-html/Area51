@@ -35,16 +35,6 @@
 
 
 <%! //methods
-	String createTableRow(int numCols, int rowNum)
-	{
-		String returnString = "";
-		for(int i = 0;i<numCols;i++)
-		{
-			returnString = returnString + "\t<td id=\"tab" + rowNum + "\">" + "row" + rowNum + "|col" + (i+1) + "</td>\n"; 	
-		}
-		return returnString;
-	}
-
 	String createTableRow(Batch batch)
 	{
 		String returnString = "";
@@ -84,11 +74,11 @@
 	
 	Timestamp startDateTS = null;
 	Timestamp endDateTS = null;
-	//BatchDAO b = new BatchDAO(new SQLConnector());
+
 	DataBaseController dbctrl = (DataBaseController) request.getSession().getAttribute("database");
 
 	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//hh:mm:ss.SSS
+
 	//tester om datoer er indtastet korrekt
 	try{
 		Date parsedDate = dateFormat.parse(startDate);
