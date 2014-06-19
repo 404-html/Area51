@@ -3,7 +3,7 @@
   <asmv1:assemblyIdentity name="USBConnector.exe" version="1.0.0.1" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="USBConnector" version="1.0.5283.15519" language="neutral" processorArchitecture="msil" />
+    <assemblyIdentity name="USBConnector" version="1.0.5283.36609" language="neutral" processorArchitecture="msil" />
     <commandLine file="USBConnector.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -48,13 +48,13 @@
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="USBConnector.exe" size="24576">
-      <assemblyIdentity name="USBConnector" version="1.0.5283.15519" language="neutral" processorArchitecture="msil" />
+      <assemblyIdentity name="USBConnector" version="1.0.5283.36609" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>Nd2/MUO2Pxnf81kEdkaUOS9MJ7Y=</dsig:DigestValue>
+        <dsig:DigestValue>2iG5B56L1gCu6gnkO9F+lDzTMJY=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
