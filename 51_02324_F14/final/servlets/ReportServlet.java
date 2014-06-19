@@ -4,6 +4,7 @@ import java.io.*;
 
 import javaMeasure.Batch;
 import javaMeasure.BatchProfile;
+import javaMeasure.PropertyHelper;
 import javaMeasure.control.DataBaseController;
 import javaMeasure.control.interfaces.IDatabaseController.DataBaseException;
 
@@ -56,75 +57,89 @@ public class ReportServlet extends HttpServlet {
 				System.out.println("redirect til menu");
 			}
 			else{
-			//Load batch from database
-			String batchName = request.getParameter("batchNameSubmit"); //selectedbatch
-			System.out.println(batchName);
-			DataBaseController dbctrl = (DataBaseController) request.getSession().getAttribute("database");
-			try {
-				batch = dbctrl.getBatch(batchName);
-				profile = dbctrl.getBatchProfile(batch.getProfileID());
-				request.setAttribute("reportData", getReport(batch, profile));
-				request.getRequestDispatcher("WEB-INF/report.jsp").forward(request, response);
-			} catch (DataBaseException e) {
-				e.printStackTrace();
-			}
+				//Load batch from database
+				String batchName = request.getParameter("batchNameSubmit"); //selectedbatch
+				System.out.println(batchName);
+				DataBaseController dbctrl = (DataBaseController) request.getSession().getAttribute("database");
+				try {
+					batch = dbctrl.getBatch(batchName);
+					profile = dbctrl.getBatchProfile(batch.getProfileID());
+					request.setAttribute("reportData", getReport(batch, profile));
+					request.getRequestDispatcher("WEB-INF/report.jsp").forward(request, response);
+				} catch (DataBaseException e) {
+					e.printStackTrace();
+				}
 			}
 
 		}else {	
 			response.sendRedirect("LoginServlet");
 		}
 
-		}
-	
+	}
+
 	private void download(HttpServletRequest request,HttpServletResponse response) throws ServletException {
-	 		response.setContentType("application/octet-stream");
-	 		response.setHeader("Content-Disposition",
-	 		"attachment;filename=downloadfilename.csv");
-	 	try{
-	 		ServletOutputStream out = response.getOutputStream();
-	 		StringBuffer sb = generateCsvFileBuffer();
-	 		InputStream in = new ByteArrayInputStream(sb.toString().getBytes("UTF-8"));
-	 		
-	 		byte[] outputByte = new byte[4096];
-	 		
+		response.setContentType("application/octet-stream");
+		response.setHeader("Content-Disposition",
+				"attachment;filename=downloadfilename.csv");
+		try{
+			ServletOutputStream out = response.getOutputStream();
+			StringBuffer sb = generateCsvFileBuffer();
+			InputStream in = new ByteArrayInputStream(sb.toString().getBytes("UTF-8"));
+
+			byte[] outputByte = new byte[4096];
+
 			while(in.read(outputByte, 0, 4096) != -1)
 			{
 				out.write(outputByte, 0, 4096);
 			}
-			
+
 			in.close();
 			out.flush();
 			out.close();
-	 	} catch (IOException e) {
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally{
 
-	 	}		
+		}		
 	}
-	
+
 	private StringBuffer generateCsvFileBuffer() {
 		StringBuffer writer = new StringBuffer();
 		String[] report;
 		report = this.getReport(batch, profile);
+		
 		for(int i = 0; i < report.length; i++){
-		writer.append(report[i]);
-		}
-		for(int i = 0; i < report.length; i++){
-			if(i > 7){
-			if(i%8 == 0){
+			writer.append(PropertyHelper.readFromProperty("csvFileLabels", "" + i));
+			if(i < report.length -1){
 				writer.append(";");
 			}
-			System.out.print(i + ": " + report[i] + "\t");
+		}
+		writer.append("\n");
+		for(int i = 0; i < report.length; i++){
+			writer.append(report[i]);
+			if(i < report.length -1){
+				writer.append(";");
 			}
 		}
+//		for(int i = 0; i < report.length; i++){
+//			if(i > 7){
+//				if(i%8 == 0){
+//					writer.append(";");
+//				}
+//				System.out.print(i + ": " + report[i] + "\t");
+//			}
+//		}
 		return writer;
 	}
 
 	public String[] getReport(Batch batch, BatchProfile profile){
+			
 		String[] reportData = new String[56];
 
+		// index 0 is reserved for the batchname
 		reportData[0] = batch.getBatchString();
+	
 
 
 		for(int i = 0; i < 7; i++){
@@ -134,29 +149,29 @@ public class ReportServlet extends HttpServlet {
 		int row = 0;
 		for(int i = 7; i < 16; i++){
 
-			
+
 			if(( i < 10 || i > 12) && i < 16){
 				reportData[reportIndex] = profile.getProfileSettings().get(i).getValue();
 				if(row < 3){
 					try{
-					reportData[reportIndex+1] = String.valueOf(Double.parseDouble(profile.getProfileSettings().get(i).getValue()) - Double.parseDouble(profile.getProfileSettings().get(i+12).getValue()));
-					reportData[reportIndex+2] = String.valueOf(Double.parseDouble(profile.getProfileSettings().get(i).getValue()) + Double.parseDouble(profile.getProfileSettings().get(i+12).getValue()));
+						reportData[reportIndex+1] = String.valueOf(Double.parseDouble(profile.getProfileSettings().get(i).getValue()) - Double.parseDouble(profile.getProfileSettings().get(i+12).getValue()));
+						reportData[reportIndex+2] = String.valueOf(Double.parseDouble(profile.getProfileSettings().get(i).getValue()) + Double.parseDouble(profile.getProfileSettings().get(i+12).getValue()));
 					} catch (NumberFormatException e){
 						if(reportData[reportIndex+1] == null){
-						reportData[reportIndex+1] = "";
+							reportData[reportIndex+1] = "";
 						}
 						reportData[reportIndex+2] = "";
 					}
 
 				} else{
 					try{
-					reportData[reportIndex+1] = String.valueOf(Double.parseDouble(profile.getProfileSettings().get(i).getValue()) - Double.parseDouble(profile.getProfileSettings().get(i+10).getValue()));
-					reportData[reportIndex+2] = String.valueOf(Double.parseDouble(profile.getProfileSettings().get(i).getValue()) + Double.parseDouble(profile.getProfileSettings().get(i+10).getValue()));
+						reportData[reportIndex+1] = String.valueOf(Double.parseDouble(profile.getProfileSettings().get(i).getValue()) - Double.parseDouble(profile.getProfileSettings().get(i+10).getValue()));
+						reportData[reportIndex+2] = String.valueOf(Double.parseDouble(profile.getProfileSettings().get(i).getValue()) + Double.parseDouble(profile.getProfileSettings().get(i+10).getValue()));
 					} catch (NumberFormatException e){
 						if(reportData[reportIndex+1] == null){
 							reportData[reportIndex+1] = "";
-							}
-							reportData[reportIndex+2] = "";
+						}
+						reportData[reportIndex+2] = "";
 					}
 
 				}
@@ -173,10 +188,10 @@ public class ReportServlet extends HttpServlet {
 
 		for(int i = 0; i < reportData.length; i++){
 			if(i > 7){
-			if(i%8 == 0){
-				System.out.println("");
-			}
-			System.out.print(i + ": " + reportData[i] + "\t");
+				if(i%8 == 0){
+					System.out.println("");
+				}
+				System.out.print(i + ": " + reportData[i] + "\t");
 			}
 		}
 		return reportData;

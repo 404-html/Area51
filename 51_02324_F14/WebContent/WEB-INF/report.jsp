@@ -82,7 +82,10 @@
 							</tr>
 							<tr>
 								<td> Length (mm): </td>
-								<%for(int i = 8; i < 16; i++){ %>
+								<%
+								// length values start with specified normal value and ends with approved under measured 
+								for(int i = 8; i < 16; i++){
+								%>
 								<td>
 								<%
 									if(reportData[i] == null || reportData[i] == ""){
@@ -108,7 +111,10 @@
 							</tr>
 							<tr>
 								<td> Thickness (mm):</td>
-								<%for(int i = 24; i < 32; i++){ %>
+								<%
+								// index 
+								for(int i = 24; i < 32; i++){ 
+								%>
 								<td>
 								<%
 									if(reportData[i] == null || reportData[i] == ""){
