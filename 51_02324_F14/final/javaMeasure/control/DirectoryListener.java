@@ -47,7 +47,7 @@ public class DirectoryListener extends Thread
 				while(!this.isInterrupted()){	
 					String filename = null;
 					deletedFile = false; createdFile = false; modifiedFile = false;
-					
+
 					Thread.sleep(1000); //1 sec update interval
 					List<WatchEvent<?>> events = watchKey.pollEvents();
 					// one change can trigger up to 3 events - Finding the filename
@@ -100,52 +100,6 @@ public class DirectoryListener extends Thread
 	public void interrupt(){
 		this.thread.interrupt();
 	}
-
-	// TODO these are all different form of changes in folder. if more than the current wants to be used replace current one with this	
-
-
-	//	public void run()
-	//	{
-	//		synchronized(this){
-	//			boolean deletedFile, createdFile, modifiedFile;
-	//			try
-	//			{
-	//				// wait for key to be signaled
-	//				this.watcher = this.dir.getFileSystem().newWatchService();
-	//				this.dir.register(this.watcher, StandardWatchEventKinds.ENTRY_CREATE,
-	//						StandardWatchEventKinds.ENTRY_DELETE, StandardWatchEventKinds.ENTRY_MODIFY);
-	//				
-	//				WatchKey watchKey = null;
-	//				watchKey = this.watcher.take(); // waits until any changes occur
-	//				System.out.println(path + " is being watched");
-	//				while(!this.isInterrupted()){	
-	//					String filename = null;
-	//					createdFile = false;
-	//					modifiedFile = false;
-	//					Thread.sleep(1000);
-	//
-	//					List<WatchEvent<?>> events = watchKey.pollEvents();
-	//					// one change can trigger up to 3 events but only 2 of them are needed at the moment
-	//					for (WatchEvent<?> event : events)
-	//					{
-	//						filename = event.context().toString(); // sets filename of file to be read by dasyFileReader
-	//						
-	//						if (event.kind() == StandardWatchEventKinds.ENTRY_CREATE)
-	//							createdFile = true;
-	//						
-	//						if (event.kind() == StandardWatchEventKinds.ENTRY_MODIFY)
-	//							modifiedFile = true;
-	//					}	
-	//					
-	//					if(createdFile && modifiedFile) // if file is pasted these events are triggered		
-	//						batchMeasureController.addLeakMeasurement(path, filename);
-	//				}
-	//				
-	//			} catch (Exception e){
-	//				System.out.println("Error: " + e.toString());
-	//			}
-	//		}
-	//	}
 
 	public static void main(String[] args) throws IOException
 	{

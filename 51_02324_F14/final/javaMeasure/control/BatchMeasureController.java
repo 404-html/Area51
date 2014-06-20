@@ -333,7 +333,7 @@ public class BatchMeasureController implements IBatchMeasureController {
 	public void updateTable(){
 		if(activeBatch == null) return;
 
-		ArrayList<Measurement[]> measurementList = activeBatch.getNewList();
+		ArrayList<Measurement[]> measurementList = activeBatch.getMeasurementsList();
 		System.out.println("measurementList: " + measurementList);
 		//		ArrayList<String[]> newList = new ArrayList<>();
 		String[][] newList = new String[measurementList.size()][4];

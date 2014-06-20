@@ -217,10 +217,6 @@ public class Batch {
 		return nextStrokeIndex;
 	}
 
-	public ArrayList<Measurement[]> getNewList(){
-		return measurements;
-	}
-
 	public String getCreated_by() {
 		return created_by;
 	}
