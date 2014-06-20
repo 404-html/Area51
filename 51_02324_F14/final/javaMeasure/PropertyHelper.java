@@ -28,15 +28,15 @@ public class PropertyHelper {
 	public static void writeToProperty(String filename, String key, String value){
 		
 		//**********************PATH FIX**************************************************
-//		CodeSource codeSource = CConnector.class.getProtectionDomain().getCodeSource();
-//		String configPath = null;
-//		File jarFile = null;
-//			try {
-//				jarFile = new File(codeSource.getLocation().toURI().getPath());
-//				configPath = jarFile.getParentFile().getParentFile().getPath() + "/";
-//			} catch (URISyntaxException e) {
-//				System.err.println("failed to get path for properties");
-//			}
+		CodeSource codeSource = CConnector.class.getProtectionDomain().getCodeSource();
+		String configPath = null;
+		File jarFile = null;
+			try {
+				jarFile = new File(codeSource.getLocation().toURI().getPath());
+				configPath = jarFile.getParentFile().getParentFile().getPath() + "/";
+			} catch (URISyntaxException e) {
+				System.err.println("failed to get path for properties");
+			}
 		//*********************************************************************************
 		
 		InputStream input = null;
@@ -51,7 +51,7 @@ public class PropertyHelper {
 			System.err.println("File not found. File will be created.");
 		}
 		try {
-			output = new FileOutputStream(filename + ".properties", false);	
+			output = new FileOutputStream(configPath + filename + ".properties", false);	
 		} catch (FileNotFoundException f){
 			System.err.println("PropertyHelper writeToProperty() - file not found exception");
 		} 
@@ -75,24 +75,24 @@ public class PropertyHelper {
 	public static String readFromProperty(String fileName, String key){
 		
 		//**********************PATH FIX**************************************************
-//		CodeSource codeSource = CConnector.class.getProtectionDomain().getCodeSource();
-//		String configPath = null;
-//		File jarFile = null;
-//			try {
-//				jarFile = new File(codeSource.getLocation().toURI().getPath());
-//				configPath = jarFile.getParentFile().getParentFile().getPath() + "/";
-//			} catch (URISyntaxException e) {
-//				System.err.println("failed to get path for properties");
-//			}
+		CodeSource codeSource = CConnector.class.getProtectionDomain().getCodeSource();
+		String configPath = null;
+		File jarFile = null;
+			try {
+				jarFile = new File(codeSource.getLocation().toURI().getPath());
+				configPath = jarFile.getParentFile().getParentFile().getPath() + "/";
+			} catch (URISyntaxException e) {
+				System.err.println("failed to get path for properties");
+			}
 		//*********************************************************************************
 		
 		String value = null;
 		Properties prop = new Properties();
 		InputStream in = null;
 		try {
-			System.out.println(fileName + ".properties");
+			System.out.println(configPath + fileName + ".properties");
 			
-			in = new FileInputStream(fileName + ".properties");
+			in = new FileInputStream(configPath + fileName + ".properties");
 			prop.load(in);
 			value = prop.getProperty(key);
 			
