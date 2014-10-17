@@ -1,4 +1,4 @@
-// Generated from C:\GoogleDrev\3 semester\Compiler teknik\MINIJAVA.v2.0\MiniJava.g4 by ANTLR 4.1
+// Generated from D:\git\Area51\MiniJavaCompiler_Frontend\src\compiler\Frontend\MiniJava.g4 by ANTLR 4.1
 package compiler.Frontend;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -1796,6 +1796,7 @@ public class MiniJavaParser extends Parser {
 
 	public static class Level3Context extends ParserRuleContext {
 		public Level4Context head;
+		public Token binOp;
 		public Level4Context level4;
 		public List<Level4Context> tail = new ArrayList<Level4Context>();
 		public Level4Context level4(int i) {
@@ -1838,9 +1839,10 @@ public class MiniJavaParser extends Parser {
 				{
 				{
 				setState(319);
+				((Level3Context)_localctx).binOp = _input.LT(1);
 				_la = _input.LA(1);
 				if ( !(_la==7 || _la==26) ) {
-				_errHandler.recoverInline(this);
+					((Level3Context)_localctx).binOp = (Token)_errHandler.recoverInline(this);
 				}
 				consume();
 				setState(320); ((Level3Context)_localctx).level4 = level4();
