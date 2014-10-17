@@ -15,7 +15,7 @@ class testmain {
 		while ("what") {
 			System.out.println("fisk");
 			a(d);
-			b.f();
+			f(d);
 		}
 	}
 }
@@ -25,7 +25,7 @@ class A {
 		return;
 	}
 	static int test2(){
-		return;
+		return (7+8);
 	}
 }
 

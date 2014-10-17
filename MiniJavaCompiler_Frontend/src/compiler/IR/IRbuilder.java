@@ -285,7 +285,7 @@ public class IRbuilder extends AbstractParseTreeVisitor<IR> implements MiniJavaV
 			argument = visitExpression(ctx.argument);
 		}
 
-		return new MJPrintln(argument);
+		return new MJReturn(argument);
 	}
 
 	//	expression
