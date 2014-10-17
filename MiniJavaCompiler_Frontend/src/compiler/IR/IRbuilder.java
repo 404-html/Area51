@@ -228,7 +228,7 @@ public class IRbuilder extends AbstractParseTreeVisitor<IR> implements MiniJavaV
 		
 		MJBlock body = new MJBlock(variableDeclarations, statements);
 		
-		MJMethod method = new MJMethod(returnType, methodName, parameterList, body, isPublic, isStatic);
+		MJMethod method = new MJMethod(returnType, methodName, parameterList, body, isStatic, isPublic);
 		
 		return method;
 	}
