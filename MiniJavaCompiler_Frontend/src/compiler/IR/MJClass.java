@@ -57,7 +57,7 @@ public class MJClass extends IR {
 		prepri.println("class " + this.getName() + " extends "
 				+ this.getSuperClass() + " {");
 		prepri.in();
-
+		//System.err.println(this.fieldList);
 		for (MJVariable v : this.fieldList) {
 			v.prettyPrint(prepri);
 			prepri.println(";");

@@ -17,6 +17,5 @@ public class MJWhile extends MJStatement {
 		this.expr.prettyPrint(prepri);
 		prepri.print(")");
 		this.stat.prettyPrint(prepri);
-		prepri.println(";");
 	}
 }

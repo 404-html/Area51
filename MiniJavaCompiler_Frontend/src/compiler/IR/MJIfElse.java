@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import compiler.PrettyPrinter;
 
 public class MJIfElse extends MJIf {
-	protected ArrayList<MJBlock> elseBlock;
+	protected MJBlock elseBlock;
 
-	public MJIfElse(MJExpression expr, MJBlock ifBlock, ArrayList<MJBlock> elseBlock){
+	public MJIfElse(MJExpression expr, MJBlock ifBlock, MJBlock elseBlock){
 		super(expr, ifBlock);
 		this.elseBlock = elseBlock;
 	}
@@ -16,10 +16,9 @@ public class MJIfElse extends MJIf {
 		this.expr.prettyPrint(prepri);
 		prepri.print(")");
 		this.ifBlock.prettyPrint(prepri);
-		for(MJBlock b : elseBlock){
-			prepri.print("else");
-			b.prettyPrint(prepri);
-		}
+
+		prepri.print("else");
+		elseBlock.prettyPrint(prepri);
 	}
 
 }
