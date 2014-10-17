@@ -26,7 +26,7 @@ public class MJMethodCallStmt extends MJStatement {
 				methodCall.prettyPrint(prepri);
 			}
 		}
-		prepri.print(");");
+		prepri.println(");");
 		
 		
 	}

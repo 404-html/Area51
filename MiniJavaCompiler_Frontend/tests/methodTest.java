@@ -15,6 +15,7 @@ class testmain {
 		while ("what") {
 			System.out.println("fisk");
 			a(d);
+			b.f();
 		}
 	}
 }
