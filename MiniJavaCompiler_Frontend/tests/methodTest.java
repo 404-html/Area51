@@ -7,7 +7,7 @@ class testmain {
 		{
 			
 		}
-		if (false && false && 7 < 8+ 7 -1 * -7)	{
+		if (false && false && 7 + 8 - 5< 8 * - 2)	{
 			
 		} else {
 			System.out.println("fisks");
