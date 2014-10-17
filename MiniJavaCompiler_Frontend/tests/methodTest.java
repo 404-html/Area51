@@ -14,3 +14,7 @@ class A {
 		return;
 	}
 }
+
+class B {
+	
+}
