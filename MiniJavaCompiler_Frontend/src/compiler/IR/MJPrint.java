@@ -19,7 +19,7 @@ public class MJPrint extends MJStatement {
 	}
 
 	public void prettyPrint(PrettyPrinter prepri) {
-		prepri.print("System.out.println(");
+		prepri.print("System.out.print(");
 		this.parameter.prettyPrint(prepri);
 		prepri.println(");");
 	}
