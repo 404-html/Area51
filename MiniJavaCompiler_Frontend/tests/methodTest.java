@@ -14,14 +14,14 @@ class testmain {
 		}
 		while ("what") {
 			System.out.println("fisk");
-			a(b);
+			a.a(b);
 		}
 	}
 }
 
 class A {
-	int a;;;
-	boolean fisse;;;
+	int a;
+	boolean b;
 	public void test() {
 
 		return;
