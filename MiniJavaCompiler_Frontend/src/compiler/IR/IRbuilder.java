@@ -127,7 +127,6 @@ public class IRbuilder extends AbstractParseTreeVisitor<IR> implements MiniJavaV
 		for (MiniJavaParser.StatementContext c : ctx.statement()) {
 			statements.add(visitStatement(c));
 		}
-		System.err.println(variableDeclarations);
 		return new MJBlock(variableDeclarations, statements);
 	}
 
