@@ -32,19 +32,43 @@ public class UserChooseServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+    
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("WEB-INF/userchoose.jsp").forward(request, response);
+		check(request, response);
+	}
+	protected void check(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		if(((User) request.getSession().getAttribute("user")) != null){
+			if(((User) request.getSession().getAttribute("user")).isActive()){
+				if(((User) request.getSession().getAttribute("user")).isAdmin()){
+					onpage(request, response);
+				}
+				else{
+					request.getRequestDispatcher("MenuServlet").forward(request, response);
+				}
+			}	
+			else{
+				request.getRequestDispatcher("LoginServlet").forward(request, response);
+			}
+		}
+		else{
+			request.getRequestDispatcher("LoginServlet").forward(request, response);
+		}
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		check(request, response);
+		
+	}
+	protected void onpage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("UserChoose - Post");
 		String chosen = request.getParameter("chosen");
 		System.out.println(chosen);
 		if(request.getParameter("Done")!=null){
-			request.getRequestDispatcher("WEB-INF/form.jsp").forward(request, response);
+			request.getRequestDispatcher("MenuServlet").forward(request, response);
 		}
 		else{
 		try {
@@ -52,7 +76,7 @@ public class UserChooseServlet extends HttpServlet {
 				System.out.println("editing "+chosen);
 				request.getSession().setAttribute("usernotfound", null);
 				request.getSession().setAttribute("editing", dbctrl.getUserFromString(chosen));
-				request.getRequestDispatcher("WEB-INF/useredit.jsp").forward(request, response);
+				request.getRequestDispatcher("UserEditServlet").forward(request, response);
 			}
 			else{
 				request.getSession().setAttribute("usernotfound", true);

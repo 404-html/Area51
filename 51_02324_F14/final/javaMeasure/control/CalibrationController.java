@@ -73,7 +73,7 @@ public class CalibrationController implements ICalibrationController{
 	}
 	
 	public static void main(String[] args){
-		CalibrationController c = new CalibrationController(new CConnector());
+		CalibrationController c = new CalibrationController(new CConnector(true));
 		c.gui.run();
 		
 	}

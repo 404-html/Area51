@@ -1,4 +1,5 @@
 package javaMeasure.control.interfaces;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import javaMeasure.*;
@@ -7,6 +8,8 @@ import javaMeasure.Measurement.MeasurementType;
 public interface IDatabaseController {
 	
 	//User functionality
+	User getActiveUserFromString(String loginString) throws DataBaseException, UserNotFoundException;
+	ArrayList<User> getActiveUserList() throws DataBaseException;
 	ArrayList<User> getUserList() throws DataBaseException;
 	boolean isUserNameInDB(String userName) throws DataBaseException;
 	boolean validateUser(User user) throws DataBaseException;
@@ -24,7 +27,10 @@ public interface IDatabaseController {
 		
 	//Batches
 	void addToDB(Batch batch) throws DataBaseException;
+	void updateBatch(Batch activeBatch) throws DataBaseException;
 	ArrayList<Batch> getBatches() throws DataBaseException;
+	ArrayList<Batch> getBatches(String partialBatchName, String fieldName,
+			Timestamp startDate, Timestamp endDate) throws DataBaseException;
 	ArrayList<String> getBatchNames() throws DataBaseException;
 	public Batch getBatch(String batchName) throws DataBaseException;
 	public Batch getBatch(int batchID) throws DataBaseException;
@@ -61,6 +67,9 @@ public interface IDatabaseController {
 	public class UserNotFoundException extends Exception {
 
 	}
+	
+
+	
 
 
 	

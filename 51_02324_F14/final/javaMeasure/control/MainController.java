@@ -23,11 +23,12 @@ public class MainController implements IMainController{
 	INewBatchController newBatchController;
 	User activeUser;
 
-	public MainController() {
+	public MainController(boolean testmode) {
 		super();
 		this.databaseController = new DataBaseController();
 		this.dasyFileReader = new DasyFileReader();
-		this.cConnector = new CConnector();
+		this.cConnector = new CConnector(testmode);
+		
 		setLookOfGuis();
 	}
 
@@ -94,28 +95,25 @@ public class MainController implements IMainController{
 			UIManager.setLookAndFeel(
 			        UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	@Override
 	public void logOut() {
-		//mainMenuController.showGui(false);
 		batchMeasureController.showGui(false);
 		loginController.showGui(true);
 		activeUser= null;
 		
 	}
+
+	
 
 	
 	

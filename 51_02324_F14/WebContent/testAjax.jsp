@@ -5,25 +5,29 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Test ajax</title>
-<link rel="stylesheet" type="text/css" href="view.css" media="all"/>
+<link rel="stylesheet" type="text/css" href="menu.css"/>
+<!-- <link rel="stylesheet" href="table.css" type="text/css"/> -->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script>
 	$(document).on('keyup', '#input_text', function() {
 		//skriver det indtastede ud i div elementet der hedder test
-		$("#test").html($("#input_text").val());
+		$("#test").html($("#input_text").val()); //kun til test
 		
 		//henter siden returnDataAjax 
-		$.get("returnDataAjax.jsp?input="+$("#input_text").val(),function(data,status){
-		    if(status = "success")
-		    {
-		    	//indsæt de hentede data i div element
-		    	$("#return_data").html(data);
-		    }
-		});
+		if($("#input_text").val().length>=2){
+			$.get("returnDataAjax.jsp?input="+$("#input_text").val(),function(data,status){
+			    if(status = "success"){
+			    	//indsæt de hentede data i div element
+			    	$("#return_data").html(data);
+			    }
+		
+			});
+		}
 		
 	});
 	
-	$(document).on('click', 'tr.returnRow', function(event) {
+	$(document).on('click', '.scrollContent tr', function(event) {
+		//denne function skal submitte form
 		alert(event.target.id);
 		console.log("click");
 		//$(this).not(':first-child').css("background","green");
@@ -59,7 +63,12 @@
 				<li>
 					<input id="input_text" name="input_text" class="element text medium" type="text" maxlength="255" value=""/>
 				</li>
-	
+				<li id="li_3">
+					<label for="input_text2" class="description">bruges ikke</label>
+				</li>
+				<li>
+					<input id="input_text2" name="input_text2" class="element text medium" type="text" maxlength="255" value=""/>
+				</li>	
 			</ul>
 			</form>
 		<p>

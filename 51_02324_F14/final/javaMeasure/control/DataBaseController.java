@@ -1,5 +1,6 @@
 package javaMeasure.control;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import javaMeasure.*;
@@ -11,16 +12,15 @@ import javaMeasure.control.interfaces.ISQLConnector;
 
 public class DataBaseController implements IDatabaseController {
 
-	IUserDAO userDAO;
-	IBatchDAO batchDAO;
-	IBatchProfileDAO batchProfileDAO;
-	IMeasurementDAO measurementDAO;
-	
-	private ISQLConnector sqlConnector = new SQLConnector();
+	private IUserDAO userDAO;
+	private IBatchDAO batchDAO;
+	private IBatchProfileDAO batchProfileDAO;
+	private IMeasurementDAO measurementDAO;
+	private ISQLConnector sqlConnector;
 	//TODO should if there is time extend the amount of exceptions!
 	public DataBaseController() {
 		super();
-		
+		sqlConnector = new SQLConnector();
 		userDAO = new UserDAO(sqlConnector);
 		batchDAO = new BatchDAO(sqlConnector);
 		batchProfileDAO = new BatchProfileDAO(sqlConnector);
@@ -85,10 +85,14 @@ public class DataBaseController implements IDatabaseController {
 	public void addToDB(Batch batch) throws DataBaseException {
 		batchDAO.addToDB(batch);
 	}
-
+	@Override
 	public ArrayList<Batch> getBatches() throws DataBaseException {
 		return batchDAO.getBatches();
 		}
+	@Override
+	public ArrayList<Batch> getBatches(String partialBatchName, String fieldName, Timestamp startDate, Timestamp endDate) throws DataBaseException{
+		return batchDAO.getBatches(partialBatchName, fieldName, startDate, endDate);
+	}
 	
 	@Override
 	public ArrayList<String> getBatchNames() throws DataBaseException {
@@ -166,8 +170,6 @@ public class DataBaseController implements IDatabaseController {
 	@Override
 	public void deleteBatchSettings(Batch batch) throws DataBaseException {
 		 batchDAO.deleteBatchSettings(batch);
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -176,13 +178,26 @@ public class DataBaseController implements IDatabaseController {
 		batchDAO.updateBatchSettings(settings, profileID);
 		
 	}
-//	public void updateBatchSettings(BatchSetting b) throws DataBaseException{
-//		batchDAO.updateBatchSettings(b);
-//	}
 
 	@Override
 	public boolean canWeRemoveAnotherAdmin() throws DataBaseException {
 		return this.userDAO.canWeRemoveAnotherAdmin();
+	}
+
+	@Override
+	public void updateBatch(Batch activeBatch) throws DataBaseException {
+		batchDAO.updateBatch(activeBatch);
+		
+	}
+
+	@Override
+	public ArrayList<User> getActiveUserList() throws DataBaseException {
+		return userDAO.getActiveUserList();
+	}
+
+	@Override
+	public User getActiveUserFromString(String loginString) throws DataBaseException, UserNotFoundException {
+		return userDAO.getActiveUserFromString(loginString);
 	}
 
 	

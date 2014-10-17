@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
  * Servlet implementation class NoliacServlet
  */
 @WebServlet("/NoliacServlet")
-//Front controller - Handles all requests.
+//DefaultController - redirects to relevant controller - might be omitted
 public class NoliacServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -35,6 +35,7 @@ public class NoliacServlet extends HttpServlet {
 
 	private void processReq(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		//Checks whether user is logged in
 		if (request.getSession().getAttribute("user") != null){ 
 			response.sendRedirect("MenuServlet");
 		} else { //user not logged in

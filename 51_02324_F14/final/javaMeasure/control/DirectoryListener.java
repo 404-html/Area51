@@ -19,7 +19,7 @@ public class DirectoryListener extends Thread
 	private Path dir;
 	private WatchService watcher;
 	private IBatchMeasureController batchMeasureController;
-	
+
 	public DirectoryListener(String path, IBatchMeasureController batchMeasureController)
 	{
 		System.out.println("initialize: " + System.nanoTime());
@@ -33,84 +33,55 @@ public class DirectoryListener extends Thread
 			System.err.println(e1.getMessage());
 		}
 		this.dir = Paths.get(path);
-		
+
 	}
-	public void run()
-	{
+	public void run(){
 		synchronized(this){
 			boolean deletedFile, createdFile, modifiedFile;
-			try
-			{
-				// wait for key to be signaled
-				WatchService watcher = this.dir.getFileSystem().newWatchService();
-				this.dir.register(watcher, StandardWatchEventKinds.ENTRY_CREATE,
+			try	{	// wait for key to be signaled
+				this.watcher = this.dir.getFileSystem().newWatchService();
+				this.dir.register(this.watcher, StandardWatchEventKinds.ENTRY_CREATE,
 						StandardWatchEventKinds.ENTRY_DELETE, StandardWatchEventKinds.ENTRY_MODIFY);
-				
-				WatchKey watchKey = null;
-				System.out.println("before .take(): " + System.nanoTime());
-				watchKey = this.watcher.take(); // waits until any changes occur
+				WatchKey watchKey = this.watcher.take(); // waits until any changes occur
 				System.out.println(path + " is being watched");
-				while(!this.isInterrupted())
-				{
-					
+				while(!this.isInterrupted()){	
 					String filename = null;
-					deletedFile = false;
-					createdFile = false;
-					modifiedFile = false;
-					Thread.sleep(1000);
+					deletedFile = false; createdFile = false; modifiedFile = false;
 
-					System.out.println("start check: " + System.nanoTime());
-					System.out.println("checking: " + path);
+					Thread.sleep(1000); //1 sec update interval
 					List<WatchEvent<?>> events = watchKey.pollEvents();
-					// one change can trigger up to 3 events
+					// one change can trigger up to 3 events - Finding the filename
 					for (WatchEvent<?> event : events)
 					{
 						filename = event.context().toString();
-						
 						if (event.kind() == StandardWatchEventKinds.ENTRY_CREATE)
-						{
-							System.out.println("Created: " + event.context().toString());
 							createdFile = true;
-						}
 						if (event.kind() == StandardWatchEventKinds.ENTRY_DELETE)
-						{
-							System.out.println("Delete: " + event.context().toString());
 							deletedFile = true;
-						}
 						if (event.kind() == StandardWatchEventKinds.ENTRY_MODIFY)
-						{
-							System.out.println("Modify: " + event.context().toString());
 							modifiedFile = true;
-						}
+					}	
+
+					if(deletedFile && createdFile && modifiedFile) { 
+						System.out.println("renamed file");	// file is renamed
 					}
-					if(deletedFile && createdFile && modifiedFile) // if file is renamed
-					{
-						System.out.println("renamed file");	
+					else if(createdFile && modifiedFile) {			
+						batchMeasureController.addLeakMeasurement(path, filename); // file is pasted
 					}
-					else if(createdFile && modifiedFile) // if file is pasted
-					{			
-						batchMeasureController.addLeakMeasurement(path, filename);
+					else if(deletedFile) {
+						System.out.println("deleted file"); // if file is deleted
 					}
-					else if(deletedFile) // if file is deleted
-					{
-						System.out.println("deleted file");
+					else if(modifiedFile) {
+						System.out.println("changes made in file"); // changes made in file
 					}
-					else if(modifiedFile) // changes made in file
-					{
-						System.out.println("changes made in file");
+					else if(createdFile) {
+						System.out.println("new file created"); // new file created
 					}
-					else if(createdFile) // new file created
-					{
-						System.out.println("new file created");
-					}
-					System.out.println("after check: " + System.nanoTime());
+					//					System.out.println("after check: " + System.nanoTime());
 				}
-				
-			} catch (Exception e)
-			{
+			} catch (Exception e){
 				System.out.println("Error: " + e.toString());
 			}
-			
 		}
 	}
 	public void start()
@@ -129,16 +100,17 @@ public class DirectoryListener extends Thread
 	public void interrupt(){
 		this.thread.interrupt();
 	}
+
 	public static void main(String[] args) throws IOException
 	{
-//		MainController m1 = new MainController();
-//		BatchMeasureController bc1 = new BatchMeasureController(m1);
-//		m1.activeUser = new User("test", 1);
-//		IDasyFileReader df = new DasyFileReader();
-//		System.out.println("file reader created");
-//		DirectoryListener dl = new DirectoryListener("C:/Dropbox/Mín mappa/Programmering/Area51/DasyLabFiles", bc1.getBatchMeasureGui(), df);
-//		dl.run();
-//		System.out.println("directoryListener running");
-		
+		//		MainController m1 = new MainController();
+		//		BatchMeasureController bc1 = new BatchMeasureController(m1);
+		//		m1.activeUser = new User("test", 1);
+		//		IDasyFileReader df = new DasyFileReader();
+		//		System.out.println("file reader created");
+		//		DirectoryListener dl = new DirectoryListener("C:/Dropbox/Mín mappa/Programmering/Area51/DasyLabFiles", bc1.getBatchMeasureGui(), df);
+		//		dl.run();
+		//		System.out.println("directoryListener running");
+
 	}
 }

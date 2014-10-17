@@ -1,6 +1,7 @@
 package javaMeasure.control;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -9,7 +10,9 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
+import java.net.URISyntaxException;
 import java.net.UnknownHostException;
+import java.security.CodeSource;
 
 import javaMeasure.Measurement;
 import javaMeasure.Measurement.MeasurementType;
@@ -24,13 +27,45 @@ public class CConnector implements ICConnector
 {
 	private Socket socket;
 	private InetAddress IP = null;
+	private Process process;
 	private int networkPort = 4567;
+	private boolean testmode;
 
 	/**
 	 * Constructor, sets up the Default IP = The local machine
+	 * @throws ConnectionException if primary usb daq has failed to run because of missing installation this exception is thrown
 	 */
-	public CConnector()
+	public CConnector(boolean testmode)
 	{
+		this.testmode = testmode;
+		CodeSource codeSource = CConnector.class.getProtectionDomain().getCodeSource();
+		String CComponentPath = null;
+		String USBConnectorPath = null;
+		File jarFile = null;
+		// finds location of the jar file. to make it possible to have the file anywhere you want to
+		try {
+			jarFile = new File(codeSource.getLocation().toURI().getPath()); 
+			CComponentPath = jarFile.getParentFile().getParentFile().getPath();
+			if(!testmode){
+			USBConnectorPath = CComponentPath + "/C#Code/USBConnector/USBConnector.exe";
+			} else{
+				USBConnectorPath = CComponentPath + "/C#Code/USBConnector - TEST MODE/USBConnector - TEST MODE.exe";
+			}
+			USBConnectorPath = USBConnectorPath.replace("\\", "/");
+			System.out.println("dir: " + CComponentPath);
+		} catch (URISyntaxException e) {
+			System.err.println("could not find jar file location!");
+		}
+		System.out.println("USBConnectorPath: " + USBConnectorPath);
+		System.out.println("starting in testmode: " + testmode);
+		Runtime rt = Runtime.getRuntime() ;     
+		try {
+			process = rt.exec(USBConnectorPath) ;
+			System.out.println("USBConnector started");
+			
+		} catch (IOException e) {
+			System.err.println("invalid execution String");
+		}
 		try
 		{
 			this.IP = InetAddress.getLocalHost();
@@ -41,6 +76,11 @@ public class CConnector implements ICConnector
 		}
 
 		System.out.println("IP in CConnector is: "+this.IP.getHostAddress());
+	}
+	
+	public void closeProcess(){
+		System.out.println("C# component destroyed");
+		process.destroy();
 	}
 
 
@@ -62,7 +102,7 @@ public class CConnector implements ICConnector
 			hardwarePort=99;
 			break;
 		case STROKE:
-			hardwarePort=99;
+			hardwarePort = (testmode ? 99 : 0); 
 			break;
 		}
 		String returnString = writeToSocket(hardwarePort + ";" + number + ";" + period + ";<EOF>", period, number);
@@ -202,6 +242,11 @@ public class CConnector implements ICConnector
 	public void setPort(int port)
 	{
 		this.networkPort=port;
+	}
+	
+	// testing if C# process starts correctly
+	public static void main(String[] args){
+			new CConnector(false);	
 	}
 
 

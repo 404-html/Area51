@@ -1,6 +1,5 @@
 package javaMeasure.view;
 
-import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JList;
@@ -11,11 +10,14 @@ import javax.swing.JLabel;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JTable;
 import javax.swing.event.TableModelEvent;
@@ -26,9 +28,7 @@ import javax.swing.table.TableCellRenderer;
 import java.io.File;
 import java.util.ArrayList;
 
-import javaMeasure.Batch;
 import javaMeasure.BatchSetting;
-import javaMeasure.Measurement;
 import javaMeasure.PropertyHelper;
 import javaMeasure.control.interfaces.IBatchMeasureController;
 import javaMeasure.view.interfaces.IBatchMeasureGui;
@@ -36,13 +36,24 @@ import javaMeasure.view.interfaces.IBatchMeasureGui;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
+
+
+
 @SuppressWarnings("serial")
 public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 	private static final String DASY_PATH = "dasyPath";
 	private static final int COLUMNS_LENGTH = 4;
+	private JButton btnEditBatchSettings;
+	private JButton btnDeleteLeak;
+	private JButton btnLeakCurrentMeasurement;
+	private JButton btnStrokeMeasurement;
+	private JButton btnDeleteStroke;
+	private JButton btnApproveBatch;
+
 	private DefaultTableModel model;
 	private JTable table;
-	private JScrollPane scrollPane;
+	private JScrollPane scrollTable;
+	private JScrollPane logScroll;
 	private DefaultTableModel logModel;
 	private Object[][] tableData;
 	private ArrayList<String> logInfo = new ArrayList<>(); // list used to update log. updates are added to this list
@@ -64,6 +75,17 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 
 		setBounds(100, 100, 1040, 650);
 
+		for(Frame f : getFrames()){
+			// WindowAdapter() implements all window listeners as empty methods. therefore it is only neccessary to override needed methods
+			// this is used to make sure the C# component process is killed when program is closed
+			f.addWindowListener(new WindowAdapter()  {
+				@Override
+				public void windowClosing(WindowEvent arg0) {
+					BatchMeasureGui.this.batchMeasureController.getMainController().getcConnector().closeProcess();
+				}
+			});
+		}
+
 		JButton btnNewBatch = new JButton("New Batch");
 		btnNewBatch.setActionCommand("newBatch");
 		btnNewBatch.setBounds(360, 10, 100, 25);
@@ -74,27 +96,33 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		btnGetBatch.setBounds(470, 10, 100, 25);
 		getContentPane().add(btnGetBatch);
 
-		JButton btnEditBatchSettings = new JButton("Edit Settings");
+		btnEditBatchSettings = new JButton("Edit Settings");
 		btnEditBatchSettings.setActionCommand("editBatchSettings");
 		btnEditBatchSettings.setBounds(360, 50, 215, 25);
 		getContentPane().add(btnEditBatchSettings);
-		
-		JButton btnLeakCurrentMeasurement = new JButton("Leak Current Measurement");
+
+		btnLeakCurrentMeasurement = new JButton("Leak Current Measurement");
 		btnLeakCurrentMeasurement.setActionCommand("leakCurrent");
 		btnLeakCurrentMeasurement.setBounds(360, 90, 215, 25);
 		getContentPane().add(btnLeakCurrentMeasurement);
 
-		JButton btnStrokeMeasurement = new JButton("Stroke Measurement");
+		btnStrokeMeasurement = new JButton("Stroke Measurement");
 		btnStrokeMeasurement.setActionCommand("stroke");
 		btnStrokeMeasurement.setBounds(360, 130, 215, 25);
 		getContentPane().add(btnStrokeMeasurement);
-		
-		JButton btnDeleteLeak = new JButton("Delete last leak");
+
+		btnApproveBatch = new JButton("Approve batch");
+		btnApproveBatch.setActionCommand("approveBatch");
+		btnApproveBatch.addActionListener(this);
+		btnApproveBatch.setBounds(360, 290, 210, 23);
+		getContentPane().add(btnApproveBatch);
+
+		btnDeleteLeak = new JButton("Delete last leak");
 		btnDeleteLeak.setBounds(360, 367, 210, 23);
 		getContentPane().add(btnDeleteLeak);
 		btnDeleteLeak.setActionCommand("deleteLeak");		
-		
-		JButton btnDeleteStroke = new JButton("Delete last stroke");
+
+		btnDeleteStroke = new JButton("Delete last stroke");
 		btnDeleteStroke.setBounds(360, 330, 210, 23);
 		getContentPane().add(btnDeleteStroke);
 		btnDeleteStroke.setActionCommand("deleteStroke");
@@ -111,19 +139,10 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		separator.setBounds(580, 10, 10, 601);
 		getContentPane().add(separator);
 
-		//setup for the log
-		logModel = new DefaultTableModel(null, columnNames);
-		logModel.setColumnCount(1);
-		log = new JList<Object>();
-		JScrollPane logScroll = new JScrollPane();
-		log.ensureIndexIsVisible(log.getMaxSelectionIndex());
-		logScroll.setViewportView(log);
-		log.setEnabled(false);
-		logScroll.setBounds(10, 443, 340, 165);
-		getContentPane().add(logScroll);
+		setupLog();
 
 		// table setup for measurements
-		this.tableData = new String[][]{{null,null,null,null}};
+		this.tableData = new String[][]{};
 		setupTable();
 		// label setup for settings. settings are all shown on labels
 		setupLabels();
@@ -157,74 +176,73 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		JLabel lbllog = new JLabel("<html><b>Event log: </b></html>");
 		lbllog.setBounds(10, 420, 90, 15);
 		getContentPane().add(lbllog);
-		
+
 		JLabel lblCustomer = new JLabel("Customer:");
 		lblCustomer.setBounds(610, 20, 90, 15);
 		getContentPane().add(lblCustomer);
-		
+
 		JLabel lblItemDescription = new JLabel("Item description:");
 		lblItemDescription.setBounds(610, 45, 90, 15);
 		getContentPane().add(lblItemDescription);
-		
+
 		JLabel lblItemCode = new JLabel("Item code:");
 		lblItemCode.setBounds(610, 70, 90, 15);
 		getContentPane().add(lblItemCode);
-		
+
 		JLabel lblInternalOrderNumber = new JLabel("Internal order number:");
 		lblInternalOrderNumber.setBounds(610, 95, 110, 15);
 		getContentPane().add(lblInternalOrderNumber);
-		
+
 		JLabel lblDrawingNumber = new JLabel("Drawing number:");
 		lblDrawingNumber.setBounds(825, 45, 85, 15);
 		getContentPane().add(lblDrawingNumber);
-		
+
 		JLabel lblSpecification = new JLabel("Specification");
 		lblSpecification.setBounds(825, 70, 85, 15);
 		getContentPane().add(lblSpecification);
-		
+
 		JLabel lblVisualInspection = new JLabel("Visual inspection");
 		lblVisualInspection.setBounds(825, 95, 85, 15);
 		getContentPane().add(lblVisualInspection);
-		
+
 		JLabel lblCustomertxt = new JLabel("-");
 		lblCustomertxt.setBounds(730, 20, 140, 15);
 		getContentPane().add(lblCustomertxt);
 		profileSettings.add(lblCustomertxt);
-		
+
 		JLabel lvlItemtxt = new JLabel("-");
 		lvlItemtxt.setBounds(730, 45, 90, 15);
 		getContentPane().add(lvlItemtxt);
 		profileSettings.add(lvlItemtxt);
-		
+
 		JLabel lblItemCodetxt = new JLabel("-");
 		lblItemCodetxt.setBounds(730, 70, 80, 15);
 		getContentPane().add(lblItemCodetxt);
 		profileSettings.add(lblItemCodetxt);
-		
+
 		JLabel lblInternaltxt = new JLabel("-");
 		lblInternaltxt.setBounds(730, 95, 90, 15);
 		getContentPane().add(lblInternaltxt);
 		profileSettings.add(lblInternaltxt);
-		
+
 		JLabel lblDrawingtxt = new JLabel("-");
 		lblDrawingtxt.setBounds(955, 45, 90, 15);
 		getContentPane().add(lblDrawingtxt);
 		profileSettings.add(lblDrawingtxt);
-		
+
 		JLabel lblSpecificationtxt = new JLabel("-");
 		lblSpecificationtxt.setBounds(955, 70, 80, 15);
 		getContentPane().add(lblSpecificationtxt);
 		profileSettings.add(lblSpecificationtxt);
-		
+
 		JLabel lblVisualtxt = new JLabel("-");
 		lblVisualtxt.setBounds(955, 95, 80, 15);
 		getContentPane().add(lblVisualtxt);
 		profileSettings.add(lblVisualtxt);
-		
+
 		JSeparator separator = new JSeparator();
 		separator.setBounds(585, 120, 440, 2);
 		getContentPane().add(separator);
-
 
 		// labels for the "+-" label 
 		for(int i = 0; i < 14 ; i++){
@@ -248,7 +266,6 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 				text.setText("-");
 				getContentPane().add(text);
 				profileSettings.add(text);
-				System.out.println("normal value: " + i);
 			}
 		}
 
@@ -261,7 +278,6 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 				text.setText("-");
 				getContentPane().add(text);
 				profileSettings.add(text);
-				System.out.println("tolerance: " + (i));
 			}	
 		}
 
@@ -272,7 +288,6 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 			text.setText("-");
 			getContentPane().add(text);
 			profileSettings.add(text);
-			System.out.println("inspection level: " + (i));
 		}
 
 		// text fields for checkboxes has to be last, because the checkboxes are added last to the settings array 
@@ -289,10 +304,38 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		}
 	}
 
+	//setup for the log
+	private void setupLog(){
+
+		logModel = new DefaultTableModel(null, columnNames);
+		logModel.setColumnCount(1);
+
+		log = new JList<Object>();
+		logScroll = new JScrollPane();
+		logScroll.setViewportView(log);
+		log.setEnabled(false);
+		logScroll.setBounds(10, 443, 340, 165);
+		log.setBounds(10, 443, 340, 160);
+		getContentPane().add(logScroll);
+
+		logScroll.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
+			int rowCount = 0;
+			@Override
+			public void adjustmentValueChanged(AdjustmentEvent arg0)
+			{
+				logModel.getRowCount();
+				if(logModel.getRowCount() != rowCount){
+					logScroll.getVerticalScrollBar().setValue(logModel.getRowCount() * 16);
+				}
+				rowCount = logModel.getRowCount();	
+			}
+		});
+	}
+
 	// extracted method because it is so large. sets up the JTable with all the extra features needed
 	private void setupTable() {
 
-		
+
 
 		model = new DefaultTableModel(tableData, columnNames);
 		table = new JTable(model){
@@ -300,19 +343,15 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 			public Component prepareRenderer(
 					TableCellRenderer renderer, int row, int column) {
 				Component c = super.prepareRenderer(renderer, row, column);
-				
-//				System.out.println("row: " + row);
-//				System.out.println("column: " + column);
+
 				if(row == getRowCount()-1){
 					c.setBackground(Color.YELLOW);
 					c.setForeground(Color.BLACK);
 				} else {
 					if(getValueAt(row, 0).toString().equalsIgnoreCase("false")){
-//						batchMeasureController.verifyElement(false, row);
 						c.setBackground(Color.RED);
 						c.setForeground(Color.BLACK);
 					} else{
-//						batchMeasureController.verifyElement(true, row);
 						c.setBackground(Color.WHITE);
 						c.setForeground(Color.BLACK);
 					}
@@ -332,6 +371,7 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 			@SuppressWarnings({ "unchecked", "rawtypes" })
 			public Class getColumnClass(int column) {
 				switch (column) {
+				
 				case 0:
 					return Boolean.class;
 				case 1:
@@ -341,10 +381,10 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 				case 3:
 					return String.class;
 				default:
-					return Boolean.class;
+					return String.class;
 				}
 			}
-			
+
 		};
 
 		table.setEditingColumn(0);
@@ -354,59 +394,46 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 			@Override
 			public void tableChanged(TableModelEvent e) {
 				if(e.getType() == TableModelEvent.UPDATE){
-					
+
 					if(e.getColumn() == 0){
 						e.getLastRow();
 						update(getGraphics()); // very important. updates graphics: when one checkbox is changed the whole row changes colour 
 					}
 				}
-//				scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum() );
 			}
 		});
 
-		scrollPane = new JScrollPane();
-		scrollPane.setViewportView(table);
-		scrollPane.setBounds(10, 10, 340, 380);
+		scrollTable = new JScrollPane();
+		scrollTable.setViewportView(table);
+		scrollTable.setBounds(10, 10, 340, 380);
 		table.setFillsViewportHeight(true);
-		getContentPane().add(scrollPane);
-		
-		scrollPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
+		getContentPane().add(scrollTable);
+		scrollTable.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
 			int rowCount = 0;
 			@Override
 			public void adjustmentValueChanged(AdjustmentEvent arg0)
 			{
 				model.getRowCount();
 				if(model.getRowCount() != rowCount){
-				scrollPane.getVerticalScrollBar().setValue(model.getRowCount() * 16);
-				
+					scrollTable.getVerticalScrollBar().setValue(model.getRowCount() * 16);
+
 				}
-				rowCount = model.getRowCount();
-				// TODO Auto-generated method stub	
+				rowCount = model.getRowCount();	
 			}
 		});
 
-		table.addMouseListener(new MouseListener() {
-			
+		// used to find row when checkboxes are clicked
+		// MouseAdapter implements MouseListener as empty methods, so only needed methods have to be overridden 
+		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				// column 0 is where checkboxes are
 				if(table.columnAtPoint(e.getPoint()) == 0){
 					int row = table.rowAtPoint(e.getPoint());
-					System.out.println("table data verified: " + tableData[row][0]);
-					
 					boolean verified = (boolean) table.getValueAt(row, 0);
-					System.out.println("verified: " + verified);
 					batchMeasureController.updateMeasurements(row, verified);
 				}
 			}
-			@Override
-			public void mousePressed(MouseEvent e) {}
-			@Override
-			public void mouseExited(MouseEvent e) {}
-			@Override
-			public void mouseEntered(MouseEvent e) {}
-			@Override
-			public void mouseClicked(MouseEvent e) {}
 		});
 	}
 
@@ -415,7 +442,6 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		for(int i = 0; i < profileSettings.size(); i++){
 			JLabel l = (JLabel) profileSettings.get(i);
 			String value = settings.get(i).getValue();
-			System.out.println("update value: " + value);
 			if(value.equalsIgnoreCase("")){
 				l.setText("-"); // only for appearences to show that nothing is inserted
 			}else{
@@ -430,79 +456,33 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		Object[] list = logInfo.toArray();
 		log.setListData(list);
 		logModel.addColumn("log", list);
-		logModel.fireTableDataChanged();
-	}
 
-	// not used yet, but propably will be
-	public void updateTable(ArrayList<ArrayList<String>> data) {
-		updateTable(arrayListToArray(data));
-	}
-	
-	public void updateTable(Batch batch){
-		ArrayList<Object[]> list = batch.getMeasurementsList();
-		Object[][] updatedList = new Object[list.size()][4];
-		for(int i = 0; i < list.size(); i++){
-			updatedList[i][0] = list.get(i)[0];
-			updatedList[i][1] = list.get(i)[1];
-			updatedList[i][2] = list.get(i)[2];
-			updatedList[i][3] = list.get(i)[3];
-		}
-		updateTable(updatedList);
+		log.updateUI();
+		logModel.fireTableDataChanged();
+		logScroll.getVerticalScrollBar().setValue(logScroll.getVerticalScrollBar().getMaximum());
+
 	}
 
 	// updates whole table
-	public void updateTable(Object[][] data){
-		this.tableData = data;
+	public void updateTable(String[][] data){
 		Object[][] list = new Object[data.length][COLUMNS_LENGTH];
-		for(int i = 0; i < data.length; i++)
-		{
-			try{
-			list[i][0] = data[i][0];
-			list[i][1] = data[i][1];
-			
-			Measurement m = (Measurement) data[i][2];
-			if(m != null){
-			list[i][2] = m.getMeasureValue();
+		for(int i = 0; i < data.length; i++){
+			for(int j = 0; j < COLUMNS_LENGTH; j++){
+				if(j == 0)
+				list[i][j] = Boolean.parseBoolean(data[i][j]);
+				else list[i][j] = data[i][j];
 			}
-			m = (Measurement) data[i][3];
-			if(m != null){
-			list[i][3] = m.getMeasureValue();
-			}
-				} catch(Exception e){
-					System.out.println("out of bounds when updating table");
-//					list[i][j] = null;
-				}
-			
 		}
+		this.tableData = list;
+
 		table.setGridColor(Color.BLUE); // just for fun
+		
 		model.setDataVector(list, columnNames);
 		model.fireTableDataChanged(); // updates table
 		model.getColumnClass(0).cast(Boolean.class); // not sure about the effect of this one
+		scrollTable.getVerticalScrollBar().setValue(scrollTable.getVerticalScrollBar().getMaximum());
 
-		
-		//TODO finish!! find out how to get to bottom
-		// does not work: ancestorListener, ContainerListener, HierarchyBoundsListener, hierarchyChanged, inputMethodListener
-		scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
-		
-//		scrollPane.getVerticalScrollBar().setValue(scrollPane.getMaximumSize().height);
-//		int test = scrollPane.getHeight()-1;
-		
-	}
-	
 
-	// converter so it is possibly to add rows to the jtable with arraylist
-	private Object[][] arrayListToArray(ArrayList<ArrayList<String>> list){
-		Object[][] data = new Object[list.size()][COLUMNS_LENGTH];
-		if(list.size() > 2)
-			for(int i = 0; i < list.size(); i++)
-			{
-				data[i][0] = list.get(i).get(0);
-				for(int j = 1; j < COLUMNS_LENGTH; j++)
-				{
-					data[i][j] =	list.get(i).get(j);
-				}
-			}
-		return data;
 	}
 
 	@Override
@@ -523,6 +503,9 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		case "leakCurrent":
 			batchMeasureController.btnLeakCurrent();
 			break;
+		case "approveBatch":
+			batchMeasureController.btnApproveBatchPressed();
+			break;
 		case "deleteLeak":
 			batchMeasureController.btnDeleteLeak();
 			break;
@@ -540,15 +523,11 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 	}
 
 	// returns the name of the chosen batch. for now, chosen batch will also be returned, even if exit is pressed
-	public String getLoadBatchName(String[] batchList){
-		// by using combobox, we can have a dropdown list inside the popup ShowMessageDialog
-		JComboBox<Object> jcb = new JComboBox<Object>(batchList);
-		jcb.setEditable(true);
-		JOptionPane.showMessageDialog(getContentPane(), jcb, "Enter batchnumber:", JOptionPane.QUESTION_MESSAGE);
-		return (String) jcb.getSelectedItem();
+	public String getLoadBatchName(){
+	return (String)	JOptionPane.showInputDialog(getContentPane(), "Insert batch name to download from database", "Get batch", JOptionPane.QUESTION_MESSAGE, null, null, "EKSAMEN  BATCH");
 	}
-	// TODO not up to date because of the new feature: DirectoryListener
-	// browse for file to read
+	
+	// browse for folder to be listened to
 	public String getDasyPath(){
 		File f = null;
 		File defaultPath = null;
@@ -557,23 +536,20 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 		if(PropertyHelper.readFromProperty(DASY_PATH) != null){
 			defaultPath = new File(PropertyHelper.readFromProperty(DASY_PATH));
 		}
-		// JFileChooser is used to browse for files
+		// JFileChooser is used to browse for folders
 		JFileChooser chooser = new JFileChooser();
-		chooser.setCurrentDirectory(defaultPath);
+		chooser.setCurrentDirectory(defaultPath); // sets the last folder as default in search window
 		chooser.setAcceptAllFileFilterUsed(false);
-		chooser.setDialogTitle("Select DasyLab file");
-
-		// a filter is added to the FileChooser, so there can only be loaded ascii/asc files. other files are not visible
-//		FileNameExtensionFilter filter = new FileNameExtensionFilter(
-//				"ASCII", "ascii", "asc");
+		chooser.setDialogTitle("Select DasyLab folder");
+		
+		// makes only directories visible to user to choose
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-//		chooser.setFileFilter(filter);
 
 		// checks if ok is pressed or if the browse window is canceled. if canceled null is returned
 		if(chooser.showOpenDialog(getParent()) == JFileChooser.APPROVE_OPTION){
-			updateLog("You chose to open this file: " + chooser.getSelectedFile().getName());
+			updateLog("You chose to open this folder: " + chooser.getSelectedFile().getName());
 			f = chooser.getSelectedFile();
-			// stores the filepath in property to be loaded again next time
+			// stores the folderpath in property to be loaded again next time
 			PropertyHelper.writeToProperty(DASY_PATH, f.getAbsolutePath());
 			return f.getAbsolutePath();
 		}
@@ -589,9 +565,8 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 	}
 
 	// method used to show information messages. fx if there is no batch to load with the chosen name
-	//TODO rename to meaningful name...
 	@Override
-	public void showInformationMessage(String message, String title){
+	public void showPopupMessage(String message, String title){
 		JOptionPane.showMessageDialog(getContentPane(), message, title, JOptionPane.INFORMATION_MESSAGE);
 	}
 
@@ -602,5 +577,37 @@ public class BatchMeasureGui extends JFrame implements IBatchMeasureGui {
 	@Override
 	public void run() {
 		this.setVisible(true);
+	}
+
+	@Override
+	public void btnBatchApproved(boolean enable) {
+		if(!enable)
+			btnApproveBatch.setText("Disapprove batch");
+		else btnApproveBatch.setText("Approve batch");
+	}
+
+	@Override
+	public void enableDeleteStroke(boolean enable) {
+		btnDeleteStroke.setEnabled(enable);
+	}
+
+	@Override
+	public void enableDeleteLeak(boolean enable) {
+		btnDeleteLeak.setEnabled(enable);
+	}
+
+	@Override
+	public void enableEditBatchSettings(boolean enable) {
+		btnEditBatchSettings.setEnabled(enable);
+	}
+
+	@Override
+	public void enableStrokeMeasurement(boolean enable) {
+		btnStrokeMeasurement.setEnabled(enable);
+	}
+
+	@Override
+	public void enableLeakMeasurement(boolean enable) {
+		btnLeakCurrentMeasurement.setEnabled(enable);
 	}
 }

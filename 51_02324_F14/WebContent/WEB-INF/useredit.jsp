@@ -15,6 +15,7 @@
 <%
 	String username = (String) session.getAttribute("username");
 	User u = (User) session.getAttribute("editing");
+	User logged=((User)request.getSession().getAttribute("user"));
 %>
 <title>User Edit</title>
 </head>
@@ -23,14 +24,6 @@
 	out.println(username);
 %> | udtræk
 </title>
-					<%
-						if (request.getAttribute("editfail") != null) {
-							out.println(" <p>Fandt ikke brugernavn i database.</p>");
-						}
-						if (request.getAttribute("edited") !=null){
-							out.println("<p>Opdateret bruger.</p>");
-						}
-					%>
 <link rel="stylesheet" type="text/css" href="view.css" media="all" />
 <script type="text/javascript" src="view.js"></script>
 <script type="text/javascript" src="calendar.js"></script>
@@ -49,28 +42,29 @@
 
 			<form id="user_edit" class="appnitro" method="post" action=UserEditServlet>
 				<div class="form_description">
-					<h1>Noliac User Edit</h1>
+					<%if(((User)request.getSession().getAttribute("user")).isAdmin()){ %>
+					<h1>Editing <%=u.getUserName() %></h1>
+					<%}else{ %>
+					<h1>Editing <%=logged.getUserName() %></h1>
+					<%} %>
 					
 				
+	<%if(((User)request.getSession().getAttribute("user")).isAdmin()){ %>
 				
-				
-	<table width="100%" border="0" cellpadding="2" cellspacing="0">
-		<tr>
-			<td>
+
 				<ul>
 				
-					<li id="li_3"><label class="description" for="username" >
-					 <% //Checks if User was found
-											if (request.getParameter("fail") != null) out.print("Bruger ikke genkendt! -");
-											%>User name</label>
-						<div>
-							<input id="username" name="username" class="element text medium"
-								type="text" maxlength="255" 
-								list="batches" autocomplete="on" value="<%=u.getUserName()%>" />
-										
-						</div>
-
+<!-- 					<li id="li_3"><label class="description" for="username" > -->
+<!-- 						</label> -->
 						
+					
+<!-- 						<div> -->
+<!-- 							<input id="username" name="username" class="element text medium" -->
+<%-- 								type="text" maxlength="255" value="<%=u.getUserName()%>" /> --%>
+										
+<!-- 						</div> -->
+
+<!-- 						</li> -->
 					<li id="li_"><label class="description" for="element_4">Password</label>
 						<div>
 							<input id="element_4" name="password" class="element text medium"
@@ -79,30 +73,33 @@
 						value="812583" />
 				  </div>                    
 				</ul>
-          </td>
-		  <td width="50%">
+
 	
-         <input type="checkbox" name="active" value="active"<%if(u.isActive()){%>checked<%} %>> active<BR>
-		  <input type="checkbox" name="admin" value="admin"<%if(u.isAdmin()){%>checked<%} %>> admin<BR></tr>
-		  </table>
+         	<input type="checkbox" name="active" value="active"<%if(u.isActive()){%>checked<%} %>> active<BR>
+		  	<input type="checkbox" name="admin" value="admin"<%if(u.isAdmin()){%>checked<%} %>> admin<BR></tr>
+
+		 	 <%} else{ %>
+		 	 <li id="li_"><label class="description" for="element_4">Password</label>
+		 		  <div> <input id="element_4" name="password" class="element text medium"
+								type="text" maxlength="255" value="<%=((User)request.getSession().getAttribute("user")).getPassWord()%>" /></div><%} %>
 		  
 		 
 				  <span class="buttons">
 				  
-				  <input id="submit" class="button_text"
-						type="submit" name="Save" value="save" />
+				  <input id="save" class="button_text"
+						type="submit" name="Save" value="Save" />
 
 
                 
 				  <input id="Done" class="button_text"
-						type="submit" name="Done" value="Done" />
+						type="submit" name="Done" value="Cancel" />
 				  </span>
 
 
 
 				
 				</div>
-				</form>
+			</form>
 			
 			<div id="footer">
 				By Area51

@@ -1,5 +1,6 @@
 package javaMeasure.interfaces;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import javaMeasure.Batch;
@@ -25,5 +26,10 @@ public interface IBatchDAO {
 	void deleteBatchSettings(Batch batch) throws DataBaseException;
 
 	void updateBatchSettings(ArrayList<BatchSetting> settings, int profileID) throws DataBaseException;
+
+	void updateBatch(Batch activeBatch) throws DataBaseException;
+
+	ArrayList<Batch> getBatches(String partialBatchName, String fieldName,
+			Timestamp startDate, Timestamp endDate) throws DataBaseException;
 
 }

@@ -1,6 +1,8 @@
 package javaMeasure.view;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 import javaMeasure.BatchProfile;
@@ -44,12 +46,22 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 			getContentPane().setLayout(null);
 			setBounds(0, 0, 552, 764);
 			setResizable(false);
-			setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+			setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 		JPanel panel = new JPanel();
 		panel.setBounds(10, 250, 529, 481);
 		getContentPane().add(panel);
 		panel.setLayout(null);
+		
+		// WindowAdapter() implements all window listeners as empty methods. therefore it is only neccessary to override needed methods
+		// this listener is for the window close operation
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				System.out.println(NewBatchGui.this.getDefaultCloseOperation());
+				NewBatchGui.this.newBatchController.cancelPressed();
+			}
+		});
 
 		JLabel lblSpecifications = new JLabel("<html><b>Specifications</b></html>");
 		lblSpecifications.setBounds(10, 11, 129, 14);
@@ -188,6 +200,8 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 				text.setBounds(149, i*25+33, 68, 20);
 				panel.add(text);
 				profileSettings.add(text);
+				System.out.println("normal values index: " + (profileSettings.size()-1));
+//				PropertyHelper.writeToProperty("TextBoxNames","FloatIndexName" + (profileSettings.size()-1), PropertyHelper.readFromProperty("newBatchGuiSetup", String.valueOf(i+ 2)) + " normal value");
 			}
 		}
 		// labels for the "+-" label 
@@ -215,7 +229,9 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 				JTextField text = new JTextField();
 				text.setBounds(274, 33 + 25*i, 68, 20);
 				panel.add(text);
-				profileSettings.add(text);	
+				profileSettings.add(text);
+				System.out.println("tolerance values index: " + (profileSettings.size()-1));
+//				PropertyHelper.writeToProperty("TextBoxNames","FloatIndexName" + (profileSettings.size()-1), PropertyHelper.readFromProperty("newBatchGuiSetup", String.valueOf(i+ 2)) + " tolerance");
 			}	
 		}
 
@@ -287,8 +303,6 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 		// TODO should not be made here
 		//		setDefaultSettings();
 
-		
-
 		//TODO might have overload in controller when in editmode - martin
 	if(!editMode){
 		btnSaveBatchSettings = new JButton("Save Batch Settings");
@@ -303,7 +317,7 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 		panel_1.add(btnSaveBatchSettings);
 		btnSaveBatchSettings.addActionListener(this);
 	}
-		JButton btnAnnuller = new JButton("Annuller");
+		JButton btnAnnuller = new JButton("Cancel");
 		btnAnnuller.setBounds(409, 66, 110, 23);
 		btnAnnuller.setActionCommand("annuller");
 		panel_1.add(btnAnnuller);
@@ -360,8 +374,6 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 		lblItemDescription.setBounds(10, 146, 129, 14);
 		panel_1.add(lblItemDescription);
 
-
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 
 	// TODO not up to date need refreshening
@@ -438,7 +450,7 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 			System.out.println("save batch settings");
 			break;
 		case "annuller":
-			newBatchController.annullerPressed();
+			newBatchController.cancelPressed();
 			break;
 		case "deleteSettings":
 			ArrayList<String> list2 = newBatchController.getSavedBatchProfiles();
@@ -448,24 +460,10 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 				try {
 					newBatchController.deleteBatchProfilePressed(profileName);
 				} catch (DataBaseException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					System.err.println(e1.getMessage());
 				}
 			}
 			break;
-//		case "editProfile":
-//			ArrayList<String> list3 = newBatchController.getSavedBatchProfiles();
-//			Object o3 = JOptionPane.showInputDialog(getContentPane(), "Choose profile to edit: ", "Edit Profile", JOptionPane.QUESTION_MESSAGE, null, list3.toArray(), list3.get(0));
-//			if(o3 != null){
-//				profileName = o3.toString();
-//				try {
-//					newBatchController.editBatchProfilePressed(profileName);
-//				} catch (DataBaseException e1) {
-//					// TODO Auto-generated catch block
-//					e1.printStackTrace();
-//				}
-//			}
-//			break;
 		default: System.err.println("ActionCommand is not recognized");
 		}		
 	}
@@ -480,14 +478,12 @@ public class NewBatchGui extends JFrame implements INewBatchGui{
 	}
 
 	@Override
-	public void showInformationMessage(String message, String title){
+	public void showPopupMessage(String message, String title){
 		JOptionPane.showMessageDialog(getContentPane(), message, title, JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	@Override
 	public void setbatchName(String batchString) {
 		textBatch.setText(batchString);
-		// TODO Auto-generated method stub
-		
 	}
 }

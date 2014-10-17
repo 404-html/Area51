@@ -1,8 +1,8 @@
 package servlets;
 
 import java.io.IOException;
-import javaMeasure.control.DataBaseController;
 
+import javaMeasure.User;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -42,6 +42,7 @@ public class MenuServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		//DataBaseController dbctrl = (DataBaseController) request.getSession().getAttribute("database");
 		//Login Check
+		System.out.println("get request");
 		if (request.getSession().getAttribute("user") == null) 
 			request.getRequestDispatcher("NoliacServlet").forward(request, response);
 		//Button logout pressed
@@ -49,11 +50,23 @@ public class MenuServlet extends HttpServlet {
 			request.getSession().setAttribute("user", null);
 			response.sendRedirect("LoginServlet");
 		} else {
-			//submitform pressed
-			if (request.getParameter("submitForm")!= null) {
-				request.getRequestDispatcher("ReportServlet").forward(request, response);
-			} else {
-				request.getRequestDispatcher("WEB-INF/form.jsp").forward(request, response);
+			if(request.getParameter("edit")!=null){
+				if(((User)request.getSession().getAttribute("user")).isAdmin()){
+					request.getRequestDispatcher("UserChooseServlet").forward(request, response);
+				}
+				else{
+					request.getRequestDispatcher("UserEditServlet").forward(request, response);
+				}
+				
+			}else {
+				//submitform pressed
+				if (request.getParameter("batchNameSubmit")!= null) {
+					request.getRequestDispatcher("ReportServlet").forward(request, response);
+				}
+				else{
+					request.getRequestDispatcher("WEB-INF/menu.jsp").forward(request, response);
+				}
+				
 			}
 		}
 	}

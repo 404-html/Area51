@@ -8,7 +8,7 @@ public class User {
 	private boolean admin;
 	
 	public User(String userName, int userID) {
-		this(userName,userID, null);
+		this(userName,userID, "12345");
 	}
 	
 	public User(String userName, int userID, String passWord) {

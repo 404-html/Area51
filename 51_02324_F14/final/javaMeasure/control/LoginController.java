@@ -27,7 +27,7 @@ public class LoginController implements ILoginController{
 		EventQueue.invokeLater(this.Gui);
 		ArrayList<User> users = new ArrayList<User>();
 		try {
-			users = mainCtrl.getDatabaseController().getUserList();
+			users = mainCtrl.getDatabaseController().getActiveUserList();
 			Gui.changestatus(Status.Connected);
 			String[] UserStrings = new String[users.size()];
 			for (int i = 0; i<users.size();i++){
@@ -56,7 +56,7 @@ public class LoginController implements ILoginController{
 		String loginString = Gui.getSelectedUser();
 		User user=null;
 		try {
-			user = mainCtrl.getDatabaseController().getUserFromString(loginString);
+			user = mainCtrl.getDatabaseController().getActiveUserFromString(loginString);
 			mainCtrl.userLoggedIn(user);
 		} catch (DataBaseException e) {
 			System.err.println("Database Connection failed - LoginController");

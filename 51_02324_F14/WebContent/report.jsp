@@ -127,7 +127,7 @@
 
 		catch (IOException ex) {
 			System.out.println(absoluteDiskPath);
-			System.out.println("Fuck you");
+			System.out.println("test ioexception report.jsp");
 		} finally {
 			try {
 				writer.close();
@@ -141,7 +141,7 @@
 	<div id="wrapper">
 
 		<div id="header">
-			<img src="noliac_logo.png" alt="Logo">
+			<a href="http://localhost:8080/51_02324_F14/"><img src="noliac_logo.png" alt="Logo"></a>
 		</div>
 
 		<div id="form_container">
@@ -153,7 +153,7 @@
 				</div>
 				<ul>
 					<li id="li_2" name="li_2">
-						<table width="100%" border="1">
+						<table width="100%" border="1" style="border-collapse:collapse">
 							<tr>
 								<td colspan="5"><h3>Final Inspection and Test Report</h3></td>
 								<td>&nbsp;</td>

@@ -1,31 +1,37 @@
 package javaMeasure;
 
-import java.text.Format;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import javaMeasure.Measurement.MeasurementType;
+import javaMeasure.Measurement;
 
 public class Batch {
 	private int BatchID;
 	private String BatchString;
 	private int profileID;
-	private ArrayList<Object[]> measurementsList; // this list is made compatible with the JTable in BatchMeasureGui. now it is easier to copy over
-	private int currentStrokeElement = 0; // counter for where to put the next stroke measurement, this is also an easy way to give measurements an elementnumber
-	private int currentLeakElement = 0; // counter for where to put the next leak measurement.
+
+	private ArrayList<Measurement[]> measurements = new ArrayList<Measurement[]>();
+	private final static int STROKE_INDEX = 0; // used in list above to keep track which index the measurement should be in
+	private final static int LEAK_INDEX = 1; // used in list above to keep track which index the measurement should be in
+	private int nextStrokeIndex = 0; // counter for where to put the next stroke measurement, this is also an easy way to give measurements an elementnumber
+	private int nextLeakIndex = 0; // counter for where to put the next leak measurement.
 
 	private String created_by;
-	private Date created_date;
+	private Timestamp created_date;
 	private String approved_by;
-	private Date approved_date;
+	private Timestamp approved_date;
 
+	/**
+	 * Constuctor for simple Batch
+	 * @param batchID
+	 * @param batchString
+	 * @param profileID
+	 */
 	public Batch(int batchID, String batchString, int profileID) {
-		super();
-		setBatchID(batchID);
-		setBatchString(batchString);
-		this.profileID = profileID;
-		this.measurementsList = new ArrayList<>();
+
+		this(batchID, batchString, profileID, null, null, null, null);
 	}
 
 	/**
@@ -38,12 +44,11 @@ public class Batch {
 	 * @param approved_by
 	 * @param approved_date
 	 */
-	public Batch(int batchID, String batchString, int profileID, String created_by, Date created_date, String approved_by, Date approved_date) {
+	public Batch(int batchID, String batchString, int profileID, String created_by, Timestamp created_date, String approved_by, Timestamp approved_date) {
 		super();
-		setBatchID(batchID);
-		setBatchString(batchString);
+		this.BatchID = batchID;
+		this.BatchString = batchString;
 		this.profileID = profileID;
-		this.measurementsList = new ArrayList<>();
 
 		this.created_by = created_by;
 		this.created_date = created_date;
@@ -76,33 +81,30 @@ public class Batch {
 	}
 
 	public boolean deleteLastStrokeMeasurement(){
-		
-		ArrayList<Object[]> list = getMeasurementsList();
-		if(currentStrokeElement < currentLeakElement || currentStrokeElement == 0)
+
+		if(nextStrokeIndex < nextLeakIndex || nextStrokeIndex == 0)
+			//Checks if Stroke list is shorter than Leak list and returns false - to avoid asynchronous data collection
 			return false;
 		else{
-			Object[] row = getMeasurementsList().get(currentStrokeElement-1);
-			row[2] = null;
-			if(row[3] == null){
-				list.remove(currentStrokeElement-1);
+			measurements.get(nextStrokeIndex-1)[STROKE_INDEX] = null;
+			if(measurements.get(nextStrokeIndex-1)[LEAK_INDEX] == null){
+				measurements.remove(nextStrokeIndex-1);
 			}
-			currentStrokeElement--;
+			nextStrokeIndex--;
 			return true;
 		}
 	}
 
 	public boolean deleteLastLeakMeasurement(){
-		
-		ArrayList<Object[]> list = getMeasurementsList();
-		if(currentLeakElement < currentStrokeElement || currentLeakElement == 0)
+
+		if(nextLeakIndex < nextStrokeIndex || nextLeakIndex == 0)
 			return false;
 		else{
-			Object[] row = getMeasurementsList().get(currentLeakElement-1);
-			row[3] = null;
-			if(row[2] == null){
-				list.remove(currentLeakElement-1);
+			measurements.get(nextLeakIndex-1)[LEAK_INDEX] = null;
+			if(measurements.get(nextLeakIndex-1)[STROKE_INDEX] == null){
+				measurements.remove(nextLeakIndex-1);
 			}
-			currentLeakElement--;
+			nextLeakIndex--;
 			return true;
 		}
 	}
@@ -110,119 +112,109 @@ public class Batch {
 	// adds a single measurement to the batch
 	// as of now, the measurements kan be taken in any chronological order, which means as of now, you have to make all measurements on all elements
 	public boolean addMeasurement(Measurement measurement){
+
 		MeasurementType type = measurement.getMeasurementType();
-		int dif = currentLeakElement - currentStrokeElement;
+		
+		// checking if measurements are taken in sync - if difference between currentLeakElement and currentStrokeElement gets bigger than 1 or lower than -1
+		// measurement will not be added and false will be returned
+		int dif = nextLeakIndex - nextStrokeIndex;
 		if(type.equals(MeasurementType.LEAK))
+			// difference between currentLeak index and currentStroke index
 			dif++;
 		else dif--;
 		if(dif > 1 || dif < -1){
 			return false;
 		}
 
-		if(type.equals(MeasurementType.LEAK)){
-			// the try catch is to make sure that the measurement never is put out bounds
-			// if the currentLeakElement points out of bounds, a new object is created in the catch clause
-			try{ measurementsList.get(currentLeakElement)[3] = measurement;
-			} catch (IndexOutOfBoundsException e){
-				measurementsList.add(new Object[]{measurement.getVerified(), currentLeakElement, null, measurement});
-			}
-			currentLeakElement++;
-		}
-		if(type.equals(MeasurementType.STROKE)){
-			// the try catch is to make sure that the measurement never is put out bounds
-			// if the currentStrokeElement points out of bounds, a new object is created in the catch clause
-			try{ measurementsList.get(currentStrokeElement)[2] = measurement;
+		MeasurementType t = measurement.getMeasurementType();
+		if(t.equals(MeasurementType.LEAK)){
+			try{
+				// leak measurement is at index 1
+				measurements.get(nextLeakIndex)[1] = measurement;
 			} catch(IndexOutOfBoundsException e){
-				measurementsList.add(new Object[]{measurement.getVerified(), currentStrokeElement, measurement, null});
+				measurements.add(new Measurement[]{null, measurement});
 			}
-			currentStrokeElement++;
+			nextLeakIndex++;
+		}
+		else if(t.equals(MeasurementType.STROKE)){
+			try{
+				// stroke measurement is at index 0
+				measurements.get(nextStrokeIndex)[0] = measurement;
+			} catch(IndexOutOfBoundsException e){
+				measurements.add(new Measurement[]{measurement, null});
+			}
+			nextStrokeIndex++;
 		}
 		return true;
 	}
-
-	// method for database to add the whole list without trouble
-	public void setMeasurementList(ArrayList<Measurement> stroke, ArrayList<Measurement> leak){
-		int size = 0;
-		if(stroke.size() > leak.size()){
-			size = stroke.size();
-		} else size = leak.size();
-		if(size != 0){
-			System.out.println(size);
-			System.out.println("stroke: " + stroke.size());
-			System.out.println("leak: " + leak.size());
-			for(int i = 0; i < size; i++)
-			{
-				if(stroke.size() > i && !stroke.isEmpty())
-					addMeasurement(stroke.get(i));
-				if(leak.size() > i && !leak.isEmpty())
-					addMeasurement(leak.get(i));
-			}
-		}
+	
+	// only thing needed to update in measurements is if they are verified or not
+	// therefore this method
+	public void updateMeasurements(int elementNumber, boolean verified) {
+		measurements.get(elementNumber)[STROKE_INDEX].setVerified(verified);;
+		measurements.get(elementNumber)[LEAK_INDEX].setVerified(verified);;
 	}
+
+	// used to report generation - gets the average stroke measured for batch
 	public float getAverageStroke(){
-		int length = 0;
 		float total = 0;
-		for(int i = 0; i < measurementsList.size(); i++)
+		// adding all stroke values together
+		for(int i = 0; i < nextStrokeIndex; i++)
 		{
-			if(measurementsList.get(i)[1] != null){
-				Measurement measurement = (Measurement) measurementsList.get(i)[2];
-				float value = (float) measurement.getMeasureValue();
+			if(measurements.get(i)[STROKE_INDEX] != null){
+				Measurement measurement = measurements.get(i)[STROKE_INDEX];
+				float value = measurement.getMeasureValue();
 				total = total + value;
-				length++;
+				
 			}
 		}
-		return total/length;
+		// returns the average - nextStrokeIndex matches the number of stroke measurements because it is 0 indexed
+		return total/nextStrokeIndex;
 	}
 
+	// used to report generation - gets the average leak measured for batch
 	public float getAverageLeak(){
-		int length = 0;
 		float total = 0;
-		for(int i = 0; i < measurementsList.size(); i++)
+		// adding all leak values together
+		for(int i = 0; i < nextLeakIndex; i++)
 		{
-			if(measurementsList.get(i)[1] != null){
-				Measurement measurement = (Measurement) measurementsList.get(i)[3];
-				float value = (float)  measurement.getMeasureValue();
+			if(measurements.get(i)[LEAK_INDEX] != null){
+				Measurement measurement = measurements.get(i)[LEAK_INDEX];
+				float value =  measurement.getMeasureValue();
 				total = total + value;
-				length++;
 			}
 		}
-		return total/length;
+		// returns the average - nextLeakIndex matches the number of leak measurements because it is 0 indexed
+		return total/nextLeakIndex;
 	}
 
+	
 	public Measurement getMeasurement(int elementnumber, MeasurementType type){
 		if(type == MeasurementType.STROKE){
-			return (Measurement) getMeasurementsList().get(elementnumber)[2];
+			return getMeasurementsList().get(elementnumber)[STROKE_INDEX];
 		}
 		else{
-			return (Measurement) getMeasurementsList().get(elementnumber)[3];
+			return getMeasurementsList().get(elementnumber)[LEAK_INDEX];
 		}
 	}
-	
+
 	//used in jsp
-	public String getDateAsString(Date date){
-		Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		return formatter.format(date);
+	public String getDateAsString(Timestamp date){
+		//Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		//return formatter.format(date);
+		try{
+			return new SimpleDateFormat("yyyy-MM-dd HH:mm").format(date);}
+		catch(Exception e){
+			return "";
+		}
 	}
 
 	public int getCurrentLeakElement(){
-		return currentLeakElement;
+		return nextLeakIndex;
 	}
 
 	public int getCurrentStrokeElement(){
-		return currentStrokeElement;
-	}
-
-	public ArrayList<Object[]> getMeasurementsList(){
-		return measurementsList;	
-	}
-
-	public void updateMeasurements(int elementNumber, boolean verified) {
-		Object[] element = getMeasurementsList().get(elementNumber);
-		measurementsList.get(elementNumber)[0] = verified;
-		Measurement stroke = (Measurement) element[2];
-		Measurement leak = (Measurement) element[3];
-		stroke.setVerified(verified);
-		leak.setVerified(verified);
+		return nextStrokeIndex;
 	}
 
 	public String getCreated_by() {
@@ -233,11 +225,11 @@ public class Batch {
 		this.created_by = created_by;
 	}
 
-	public Date getCreated_date() {
+	public Timestamp getCreated_date() {
 		return created_date;
 	}
 
-	public void setCreated_date(Date created_date) {
+	public void setCreated_date(Timestamp created_date) {
 		this.created_date = created_date;
 	}
 
@@ -249,12 +241,16 @@ public class Batch {
 		this.approved_by = approved_by;
 	}
 
-	public Date getApproved_date() {
+	public Timestamp getApproved_date() {
 		return approved_date;
 	}
 
-	public void setApproved_date(Date approved_date) {
+	public void setApproved_date(Timestamp approved_date) {
 		this.approved_date = approved_date;
+	}
+
+	public ArrayList<Measurement[]> getMeasurementsList() {
+		return measurements;
 	}
 
 }
