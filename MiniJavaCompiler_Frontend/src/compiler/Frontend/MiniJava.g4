@@ -89,7 +89,7 @@ statementAssign  : lhs=id '=' rhs=expression ';' ;
 statementArrayAssign : lhs=id '[' size=expression ']' '=' rhs=expression ';'; 
 statementPrintln : 'System.out.println' '(' argument=expression ')' ';' ;
 statementPrint   : 'System.out.print' '(' argument=expression ')' ';' ;
-statementMethodCall : methodId=identifier '(' (head=expression ( ',' tail+=expression)*)? ')' ';';
+statementMethodCall : (identifier '.')? methodId=IDENT '(' (head=expression ( ',' tail+=expression)*)? ')' ';';
 statementReturn  : 'return' ('(' argument=expression ')' )? ';' ;
 
 expression

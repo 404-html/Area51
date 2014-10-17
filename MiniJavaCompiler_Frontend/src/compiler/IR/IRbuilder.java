@@ -277,7 +277,7 @@ public class IRbuilder extends AbstractParseTreeVisitor<IR> implements MiniJavaV
 		return new MJPrintln(argument);
 	}
 
-	public MJStatement visitStatementReturn(MiniJavaParser.StatementReturnContext ctx) {
+	public MJReturn visitStatementReturn(MiniJavaParser.StatementReturnContext ctx) {
 
 		MJExpression argument = new MJNoExpression();
 
@@ -345,9 +345,16 @@ public class IRbuilder extends AbstractParseTreeVisitor<IR> implements MiniJavaV
 	public MJExpression visitLevel3(MiniJavaParser.Level3Context ctx) {
 
 		MJExpression root = visitLevel4(ctx.head);
-
-		for (MiniJavaParser.Level4Context c : ctx.tail) {
-			MJExpression newRoot = new MJPlus(root, visitLevel4(c));
+		MJExpression newRoot = null;
+		List<Token> binOp = ctx.binOp; 
+		for (int i = 0; i < ctx.tail.size(); i++) {
+			if(binOp.get(i).equals('+')){
+				newRoot = new MJPlus(root, visitLevel4(ctx.tail.get(i)));
+			}
+			else if( ctx.binOp.get(i).equals('-')){
+				newRoot = new MJMinus(root, visitLevel4(ctx.tail.get(i)));
+			
+			}
 			root = newRoot;
 		}
 
@@ -527,7 +534,7 @@ public class IRbuilder extends AbstractParseTreeVisitor<IR> implements MiniJavaV
 
 	@Override
 	public MJNegate visitExpressionNegation(ExpressionNegationContext ctx) {
-		return new MJNegate(ctx.argument);
+		return new MJNegate(visitLevel5(ctx.argument));
 	}
 
 	@Override
