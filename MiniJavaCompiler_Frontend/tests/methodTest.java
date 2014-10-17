@@ -1,5 +1,5 @@
 class testmain {
-	
+
 	public static void main (String[] args) {
 		System.out.println("Hello World");
 		System.out.print(true);
@@ -14,14 +14,16 @@ class testmain {
 		}
 		while ("what") {
 			System.out.println("fisk");
-			a(d);
-			f(d);
+			a(b);
 		}
 	}
 }
 
 class A {
+	int a;;;
+	boolean fisse;;;
 	public void test() {
+
 		return;
 	}
 	static int test2(){

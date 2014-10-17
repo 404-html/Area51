@@ -10,8 +10,6 @@ public class MJClass extends IR {
 	private MJType superClass;
 	private LinkedList<MJMethod> methodList = new LinkedList<MJMethod>();
 	private LinkedList<MJVariable> fieldList = new LinkedList<MJVariable>();
-
-	public MJClass() {}
 	
 	// this we have just for the main class
 

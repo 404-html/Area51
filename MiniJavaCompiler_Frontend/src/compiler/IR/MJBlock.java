@@ -9,7 +9,6 @@ public class MJBlock extends MJStatement {
 	private LinkedList<MJVariable> variables = new LinkedList<MJVariable>();
 	private LinkedList<MJStatement> statements = new LinkedList<MJStatement>();
 
-	public MJBlock() {}
 	
 	public MJBlock(LinkedList<MJVariable> vdl, LinkedList<MJStatement> sdl) {
 		this.variables = vdl;

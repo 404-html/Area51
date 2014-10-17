@@ -119,14 +119,15 @@ public class IRbuilder extends AbstractParseTreeVisitor<IR> implements MiniJavaV
 
 		LinkedList<MJVariable> variableDeclarations = new LinkedList<MJVariable>();
 		for (MiniJavaParser.VarDeclarationContext c : ctx.varDeclaration()) {
-			variableDeclarations.add(visitVarDeclaration(c));
+			MJVariable v = visitVarDeclaration(c);			
+			variableDeclarations.add(v);
 		}
 
 		LinkedList<MJStatement> statements = new LinkedList<MJStatement>();
 		for (MiniJavaParser.StatementContext c : ctx.statement()) {
 			statements.add(visitStatement(c));
 		}
-
+		System.err.println(variableDeclarations);
 		return new MJBlock(variableDeclarations, statements);
 	}
 
@@ -134,7 +135,11 @@ public class IRbuilder extends AbstractParseTreeVisitor<IR> implements MiniJavaV
 	//	  : variable  ';'
 	//	  ;
 
-	public MJVariable visitVarDeclaration(MiniJavaParser.VarDeclarationContext ctx) { return (MJVariable)visitChildren(ctx); }
+	public MJVariable visitVarDeclaration(MiniJavaParser.VarDeclarationContext ctx) { 
+		return visitVariable(ctx.variable());
+		
+		// return (MJVariable)visitChildren(ctx); 
+		}
 
 	//	variable : type variableName=IDENT
 	//			  ;
@@ -345,11 +350,19 @@ public class IRbuilder extends AbstractParseTreeVisitor<IR> implements MiniJavaV
 	public MJExpression visitLevel3(MiniJavaParser.Level3Context ctx) {
 
 		MJExpression root = visitLevel4(ctx.head);
-
-		for (MiniJavaParser.Level4Context c : ctx.tail) {
-			MJExpression newRoot = new MJPlus(root, visitLevel4(c));
+		MJExpression newRoot = null;
+		List<Token> binOp = ctx.binOp; 
+		for (int i = 0; i < ctx.tail.size(); i++) {
+			if(binOp.get(i).getText().equals("+")){
+				newRoot = new MJPlus(root, visitLevel4(ctx.tail.get(i)));
+			}
+			else if( ctx.binOp.get(i).getText().equals("-")){
+				newRoot = new MJMinus(root, visitLevel4(ctx.tail.get(i)));
+			
+			}
 			root = newRoot;
 		}
+
 
 		return root;
 	}
@@ -471,7 +484,7 @@ public class IRbuilder extends AbstractParseTreeVisitor<IR> implements MiniJavaV
 
 	@Override
 	public MJMethodCallStmt visitStatementMethodCall(StatementMethodCallContext ctx) {
-		MJIdentifier id = visitIdentifier(ctx.identifier());
+		MJIdentifier id = new MJIdentifier(ctx.methodId.getText());
 		MJExpression head = visitExpression(ctx.head);
 		ArrayList<MJExpression> tail = new ArrayList<>();
 		for (ExpressionContext ec : ctx.tail) {
