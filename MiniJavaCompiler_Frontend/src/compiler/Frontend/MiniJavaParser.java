@@ -1796,7 +1796,10 @@ public class MiniJavaParser extends Parser {
 
 	public static class Level3Context extends ParserRuleContext {
 		public Level4Context head;
-		public Token binOp;
+		public Token s7;
+		public List<Token> binOp = new ArrayList<Token>();
+		public Token s26;
+		public Token _tset600;
 		public Level4Context level4;
 		public List<Level4Context> tail = new ArrayList<Level4Context>();
 		public Level4Context level4(int i) {
@@ -1839,12 +1842,13 @@ public class MiniJavaParser extends Parser {
 				{
 				{
 				setState(319);
-				((Level3Context)_localctx).binOp = _input.LT(1);
+				((Level3Context)_localctx)._tset600 = _input.LT(1);
 				_la = _input.LA(1);
 				if ( !(_la==7 || _la==26) ) {
-					((Level3Context)_localctx).binOp = (Token)_errHandler.recoverInline(this);
+					((Level3Context)_localctx)._tset600 = (Token)_errHandler.recoverInline(this);
 				}
 				consume();
+				((Level3Context)_localctx).binOp.add(((Level3Context)_localctx)._tset600);
 				setState(320); ((Level3Context)_localctx).level4 = level4();
 				((Level3Context)_localctx).tail.add(((Level3Context)_localctx).level4);
 				}
