@@ -1,6 +1,6 @@
 class testmain {
 	
-	public static void main (String[] args) {		
+	public static void main (String[] args) {
 		System.out.println("Hello World");
 		System.out.print(true);
 	}
@@ -10,11 +10,11 @@ class A {
 	public void test() {
 		return;
 	}
-	static void test2(){
+	static int test2(){
 		return;
 	}
 }
 
-class B {
+class B extends A{
 	
 }
