@@ -7,8 +7,16 @@ class testmain {
 		{
 			int a;
 		}
-		if (false && false && 7 + 8 - 5< 8 * - 2)	{
-			a = a;
+		if (!(false && false && 7 + -(8 + !8) + 8 - 5< 8 * - 2))	{
+			int a;
+			int[] a;
+			A a;
+			a = new int[!5];
+			a = new A();
+			a = !a;
+			a = "";
+			
+			{int a;}
 
 		} else {
 			System.out.println("fisks");
