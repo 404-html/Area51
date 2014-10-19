@@ -534,9 +534,8 @@ public class IRbuilder extends AbstractParseTreeVisitor<IR> implements MiniJavaV
 		MJIdentifier id = visitId(ctx.lhs);
 		MJExpression index = visitExpression(ctx.size);
 		MJExpression val = visitExpression(ctx.rhs);
-		MJIdentifier lhs = new MJIdentifier(new MJArray(id, index).getName());
-
-		return new MJAssign(lhs, val);
+		
+		return new MJAssign(id, index, val);
 	}
 
 	@Override
