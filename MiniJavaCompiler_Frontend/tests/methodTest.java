@@ -12,11 +12,11 @@ class testmain {
 			int[] a;
 			A a;
 			a = new int[!5];
+			a[5] = 5;
 			a = new A();
 			a[2] = 4;
 			a = !a;
 			a = "";
-			
 			{int a;}
 
 		} else {
@@ -34,7 +34,7 @@ class A {
 	boolean b;
 	public void test() {
 
-		return;
+		return ;
 	}
 	static int test2(){
 		return (7+8);
