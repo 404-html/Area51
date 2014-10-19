@@ -41,5 +41,7 @@ class A {
 }
 
 class B extends A{
+	/* //kommentarer virker ikke - men er heller ikke defineret i MiniJava Spec  */
 	
 }
+
