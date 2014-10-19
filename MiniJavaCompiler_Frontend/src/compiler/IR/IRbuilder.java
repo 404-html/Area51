@@ -406,7 +406,7 @@ public class IRbuilder extends AbstractParseTreeVisitor<IR> implements MiniJavaV
 	}
 
 	public MJExpression visitExpressionParentheses(MiniJavaParser.ExpressionParenthesesContext ctx) {
-		return new MJUnaryMinus(visitExpression(ctx.argument));
+		return new MJParentheses(visitExpression(ctx.argument));
 	}
 
 	public MJExpression visitExpressionConstantTrue(MiniJavaParser.ExpressionConstantTrueContext ctx) {
