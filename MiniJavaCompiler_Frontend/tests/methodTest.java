@@ -5,10 +5,11 @@ class testmain {
 		System.out.print(true);
 		if (true == true)
 		{
-			
+			int a;
 		}
 		if (false && false && 7 + 8 - 5< 8 * - 2)	{
-			
+			a = a;
+
 		} else {
 			System.out.println("fisks");
 		}

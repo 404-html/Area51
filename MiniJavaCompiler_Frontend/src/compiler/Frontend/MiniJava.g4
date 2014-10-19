@@ -89,7 +89,7 @@ statementAssign  : lhs=id '=' rhs=expression ';' ;
 statementArrayAssign : lhs=id '[' size=expression ']' '=' rhs=expression ';'; 
 statementPrintln : 'System.out.println' '(' argument=expression ')' ';' ;
 statementPrint   : 'System.out.print' '(' argument=expression ')' ';' ;
-statementMethodCall : (identifier '.')? methodId=IDENT '(' (head=expression ( ',' tail+=expression)*)? ')' ';';
+statementMethodCall : (objectId=identifier '.')? methodId=IDENT '(' (head=expression ( ',' tail+=expression)*)? ')' ';';
 statementReturn  : 'return' ('(' argument=expression ')' )? ';' ;
 
 expression
@@ -114,7 +114,12 @@ level4
   
 level5
   : expressionUnaryMinus
+  | expressionNegation
+  | expressionNewArray
+  | expressionNewObject
   | expressionIdentifier
+  | expressionArrayAccess
+  | expressionMethodCall
   | expressionParentheses
   | expressionConstantTrue
   | expressionConstantFalse
@@ -128,7 +133,7 @@ expressionNewArray        : 'new' 'int' '[' argument=expression ']' ;
 expressionNewObject       : 'new' id '(' ')';
 expressionIdentifier      : id ;
 expressionArrayAccess     : id '[' argument=expression ']';
-expressionMethodCall      : identifier '(' (argument=expression (',' tail+=expression)* )? ')';
+expressionMethodCall      : (objectId=identifier '.')? methodId=IDENT '(' (argument=expression (',' tail+=expression)* )? ')';
 expressionParentheses     : '(' argument=expression ')' ;
 expressionConstantTrue    : 'true' ;
 expressionConstantFalse   : 'false' ;

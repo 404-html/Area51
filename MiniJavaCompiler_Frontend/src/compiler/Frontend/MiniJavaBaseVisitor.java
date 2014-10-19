@@ -1,4 +1,4 @@
-// Generated from C:\Users\Rúni\Desktop\MiniJava.g4 by ANTLR 4.1
+// Generated from C:\Users\Rúni\Desktop\ANTLR File v2.56\MiniJava.g4 by ANTLR 4.1
 package compiler.Frontend;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;

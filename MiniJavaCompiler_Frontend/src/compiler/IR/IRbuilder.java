@@ -543,7 +543,7 @@ public class IRbuilder extends AbstractParseTreeVisitor<IR> implements MiniJavaV
 
 	@Override
 	public MJNegate visitExpressionNegation(ExpressionNegationContext ctx) {
-		return new MJNegate(ctx.argument);
+		return new MJNegate(visitLevel5(ctx.argument));
 	}
 
 	@Override
