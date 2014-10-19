@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.event.MenuKeyEvent;
-
 import compiler.Frontend.*;
 import compiler.Frontend.MiniJavaParser.ArraytypeContext;
 import compiler.Frontend.MiniJavaParser.ExpressionArrayAccessContext;
@@ -15,7 +13,6 @@ import compiler.Frontend.MiniJavaParser.ExpressionMethodCallContext;
 import compiler.Frontend.MiniJavaParser.ExpressionNegationContext;
 import compiler.Frontend.MiniJavaParser.ExpressionNewArrayContext;
 import compiler.Frontend.MiniJavaParser.ExpressionNewObjectContext;
-import compiler.Frontend.MiniJavaParser.SimpleTypeContext;
 import compiler.Frontend.MiniJavaParser.StatementArrayAssignContext;
 import compiler.Frontend.MiniJavaParser.StatementIfContext;
 import compiler.Frontend.MiniJavaParser.StatementMethodCallContext;
@@ -483,13 +480,14 @@ public class IRbuilder extends AbstractParseTreeVisitor<IR> implements MiniJavaV
 
 	@Override
 	public MJMethodCallStmt visitStatementMethodCall(StatementMethodCallContext ctx) {
-		MJIdentifier id = new MJIdentifier(ctx.methodId.getText());
+		MJIdentifier methodId = new MJIdentifier(ctx.methodId.getText());
+		MJIdentifier objectId = new MJIdentifier(ctx.objectId.getText());
 		MJExpression head = visitExpression(ctx.head);
 		ArrayList<MJExpression> tail = new ArrayList<>();
 		for (ExpressionContext ec : ctx.tail) {
 			tail.add(visitExpression(ec));
 		}
-		return new MJMethodCallStmt(id, head, tail);
+		return new MJMethodCallStmt(objectId, methodId, head, tail);
 	}
 
 	@Override
