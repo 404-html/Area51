@@ -13,6 +13,7 @@ class testmain {
 			A a;
 			a = new int[!5];
 			a = new A();
+			a[2] = 4;
 			a = !a;
 			a = "";
 			

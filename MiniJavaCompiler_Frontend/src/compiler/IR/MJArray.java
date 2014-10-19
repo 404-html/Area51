@@ -21,6 +21,11 @@ public class MJArray extends MJIdentifier {
 	public MJExpression getIndex() {
 		return index;
 	}
+	
+	public String getName(){
+		return array.getName() + "[" + index.toString() + "]";
+		
+	}
 
 	public void prettyPrint(PrettyPrinter prepri) {
 		this.array.prettyPrint(prepri);

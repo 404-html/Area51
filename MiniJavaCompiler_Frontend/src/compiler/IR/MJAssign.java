@@ -5,13 +5,17 @@ import compiler.PrettyPrinter;
 public class MJAssign extends MJStatement {
 
 	private MJExpression rhs;
+	private MJExpression index;
 	private MJIdentifier lhs;
-
-	public MJAssign() {}
+	
+	public MJAssign(MJIdentifier id, MJExpression index, MJExpression rhs) {
+		this.lhs = id;
+		this.index = index;
+		this.rhs = rhs;
+	}
 	
 	public MJAssign(MJIdentifier lhs, MJExpression rhs) {
-		this.rhs = rhs;
-		this.lhs = lhs;
+		this(lhs, null, rhs);
 	}
 
 	public MJIdentifier getLhs() {
@@ -24,6 +28,11 @@ public class MJAssign extends MJStatement {
 
 	public void prettyPrint(PrettyPrinter prepri) {
 		this.lhs.prettyPrint(prepri);
+		if(index != null){
+			prepri.print("[");
+			index.prettyPrint(prepri);
+			prepri.print("]");
+		}
 		prepri.print(" = ");
 		this.rhs.prettyPrint(prepri);
 		prepri.println(";");
