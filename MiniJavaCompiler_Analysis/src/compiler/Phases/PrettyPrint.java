@@ -102,6 +102,8 @@ public class PrettyPrint extends IRElementVisitor<Integer> {
 
 	@Override
 	public Integer visitMethod(MJMethod e) throws VisitorException {
+		if (e.isPublic()) pp.print("public ");
+		if (e.isStatic()) pp.print("static ");
 		visitType(e.getReturnType());
 		pp.print(" ");
 		pp.print(e.getName());

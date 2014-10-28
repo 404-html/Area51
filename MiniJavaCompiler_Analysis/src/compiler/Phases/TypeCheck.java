@@ -57,7 +57,7 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 				
 				if (src.getDecl()==null) {
 					try {
-						src.setDecl(src.classes.lookup(src.getName()));
+						src.setDecl(IR.classes.lookup(src.getName()));
 					} catch (ClassNotFound exc) {
 						throw new TypeCheckerException("Class "+src.getName()+" not defined.");
 					}
@@ -190,7 +190,7 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 		
 		if (!e.isTop()) {
 			try {
-				visitClass(e.classes.lookup(e.getSuperClass().getName()));
+				visitClass(IR.classes.lookup(e.getSuperClass().getName()));
 			} catch (ClassNotFound exc) {
 				throw new TypeCheckerException("Class "+e.getSuperClass().getName()+" not found!");
 			}
@@ -232,8 +232,10 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 		if (e.isVoid()) return MJType.getVoidType();
 		if (e.isClass()) {
 			try {
-				e.setDecl(e.classes.lookup(e.getName()));
+				//Look up Class definition in Class Table
+				e.setDecl(IR.classes.lookup(e.getName()));
 			} catch (ClassNotFound exc) {
+				//Throw exception if Class not defined
 				throw new TypeCheckerException("Class "+e.getName()+" not defined.");
 			}
 			return e;
@@ -270,11 +272,13 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 		}
 
 		// now we typecheck the body
+		//Implicit check of return type vs. return declaration - return statements in block
+		//are checked against return type of IR.currentMethod
 		visitStatement(e.getBody());
-
+		
 		// and leave the scope
 		IR.stack.leaveScope();
-
+		 
 		return MJType.getVoidType();
 	}
 
@@ -306,16 +310,30 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 
 	@Override
 	public MJType visitStatement(MJIf e) throws VisitorException {
+		//TODO Write Visit if
+		//Visiting Condition expression
+			if (!visitExpression(e.getCondition()).isBoolean()){
+				throw new VisitorException("If condition does not evaluate to Boolean");
+			}
+		//Visiting ifblock
+			if (!visitStatement(e.getIfBlock()).isVoid()){
+				
+			};
+
+		
+		
 		return MJType.getVoidType();
 	}
 
 	@Override
 	public MJType visitStatement(MJIfElse e) throws VisitorException {
+		//TODO Write visit if else
 		return MJType.getVoidType();
 	}
 
 	@Override
 	public MJType visitStatement(MJWhile e) throws VisitorException {
+		//TODO visitStatement While
 		return MJType.getVoidType();
 	}
 
