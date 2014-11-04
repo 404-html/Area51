@@ -2,6 +2,7 @@ package compiler.Phases;
 
 import compiler.IR.*;
 import compiler.IR.support.IRElementVisitor;
+import compiler.IR.support.MJClassTable;
 import compiler.Exceptions.ClassAlreadyDeclared;
 import compiler.Exceptions.ClassErrorField;
 import compiler.Exceptions.ClassErrorMethod;
@@ -20,41 +21,41 @@ import java.util.LinkedList;
 public class TypeCheck extends IRElementVisitor<MJType> {
 
 	public static void check(IR ir) throws TypeCheckerException {
-	
+
 		try {
 			new TypeCheck().visitProgram(ir.getProgram());
 		} catch (VisitorException e) {
 			throw new TypeCheckerException(e.getMessage());
 		}
-		
+
 	}
-	
+
 	// check whether one type can be assigned to the other
 
 	public static boolean isAssignable(MJType src, MJType dest) throws TypeCheckerException {
-		
+
 		// if they have the same type, this should be easy
-		
+
 		if (src.isSame(dest)) {
-			
+
 			// if they are class types
-			
+
 			if (src.isClass()) {
-				
+
 				// if they are the same class, return true
-				
+
 				if (src.getName().equals(dest.getName())) {
 					return true;
 				}
-				
+
 				// may be dest is a super class of src...
-				
+
 				// but only if we are not yet at the root
-				
+
 				if (src.getName().equals("Object")) {
 					return false;
 				}
-				
+
 				if (src.getDecl()==null) {
 					try {
 						src.setDecl(IR.classes.lookup(src.getName()));
@@ -63,24 +64,24 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 					}
 
 				}
-				
+
 				return isAssignable(src.getDecl().getSuperClass(), dest);
 
 			}
-			
+
 			// if they are array types
-			
+
 			if (src.isArray()) {
 				if (dest.isClass() && dest.getName().equals("Object")){
 					return true;
 				}
 				return isAssignable(src.getBaseType(), dest.getBaseType());
 			}
-			
+
 			// otherwise they must be basic types
 			return true;
 		}
-		
+
 		return false;
 	}
 
@@ -92,7 +93,7 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 				new LinkedList<MJVariable>(), new LinkedList<MJMethod>());
 		oc.setAsTop();
 		e.getClasses().addLast(oc);
-		
+
 		LinkedList<MJVariable> varlist = new LinkedList<MJVariable>();
 		MJVariable length = new MJVariable(MJType.getIntType(), "length");
 		MJVariable text = new MJVariable(MJType.getClassType("String"), "text");
@@ -100,7 +101,7 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 		varlist.addLast(length);
 
 		oc = new MJClass("String", "Object", varlist, new LinkedList<MJMethod>());
-		
+
 		e.getClasses().addLast(oc);
 
 		// and add its methods - this is actually empty
@@ -138,43 +139,43 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 		}
 
 		// finally we can typecheck the individual classes
-		
+
 		MJClass mainClass = e.getClasses().getFirst();
-		
+
 		if (mainClass.getFieldList().size()>0) {
 			throw new TypeCheckerException("Main class may not have fields");
 		}
-		
+
 		if (mainClass.getMethodList().size()!=1) {
 			throw new TypeCheckerException("Main class may only have one method.");
 		}
 
 		MJMethod method = mainClass.getMethodList().getFirst();
-		
+
 		if (!(method.isPublic() && method.isStatic()) ) {
 			throw new TypeCheckerException("Main method must be public static.");
 		}
-		
+
 		if (!method.getReturnType().isVoid()) {
 			throw new TypeCheckerException("Main method must have return type void.");			
 		}
-		
+
 		if (!method.getName().equals("main")) {
 			throw new TypeCheckerException("Main method must have name 'main'.");
 		}
-		
+
 		if (!(method.getParameters().size()==1)) {
 			throw new TypeCheckerException("Main method must take one argument.");
 		}
-		
+
 		MJVariable parameter = method.getParameters().getFirst();
-		
+
 		if (!(parameter.getType().isArray() && 
 				parameter.getType().getBaseType().isClass() && 
 				parameter.getType().getBaseType().getName().equals("String"))) {
 			throw new TypeCheckerException("Main method argument must have type 'String[]'");
 		}
-		
+
 		for (MJClass c : e.getClasses()) {
 			visitClass(c);
 		}
@@ -187,7 +188,7 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 		// remember the current class
 
 		// typecheck super class
-		
+
 		if (!e.isTop()) {
 			try {
 				visitClass(IR.classes.lookup(e.getSuperClass().getName()));
@@ -218,15 +219,15 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 	public MJType visitVariable(MJVariable e) throws VisitorException {
 		// we only need to typecheck the type of the variable
 		// adding to the scope stack ensures that the name is unique
-		
+
 		visitType(e.getType());
-		
+
 		return MJType.getVoidType();
 	}
 
 	@Override
 	public MJType visitType(MJType e) throws VisitorException {
-		
+
 		if (e.isBoolean()) return MJType.getBooleanType();
 		if (e.isInt()) return MJType.getIntType();
 		if (e.isVoid()) return MJType.getVoidType();
@@ -275,10 +276,10 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 		//Implicit check of return type vs. return declaration - return statements in block
 		//are checked against return type of IR.currentMethod
 		visitStatement(e.getBody());
-		
+
 		// and leave the scope
 		IR.stack.leaveScope();
-		 
+
 		return MJType.getVoidType();
 	}
 
@@ -310,30 +311,43 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 
 	@Override
 	public MJType visitStatement(MJIf e) throws VisitorException {
-		//TODO Write Visit if
-		//Visiting Condition expression
-			if (!visitExpression(e.getCondition()).isBoolean()){
-				throw new VisitorException("If condition does not evaluate to Boolean");
-			}
-		//Visiting ifblock
-			if (!visitStatement(e.getIfBlock()).isVoid()){
-				
-			};
+		//TODO Test
+		//Visiting Condition expression - must evaluate to boolean
+		if (!visitExpression(e.getCondition()).isBoolean()){
+			throw new TypeCheckerException("If condition does not evaluate to Boolean");
+		}
+		//Visiting if block
+		if (e.getIfBlock() != null){
+			visitStatement(e.getIfBlock());
+		};
 
-		
-		
 		return MJType.getVoidType();
 	}
 
 	@Override
 	public MJType visitStatement(MJIfElse e) throws VisitorException {
-		//TODO Write visit if else
+		//TODO Test
+		//Checking if condition and block by typecasting
+		visitStatement((MJIf)e);
+		//Visiting Else block
+		if(e.getElseBlock()!=null){
+			visitStatement(e.getElseBlock());
+		}
+
 		return MJType.getVoidType();
 	}
 
 	@Override
 	public MJType visitStatement(MJWhile e) throws VisitorException {
-		//TODO visitStatement While
+		//TODO Test
+		//Check condition (condition not null)
+		if(!visitExpression(e.getCondition()).isBoolean()){
+			throw new TypeCheckerException("While condition does not evaluate to Boolean");
+		}
+		//Check Block contents
+		if(e.getBlock()!=null){
+			visitStatement(e.getBlock());
+		}
 		return MJType.getVoidType();
 	}
 
@@ -342,60 +356,62 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 		// typecheck the rhs and lhs
 		MJType rhsType = visitExpression(e.getRhs());
 		MJType lhsType = visitExpression(e.getLhs());
-		
+
 		// check that rhs is assignable to lhs
 		if (!isAssignable(rhsType, lhsType)) {
 			throw new TypeCheckerException("Types in assignment are not assignable ("+lhsType+","+rhsType+")");
 		}
-		
+
 		return MJType.getVoidType();
 	}
 
 	@Override
 	public MJType visitStatement(MJPrint e) throws VisitorException {
-		
+		//Null check unnecessary since grammar demands an expresssion - but for safety ;)
+		if (e.getParameter()!=null){	
+			visitExpression(e.getParameter());
+		}
 		return MJType.getVoidType();
 	}
 
 	@Override
 	public MJType visitStatement(MJPrintln e) throws VisitorException {
-		
-		// typecheck the parameter - and done.
+		// typecheck the parameter - and done. (no null check here ;))
 		visitExpression(e.getParameter());
-		
+
 		return MJType.getVoidType();
 	}
 
 	@Override
 	public MJType visitStatement(MJMethodCallStmt e) throws VisitorException {
 		visitExpression(e.getMethodCallExpr());
-		
+
 		return MJType.getVoidType();
 	}
 
 	@Override
 	public MJType visitStatement(MJReturn e) throws VisitorException {
-		
+
 		// typecheck the parameter - and done.
 		MJType returnType = visitExpression(e.getArgument());
-		
+
 		if (!isAssignable(returnType, IR.currentMethod.getReturnType())) {
 			throw new TypeCheckerException("Type of return does not match function's return type.");
 		}
-		
+
 		return MJType.getVoidType();
 	}
 
 	@Override
 	public MJType visitExpression(MJAnd e) throws VisitorException {
-		
+
 		MJType ltype = visitExpression(e.getLhs());
 		MJType rtype = visitExpression(e.getRhs());
-		
+
 		if (!ltype.isSame(rtype)) { 
 			throw new TypeCheckerException("Arguments to && must be of same type");
 		}
-		
+
 		if(!ltype.isBoolean()) {
 			throw new TypeCheckerException("Arguments to && must be of type boolean");
 		}
@@ -405,91 +421,180 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 
 	@Override
 	public MJType visitExpression(MJEqual e) throws VisitorException {
-		
+
 		MJType ltype = visitExpression(e.getLhs());
 		MJType rtype = visitExpression(e.getRhs());
-		
+
 		if (!ltype.isSame(rtype)) { 
 			throw new TypeCheckerException("Arguments to == must be of same type");
 		}
-		
+
 		e.setType(MJType.getBooleanType());
 		return e.getType();
 	}
 
 	@Override
 	public MJType visitExpression(MJLess e) throws VisitorException {
-		
+		MJType ltype = visitExpression(e.getLhs());
+		MJType rType = visitExpression(e.getRhs());
+		if (!ltype.isSame(rType)){
+			throw new TypeCheckerException("Arguments of < must match!");
+		}
+		e.setType(MJType.getBooleanType());
 		return e.getType();
 	}
 
 	@Override
 	public MJType visitExpression(MJPlus e) throws VisitorException {
-		
+		//TODO intense testing - DANGER	
+		MJType ltype = visitExpression(e.getLhs());
+		MJType rtype = visitExpression(e.getRhs());
+		//Matching types 
+		if(!ltype.isSame(rtype)){
+			throw new TypeCheckerException("Operands of + must match");
+		}  
+		//Matching integer or String class
+		if (!ltype.isInt() &&
+				!(ltype.isClass() && ltype.isSame(MJType.getClassType("String")))){
+			throw new TypeCheckerException("+ only allowed for String and integer types");
+		}
+		//Return type of operands
+		e.setType(ltype);	
 		return e.getType();
 	}
 
+
 	@Override
 	public MJType visitExpression(MJMinus e) throws VisitorException {
-		
+
 		// get types from child elements
-		
+
 		MJType leftType = visitExpression(e.getLhs());
 		MJType rightType = visitExpression(e.getRhs());
-		
+
 		// check whether they are correct
-		
+
 		if (!leftType.isSame(rightType)) {
 			throw new TypeCheckerException("Arguments of - must have same type.");
 		}
-		
+
 		if (!leftType.isInt()) {
 			throw new TypeCheckerException("Arguments of - must be int.");
 		}
-		
+
 		// safe type and return 
-		
+
 		e.setType(leftType);
 		return e.getType();
 	}
 
 	@Override
 	public MJType visitExpression(MJMult e) throws VisitorException {
-		
+		// get types from child elements
+
+		MJType leftType = visitExpression(e.getLhs());
+		MJType rightType = visitExpression(e.getRhs());
+
+		// check whether they are correct
+
+		if (!leftType.isSame(rightType)) {
+			throw new TypeCheckerException("Arguments of * must have same type.");
+		}
+
+		if (!leftType.isInt()) {
+			throw new TypeCheckerException("Arguments of * must be int.");
+		}
+
+		// safe type and return 
+
+		e.setType(leftType);
 		return e.getType();
 	}
 
 	@Override
 	public MJType visitExpression(MJUnaryMinus e) throws VisitorException {
-		
+
 		MJType type = visitExpression(e.getArgument());
-		
+
 		if(!type.isInt()) {
 			throw new TypeCheckerException("Arguments to - must be of type int");
 		}
-		
+
 		e.setType(type);
 		return e.getType();
 	}
 
 	@Override
 	public MJType visitExpression(MJNegate e) throws VisitorException {
+		MJType type = visitExpression(e.getArgument());
+
+		if (!type.isBoolean()){
+			throw new TypeCheckerException("Argument of ! must be boolean");
+		}
+
+		e.setType(type);
 		return e.getType();
 	}
 
 	@Override
 	public MJType visitExpression(MJNew e) throws VisitorException {
+		//Looking up if class has been declared
+		try{
+			IR.classes.lookup(e.getClassName());
+		} catch(ClassNotFound e1){
+			throw new TypeCheckerException("Class not found" + e1.getMessage());
+		}
+		//Setting type to relevant class type
+		e.setType(MJType.getClassType(e.getClassName()));
 		return e.getType();
 	}
 
 	@Override
 	public MJType visitExpression(MJNewArray e) throws VisitorException {
+		MJType type = visitExpression(e.getSize());
+		// Checking Size Expression
+		if (!type.isInt()){
+			throw new TypeCheckerException("Array size must evaluate to int");
+		}
+		//Setting type to ArrayType of IntType
+		e.setType(MJType.getArrayType(MJType.getIntType()));
 		return e.getType();
 	}
 
 	@Override
 	public MJType visitExpression(MJMethodCallExpr e) throws VisitorException {
-
+		//Getting and visiting args for method
+		LinkedList<MJExpression> args = e.getArguments();
+		for (MJExpression mjExpression : args) {
+			visitExpression(mjExpression);
+		}
+		//Getting Identifier for object - if null -> own method
+		MJIdentifier objectid = e.getObject();
+		//Class for method - set to CurrentClass until further
+		MJClass oclass = IR.currentClass; 
+		//MJ method var
+		MJMethod mmethod;
+		//Checking if there is a parent object 
+		if (objectid !=null){
+			//If parent object -> visit parent...
+			MJType otype =  visitExpression(e.getObject());
+			try {
+				//...and get class from class table
+				oclass = IR.classes.lookup(otype.getName());
+			} catch (ClassNotFound e2) {
+				throw new TypeCheckerException("Object not found for methodcall");
+			}
+		}	
+		//Get method from class table 
+		try {
+			mmethod = IR.classes.lookupMethod(oclass, e.getMethodName(), args);
+			//setting target (future)
+			e.setTarget(mmethod);
+		} catch (ClassErrorMethod | MethodNotFound e1) {
+			throw new TypeCheckerException("Method not found for Class");
+		}
+		//set type to return type.		
+		e.setType(mmethod.getReturnType());
 		return e.getType();
 	}
 
@@ -523,7 +628,7 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 		// find the declaration for the identifier on the stack
 		MJVariable var;
 		String name = e.getName();
-		
+
 		if (name.equals("this") && IR.currentMethod.isStatic()) {
 			throw new TypeCheckerException("this encountered in static method.");
 		}
@@ -535,7 +640,7 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 		}
 
 		// remember the declaration
-		
+
 		e.setDeclaration(var);
 		e.setType(var.getType());
 		return e.getType();
@@ -543,23 +648,23 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 
 	@Override
 	public MJType visitExpression(MJArray e) throws VisitorException {
-		
+
 		// typecheck the identifier
 		MJType idtype = visitExpression(e.getArray());
-		
+
 		// which must have array type
 		if (!idtype.isArray()) {
 			throw new TypeCheckerException(e.getName()+" must have array type");
 		}
-		
+
 		// typecheck the index
 		MJType idxtype = visitExpression(e.getIndex());
-		
+
 		// which must have type integer
 		if (!idxtype.isInt()) {
 			throw new TypeCheckerException("Index for "+e.getName()+" must have type int");			
 		}
-		
+
 		// type of the element is that of the base type
 		e.setType(idtype.getBaseType());		
 		return e.getType();
