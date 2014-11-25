@@ -185,7 +185,6 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 
 	@Override
 	public MJType visitClass(MJClass e) throws VisitorException {
-		// remember the current class
 
 		// typecheck super class
 
@@ -227,7 +226,7 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 
 	@Override
 	public MJType visitType(MJType e) throws VisitorException {
-
+		//Check type of identifier 
 		if (e.isBoolean()) return MJType.getBooleanType();
 		if (e.isInt()) return MJType.getIntType();
 		if (e.isVoid()) return MJType.getVoidType();
@@ -241,10 +240,12 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 			}
 			return e;
 		}
+		//If type is Array - visit array base type
 		if (e.isArray()) {
 			visitType(e.getBaseType());
 			return e;
 		}
+		//If type not found - throw exception.
 		throw new TypeCheckerException("Unknown type "+e.getName()+".");
 	}
 
@@ -311,7 +312,6 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 
 	@Override
 	public MJType visitStatement(MJIf e) throws VisitorException {
-		//TODO Test
 		//Visiting Condition expression - must evaluate to boolean
 		if (!visitExpression(e.getCondition()).isBoolean()){
 			throw new TypeCheckerException("If condition does not evaluate to Boolean");
@@ -326,10 +326,9 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 
 	@Override
 	public MJType visitStatement(MJIfElse e) throws VisitorException {
-		//TODO Test
 		//Checking if condition and block by typecasting
 		visitStatement((MJIf)e);
-		//Visiting Else block
+		//Visiting Else block (should exist)
 		if(e.getElseBlock()!=null){
 			visitStatement(e.getElseBlock());
 		}
@@ -339,7 +338,6 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 
 	@Override
 	public MJType visitStatement(MJWhile e) throws VisitorException {
-		//TODO Test
 		//Check condition (condition not null)
 		if(!visitExpression(e.getCondition()).isBoolean()){
 			throw new TypeCheckerException("While condition does not evaluate to Boolean");
@@ -404,56 +402,64 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 
 	@Override
 	public MJType visitExpression(MJAnd e) throws VisitorException {
-
+		//Visiting both sides of and expression
 		MJType ltype = visitExpression(e.getLhs());
 		MJType rtype = visitExpression(e.getRhs());
-
+		//Check if they match
 		if (!ltype.isSame(rtype)) { 
 			throw new TypeCheckerException("Arguments to && must be of same type");
 		}
-
+		//Check that type is Boolean
 		if(!ltype.isBoolean()) {
 			throw new TypeCheckerException("Arguments to && must be of type boolean");
 		}
+		//Set type to Boolean (ltype)
 		e.setType(ltype);
 		return e.getType();
 	}
 
 	@Override
 	public MJType visitExpression(MJEqual e) throws VisitorException {
-
+		//Visiting both sides of expression
 		MJType ltype = visitExpression(e.getLhs());
 		MJType rtype = visitExpression(e.getRhs());
-
+		//Check if they match
 		if (!ltype.isSame(rtype)) { 
 			throw new TypeCheckerException("Arguments to == must be of same type");
 		}
-
+		//Evaluates to Boolean
 		e.setType(MJType.getBooleanType());
 		return e.getType();
 	}
 
 	@Override
 	public MJType visitExpression(MJLess e) throws VisitorException {
+		//Visiting both sides of expression
 		MJType ltype = visitExpression(e.getLhs());
 		MJType rType = visitExpression(e.getRhs());
+		//Check if they match
 		if (!ltype.isSame(rType)){
 			throw new TypeCheckerException("Arguments of < must match!");
 		}
+		//And that they are integers
+		if(!ltype.isInt()) {
+			throw new TypeCheckerException("Arguments to < must be of type integer");
+		}
+		//return boolean
 		e.setType(MJType.getBooleanType());
 		return e.getType();
 	}
 
 	@Override
 	public MJType visitExpression(MJPlus e) throws VisitorException {
-		//TODO intense testing - DANGER	
+		//Visiting both sides
 		MJType ltype = visitExpression(e.getLhs());
 		MJType rtype = visitExpression(e.getRhs());
 		//Matching types 
 		if(!ltype.isSame(rtype)){
 			throw new TypeCheckerException("Operands of + must match");
 		}  
-		//Matching integer or String class
+		//Matching integer or String class (DeMorgans law applied - hard to read ;))
 		if (!ltype.isInt() &&
 				!(ltype.isClass() && ltype.isSame(MJType.getClassType("String")))){
 			throw new TypeCheckerException("+ only allowed for String and integer types");
@@ -513,13 +519,13 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 
 	@Override
 	public MJType visitExpression(MJUnaryMinus e) throws VisitorException {
-
+		
 		MJType type = visitExpression(e.getArgument());
-
+		//Unary minus applies only to integers!
 		if(!type.isInt()) {
 			throw new TypeCheckerException("Arguments to - must be of type int");
 		}
-
+		//return Integer ;)
 		e.setType(type);
 		return e.getType();
 	}
@@ -527,11 +533,11 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 	@Override
 	public MJType visitExpression(MJNegate e) throws VisitorException {
 		MJType type = visitExpression(e.getArgument());
-
+		//Only Boolean can be negated
 		if (!type.isBoolean()){
 			throw new TypeCheckerException("Argument of ! must be boolean");
 		}
-
+		//Return Boolean
 		e.setType(type);
 		return e.getType();
 	}
@@ -552,7 +558,7 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 	@Override
 	public MJType visitExpression(MJNewArray e) throws VisitorException {
 		MJType type = visitExpression(e.getSize());
-		// Checking Size Expression
+		// Checking Size Expression - we only allow int arrays
 		if (!type.isInt()){
 			throw new TypeCheckerException("Array size must evaluate to int");
 		}
@@ -626,9 +632,18 @@ public class TypeCheck extends IRElementVisitor<MJType> {
 	@Override
 	public MJType visitExpression(MJIdentifier e) throws VisitorException {
 		// find the declaration for the identifier on the stack
+		//Work around for Array problem
+		if(e instanceof MJArray) {
+			return visitExpression((MJArray) e);
+		}
+		//Work around for Selector
+		if(e instanceof MJSelector){
+			return visitExpression((MJSelector)e);
+		}
+		
 		MJVariable var;
 		String name = e.getName();
-
+		
 		if (name.equals("this") && IR.currentMethod.isStatic()) {
 			throw new TypeCheckerException("this encountered in static method.");
 		}

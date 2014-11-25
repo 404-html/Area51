@@ -45,6 +45,7 @@ public class CodeGen extends IRElementVisitorWithArgument<CODE> {
 				
 		for (MJMethod meth : e.getMethodList()) {
 			IR.currentMethod = meth;
+			code.add(new LC3ADD(CODE.TMP0, CODE.TMP0, 0));
 			code.add(meth.getLabel());
 			visitMethod(meth,code);
 		}
@@ -67,6 +68,7 @@ public class CodeGen extends IRElementVisitorWithArgument<CODE> {
 
 	@Override
 	public CODE visitMethod(MJMethod e, CODE state) throws VisitorException {
+		state.add(new LC3ADD(CODE.TMP0, CODE.TMP0, 0)); // STUPIDO!!! :(
 		state.comment(" METHOD "+e.getName());
 		// save return address (r7) in word 3 of stack
 		// STR R7 R6 3
@@ -100,7 +102,8 @@ public class CodeGen extends IRElementVisitorWithArgument<CODE> {
 		LC3label labelIfEnd = new LC3label();
 		code.add(new LC3BRZ(labelIfEnd));
 		visitStatement(e.getIfBlock(), code);
-		code.add(labelIfEnd); 
+		code.add(labelIfEnd);
+		code.add(new LC3ADD(CODE.TMP0, CODE.TMP0, 0)); // stupid bug fix
 		code.comment(" IF END ");
 
 		return null;
@@ -121,6 +124,7 @@ public class CodeGen extends IRElementVisitorWithArgument<CODE> {
 		code.add(elseStart);
 		visitStatement(e.getElseBlock(), code);
 		code.add(ifelseEnd);
+		code.add(new LC3ADD(CODE.TMP0, CODE.TMP0, 0)); // stupid bug fix
 		code.comment(" IF/ELSE END ");
 
 		return null;
@@ -138,6 +142,7 @@ public class CodeGen extends IRElementVisitorWithArgument<CODE> {
 		visitStatement(e.getBlock(), code); //Visit block
 		code.add(new LC3BR(whileStart)); //Back to startlabel
 		code.add(whileEnd); //End label
+		code.add(new LC3ADD(CODE.TMP0, CODE.TMP0, 0)); // stupid bug fix
 		code.comment(" WHILE END");
 
 		return null;
@@ -493,10 +498,12 @@ public class CodeGen extends IRElementVisitorWithArgument<CODE> {
 		visitExpression(e.getArgument(), code);
 		//Get the result from the stack
 		code.pop(CODE.TMP0);
+		
 		//NOT the result
 		code.add(new LC3NOT(CODE.TMP0, CODE.TMP0));
-		//Add 1 to get twos complement
-		code.add(new LC3ADD(CODE.TMP0, CODE.TMP0, 1));
+		
+//		//And 1 to clear 7 msb
+		code.add(new LC3AND(CODE.TMP0, CODE.TMP0, 1));
 		//Back onto the stack
 		code.push(CODE.TMP0);
 		code.comment(" NEGATE END ");
@@ -1303,9 +1310,9 @@ public class CodeGen extends IRElementVisitorWithArgument<CODE> {
 		code.add( new LC3TRAP(0x22));
 		code.add( new LC3TRAP(0x25));
 		code.add( npeerrmsg);
-		code.add( new LC3string("Null pointer exception\n"));
+		code.add( new LC3string("null_pointer_exception\\n"));
 
-		code.comment(" index out of bounds exception ");
+		code.comment(" index out of bounds ");
 		code.commentline( " prints error message and exits");
 		code.add( code.indexoutofbounds );
 
@@ -1315,7 +1322,7 @@ public class CodeGen extends IRElementVisitorWithArgument<CODE> {
 		code.add( new LC3TRAP(0x22));
 		code.add( new LC3TRAP(0x25));
 		code.add( iooberrmsg);
-		code.add( new LC3string("Index out of bounds exception\n"));
+		code.add( new LC3string("index_out_of_bounds\\n"));
 
 		code.comment(" add two strings ");
 		code.commentline( " expects args on top of stack, puts result on stack");
@@ -1698,7 +1705,9 @@ public class CodeGen extends IRElementVisitorWithArgument<CODE> {
 				code.commentline(" "+idx+" "+m.getName());
 				code.add( new LC3labeldata(m.getLabel()));
 			}
+			code.add(new LC3ADD(CODE.TMP0, CODE.TMP0, 0)); // BOGUS INSTRUCTION MASSER LORT MAND
 			code.comment("END " + c.getName()+" virtual method table");
+//			code.add(new LC3ADD(CODE.TMP0, CODE.TMP0, 0)); // MORE BOGUS
 		}
 		code.add(cont);
 

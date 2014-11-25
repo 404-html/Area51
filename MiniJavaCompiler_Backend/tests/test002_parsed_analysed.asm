@@ -29,16 +29,20 @@ LAB_9
   ; 
   ; BEGIN A virtual method table
   ; 
-LAB_10 .FILL LAB_19
+LAB_10
+.FILL LAB_19
 LAB_19
+  ADD R0, R0, 0
   ; 
   ; END A virtual method table
   ; 
   ; 
   ; BEGIN Object virtual method table
   ; 
+LAB_11
 .FILL LAB_20
 LAB_20
+  ADD R0, R0, 0
   ; 
   ; END Object virtual method table
   ; 
@@ -48,11 +52,14 @@ LAB_20
 LAB_12
 .FILL LAB_21
 LAB_21
+  ADD R0, R0, 0
   ; 
   ; END String virtual method table
   ; 
 LAB_14
+  ADD R0, R0, 0
 LAB_13
+  ADD R0, R0, 0
   ; 
   ;  METHOD main
   ; 
@@ -450,10 +457,9 @@ LAB_7
   TRAP x22
   TRAP x25
 LAB_74
-.STRINGZ "Null pointer exception
-"
+.STRINGZ "null_pointer_exception\n"
   ; 
-  ;  index out of bounds exception 
+  ;  index out of bounds 
   ; 
   ;  prints error message and exits
 LAB_8
@@ -461,8 +467,7 @@ LAB_8
   TRAP x22
   TRAP x25
 LAB_75
-.STRINGZ "Index out of bounds exception
-"
+.STRINGZ "index_out_of_bounds\n"
   ; 
   ;  add two strings 
   ; 

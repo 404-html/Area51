@@ -320,57 +320,237 @@
                                         <compiler.IR.MJBlock id=31>
                                             <variables>
                                                 <java.util.LinkedList id=32>
+                                                    <compiler.IR.MJVariable id=33>
+                                                        <type>
+                                                            <compiler.IR.MJType id=8>
+                                                                IS ALREADY SERIALIZED
+                                                            </compiler.IR.MJType>
+                                                        </type>
+                                                        <name>
+                                                            <java.lang.String id=34>
+                                                                i
+                                                            </java.lang.String>
+                                                        </name>
+                                                    </compiler.IR.MJVariable>
+                                                    <compiler.IR.MJVariable id=35>
+                                                        <type>
+                                                            <compiler.IR.MJType id=8>
+                                                                IS ALREADY SERIALIZED
+                                                            </compiler.IR.MJType>
+                                                        </type>
+                                                        <name>
+                                                            <java.lang.String id=36>
+                                                                j
+                                                            </java.lang.String>
+                                                        </name>
+                                                    </compiler.IR.MJVariable>
+                                                    <compiler.IR.MJVariable id=37>
+                                                        <type>
+                                                            <compiler.IR.MJType id=11>
+                                                                IS ALREADY SERIALIZED
+                                                            </compiler.IR.MJType>
+                                                        </type>
+                                                        <name>
+                                                            <java.lang.String id=38>
+                                                                t
+                                                            </java.lang.String>
+                                                        </name>
+                                                    </compiler.IR.MJVariable>
                                                 </java.util.LinkedList>
                                             </variables>
                                             <statements>
-                                                <java.util.LinkedList id=33>
-                                                    <compiler.IR.MJIf id=34>
-                                                        <condition>
-                                                            <compiler.IR.MJBoolean id=35>
+                                                <java.util.LinkedList id=39>
+                                                    <compiler.IR.MJAssign id=40>
+                                                        <rhs>
+                                                            <compiler.IR.MJBoolean id=41>
                                                                 <value>
-                                                                    <compiler.IR.MJBoolean$MJBooleanValues id=36>
-                                                                        True
+                                                                    <compiler.IR.MJBoolean$MJBooleanValues id=42>
+                                                                        False
                                                                     </compiler.IR.MJBoolean$MJBooleanValues>
                                                                 </value>
                                                                 <False>
-                                                                    <compiler.IR.MJBoolean id=37>
+                                                                    <compiler.IR.MJBoolean id=41>
+                                                                        IS ALREADY SERIALIZED
+                                                                    </compiler.IR.MJBoolean>
+                                                                </False>
+                                                                <True>
+                                                                    <compiler.IR.MJBoolean id=43>
                                                                         <value>
-                                                                            <compiler.IR.MJBoolean$MJBooleanValues id=38>
-                                                                                False
+                                                                            <compiler.IR.MJBoolean$MJBooleanValues id=44>
+                                                                                True
                                                                             </compiler.IR.MJBoolean$MJBooleanValues>
                                                                         </value>
                                                                         <False>
-                                                                            <compiler.IR.MJBoolean id=37>
+                                                                            <compiler.IR.MJBoolean id=41>
                                                                                 IS ALREADY SERIALIZED
                                                                             </compiler.IR.MJBoolean>
                                                                         </False>
                                                                         <True>
-                                                                            <compiler.IR.MJBoolean id=35>
+                                                                            <compiler.IR.MJBoolean id=43>
                                                                                 IS ALREADY SERIALIZED
                                                                             </compiler.IR.MJBoolean>
                                                                         </True>
                                                                     </compiler.IR.MJBoolean>
-                                                                </False>
-                                                                <True>
-                                                                    <compiler.IR.MJBoolean id=35>
-                                                                        IS ALREADY SERIALIZED
-                                                                    </compiler.IR.MJBoolean>
                                                                 </True>
                                                             </compiler.IR.MJBoolean>
-                                                        </condition>
-                                                        <ifBlock>
-                                                            <compiler.IR.MJBlock id=39>
+                                                        </rhs>
+                                                        <lhs>
+                                                            <compiler.IR.MJIdentifier id=45>
+                                                                <name>
+                                                                    <java.lang.String id=46>
+                                                                        t
+                                                                    </java.lang.String>
+                                                                </name>
+                                                            </compiler.IR.MJIdentifier>
+                                                        </lhs>
+                                                    </compiler.IR.MJAssign>
+                                                    <compiler.IR.MJAssign id=47>
+                                                        <rhs>
+                                                            <compiler.IR.MJInteger id=48>
+                                                                <value>
+                                                                    <java.lang.Integer id=49>
+                                                                        1
+                                                                    </java.lang.Integer>
+                                                                </value>
+                                                            </compiler.IR.MJInteger>
+                                                        </rhs>
+                                                        <lhs>
+                                                            <compiler.IR.MJIdentifier id=50>
+                                                                <name>
+                                                                    <java.lang.String id=51>
+                                                                        j
+                                                                    </java.lang.String>
+                                                                </name>
+                                                            </compiler.IR.MJIdentifier>
+                                                        </lhs>
+                                                    </compiler.IR.MJAssign>
+                                                    <compiler.IR.MJAssign id=52>
+                                                        <rhs>
+                                                            <compiler.IR.MJInteger id=53>
+                                                                <value>
+                                                                    <java.lang.Integer id=54>
+                                                                        0
+                                                                    </java.lang.Integer>
+                                                                </value>
+                                                            </compiler.IR.MJInteger>
+                                                        </rhs>
+                                                        <lhs>
+                                                            <compiler.IR.MJIdentifier id=55>
+                                                                <name>
+                                                                    <java.lang.String id=56>
+                                                                        i
+                                                                    </java.lang.String>
+                                                                </name>
+                                                            </compiler.IR.MJIdentifier>
+                                                        </lhs>
+                                                    </compiler.IR.MJAssign>
+                                                    <compiler.IR.MJAssign id=57>
+                                                        <rhs>
+                                                            <compiler.IR.MJMinus id=58>
+                                                                <lhs>
+                                                                    <compiler.IR.MJInteger id=59>
+                                                                        <value>
+                                                                            <java.lang.Integer id=60>
+                                                                                1
+                                                                            </java.lang.Integer>
+                                                                        </value>
+                                                                    </compiler.IR.MJInteger>
+                                                                </lhs>
+                                                                <rhs>
+                                                                    <compiler.IR.MJInteger id=61>
+                                                                        <value>
+                                                                            <java.lang.Integer id=62>
+                                                                                1
+                                                                            </java.lang.Integer>
+                                                                        </value>
+                                                                    </compiler.IR.MJInteger>
+                                                                </rhs>
+                                                            </compiler.IR.MJMinus>
+                                                        </rhs>
+                                                        <lhs>
+                                                            <compiler.IR.MJIdentifier id=63>
+                                                                <name>
+                                                                    <java.lang.String id=64>
+                                                                        j
+                                                                    </java.lang.String>
+                                                                </name>
+                                                            </compiler.IR.MJIdentifier>
+                                                        </lhs>
+                                                    </compiler.IR.MJAssign>
+                                                    <compiler.IR.MJAssign id=65>
+                                                        <rhs>
+                                                            <compiler.IR.MJNegate id=66>
+                                                                <argument>
+                                                                    <compiler.IR.MJIdentifier id=67>
+                                                                        <name>
+                                                                            <java.lang.String id=68>
+                                                                                t
+                                                                            </java.lang.String>
+                                                                        </name>
+                                                                    </compiler.IR.MJIdentifier>
+                                                                </argument>
+                                                            </compiler.IR.MJNegate>
+                                                        </rhs>
+                                                        <lhs>
+                                                            <compiler.IR.MJIdentifier id=69>
+                                                                <name>
+                                                                    <java.lang.String id=70>
+                                                                        t
+                                                                    </java.lang.String>
+                                                                </name>
+                                                            </compiler.IR.MJIdentifier>
+                                                        </lhs>
+                                                    </compiler.IR.MJAssign>
+                                                    <compiler.IR.MJIfElse id=71>
+                                                        <elseBlock>
+                                                            <compiler.IR.MJBlock id=72>
                                                                 <variables>
-                                                                    <java.util.LinkedList id=40>
+                                                                    <java.util.LinkedList id=73>
                                                                     </java.util.LinkedList>
                                                                 </variables>
                                                                 <statements>
-                                                                    <java.util.LinkedList id=41>
-                                                                        <compiler.IR.MJPrintln id=42>
+                                                                    <java.util.LinkedList id=74>
+                                                                        <compiler.IR.MJPrintln id=75>
                                                                             <parameter>
-                                                                                <compiler.IR.MJString id=43>
+                                                                                <compiler.IR.MJString id=76>
                                                                                     <value>
-                                                                                        <java.lang.String id=44>
+                                                                                        <java.lang.String id=77>
+                                                                                            "false hahahahaa"
+                                                                                        </java.lang.String>
+                                                                                    </value>
+                                                                                </compiler.IR.MJString>
+                                                                            </parameter>
+                                                                        </compiler.IR.MJPrintln>
+                                                                    </java.util.LinkedList>
+                                                                </statements>
+                                                            </compiler.IR.MJBlock>
+                                                        </elseBlock>
+                                                        <condition>
+                                                            <compiler.IR.MJNegate id=78>
+                                                                <argument>
+                                                                    <compiler.IR.MJIdentifier id=79>
+                                                                        <name>
+                                                                            <java.lang.String id=80>
+                                                                                t
+                                                                            </java.lang.String>
+                                                                        </name>
+                                                                    </compiler.IR.MJIdentifier>
+                                                                </argument>
+                                                            </compiler.IR.MJNegate>
+                                                        </condition>
+                                                        <ifBlock>
+                                                            <compiler.IR.MJBlock id=81>
+                                                                <variables>
+                                                                    <java.util.LinkedList id=82>
+                                                                    </java.util.LinkedList>
+                                                                </variables>
+                                                                <statements>
+                                                                    <java.util.LinkedList id=83>
+                                                                        <compiler.IR.MJPrintln id=84>
+                                                                            <parameter>
+                                                                                <compiler.IR.MJString id=85>
+                                                                                    <value>
+                                                                                        <java.lang.String id=86>
                                                                                             "Hello World!"
                                                                                         </java.lang.String>
                                                                                     </value>
@@ -381,21 +561,145 @@
                                                                 </statements>
                                                             </compiler.IR.MJBlock>
                                                         </ifBlock>
-                                                    </compiler.IR.MJIf>
-                                                    <compiler.IR.MJPrintln id=45>
+                                                    </compiler.IR.MJIfElse>
+                                                    <compiler.IR.MJWhile id=87>
+                                                        <condition>
+                                                            <compiler.IR.MJLess id=88>
+                                                                <lhs>
+                                                                    <compiler.IR.MJIdentifier id=89>
+                                                                        <name>
+                                                                            <java.lang.String id=90>
+                                                                                i
+                                                                            </java.lang.String>
+                                                                        </name>
+                                                                    </compiler.IR.MJIdentifier>
+                                                                </lhs>
+                                                                <rhs>
+                                                                    <compiler.IR.MJInteger id=91>
+                                                                        <value>
+                                                                            <java.lang.Integer id=92>
+                                                                                3
+                                                                            </java.lang.Integer>
+                                                                        </value>
+                                                                    </compiler.IR.MJInteger>
+                                                                </rhs>
+                                                            </compiler.IR.MJLess>
+                                                        </condition>
+                                                        <block>
+                                                            <compiler.IR.MJBlock id=93>
+                                                                <variables>
+                                                                    <java.util.LinkedList id=94>
+                                                                    </java.util.LinkedList>
+                                                                </variables>
+                                                                <statements>
+                                                                    <java.util.LinkedList id=95>
+                                                                        <compiler.IR.MJPrintln id=96>
+                                                                            <parameter>
+                                                                                <compiler.IR.MJString id=97>
+                                                                                    <value>
+                                                                                        <java.lang.String id=98>
+                                                                                            "GoodBeirut World"
+                                                                                        </java.lang.String>
+                                                                                    </value>
+                                                                                </compiler.IR.MJString>
+                                                                            </parameter>
+                                                                        </compiler.IR.MJPrintln>
+                                                                        <compiler.IR.MJAssign id=99>
+                                                                            <rhs>
+                                                                                <compiler.IR.MJPlus id=100>
+                                                                                    <lhs>
+                                                                                        <compiler.IR.MJIdentifier id=101>
+                                                                                            <name>
+                                                                                                <java.lang.String id=102>
+                                                                                                    i
+                                                                                                </java.lang.String>
+                                                                                            </name>
+                                                                                        </compiler.IR.MJIdentifier>
+                                                                                    </lhs>
+                                                                                    <rhs>
+                                                                                        <compiler.IR.MJInteger id=103>
+                                                                                            <value>
+                                                                                                <java.lang.Integer id=104>
+                                                                                                    1
+                                                                                                </java.lang.Integer>
+                                                                                            </value>
+                                                                                        </compiler.IR.MJInteger>
+                                                                                    </rhs>
+                                                                                </compiler.IR.MJPlus>
+                                                                            </rhs>
+                                                                            <lhs>
+                                                                                <compiler.IR.MJIdentifier id=105>
+                                                                                    <name>
+                                                                                        <java.lang.String id=106>
+                                                                                            i
+                                                                                        </java.lang.String>
+                                                                                    </name>
+                                                                                </compiler.IR.MJIdentifier>
+                                                                            </lhs>
+                                                                        </compiler.IR.MJAssign>
+                                                                    </java.util.LinkedList>
+                                                                </statements>
+                                                            </compiler.IR.MJBlock>
+                                                        </block>
+                                                    </compiler.IR.MJWhile>
+                                                    <compiler.IR.MJPrintln id=107>
                                                         <parameter>
-                                                            <compiler.IR.MJString id=46>
+                                                            <compiler.IR.MJString id=108>
                                                                 <value>
-                                                                    <java.lang.String id=47>
-                                                                        "GoodBeirut World"
+                                                                    <java.lang.String id=109>
+                                                                        "Nu Christian glad:"
                                                                     </java.lang.String>
                                                                 </value>
                                                             </compiler.IR.MJString>
                                                         </parameter>
                                                     </compiler.IR.MJPrintln>
-                                                    <compiler.IR.MJReturn id=48>
+                                                    <compiler.IR.MJPrint id=110>
+                                                        <parameter>
+                                                            <compiler.IR.MJString id=111>
+                                                                <value>
+                                                                    <java.lang.String id=112>
+                                                                        "i: "
+                                                                    </java.lang.String>
+                                                                </value>
+                                                            </compiler.IR.MJString>
+                                                        </parameter>
+                                                    </compiler.IR.MJPrint>
+                                                    <compiler.IR.MJPrintln id=113>
+                                                        <parameter>
+                                                            <compiler.IR.MJIdentifier id=114>
+                                                                <name>
+                                                                    <java.lang.String id=115>
+                                                                        i
+                                                                    </java.lang.String>
+                                                                </name>
+                                                            </compiler.IR.MJIdentifier>
+                                                        </parameter>
+                                                    </compiler.IR.MJPrintln>
+                                                    <compiler.IR.MJPrint id=116>
+                                                        <parameter>
+                                                            <compiler.IR.MJString id=117>
+                                                                <value>
+                                                                    <java.lang.String id=118>
+                                                                        "j: "
+                                                                    </java.lang.String>
+                                                                </value>
+                                                            </compiler.IR.MJString>
+                                                        </parameter>
+                                                    </compiler.IR.MJPrint>
+                                                    <compiler.IR.MJPrintln id=119>
+                                                        <parameter>
+                                                            <compiler.IR.MJIdentifier id=120>
+                                                                <name>
+                                                                    <java.lang.String id=121>
+                                                                        j
+                                                                    </java.lang.String>
+                                                                </name>
+                                                            </compiler.IR.MJIdentifier>
+                                                        </parameter>
+                                                    </compiler.IR.MJPrintln>
+                                                    <compiler.IR.MJReturn id=122>
                                                         <argument>
-                                                            <compiler.IR.MJNoExpression id=49>
+                                                            <compiler.IR.MJNoExpression id=123>
                                                             </compiler.IR.MJNoExpression>
                                                         </argument>
                                                     </compiler.IR.MJReturn>
@@ -404,12 +708,12 @@
                                         </compiler.IR.MJBlock>
                                     </body>
                                     <isStatic>
-                                        <java.lang.Boolean id=50>
+                                        <java.lang.Boolean id=124>
                                             true
                                         </java.lang.Boolean>
                                     </isStatic>
                                     <isPublic>
-                                        <java.lang.Boolean id=51>
+                                        <java.lang.Boolean id=125>
                                             true
                                         </java.lang.Boolean>
                                     </isPublic>
@@ -417,7 +721,7 @@
                             </java.util.LinkedList>
                         </methodList>
                         <fieldList>
-                            <java.util.LinkedList id=52>
+                            <java.util.LinkedList id=126>
                             </java.util.LinkedList>
                         </fieldList>
                     </compiler.IR.MJClass>
